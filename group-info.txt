@@ -4,5 +4,5 @@ Group Name:
 Group Members:
 	- Yafet Kubrom
 	- Jake Grossman
-	- 
+	- Jacob Simmerman
 	- 
