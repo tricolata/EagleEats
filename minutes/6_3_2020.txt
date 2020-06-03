@@ -1,6 +1,11 @@
 Members Present: All
 
 Topics Discussed:
-- Assigned Roles
+- Assigned roles for proposoal
 - Discussed specific aspects of the project to get a common understanding of our
   goal with the project
+
+  Project: Food Delivery Web Service
+
+  Backend Language: Python + Flask
+  DB: SQLite
