@@ -1,5 +1,7 @@
 Group Name: 
 	- Bears Beets Battlestar Galatica
+Group Repository Name:
+	- csce-3444-project
 
 Group Members:
 	- Yafet Kubrom
