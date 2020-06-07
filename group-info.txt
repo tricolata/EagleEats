@@ -1,5 +1,5 @@
 Group Name: 
-	- Bears Beets Battlestar Galatica
+	- Bears Beets Battlestar Galactica
 Group Repository Name:
 	- csce-3444-project
 
