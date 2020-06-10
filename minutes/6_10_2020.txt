@@ -1,0 +1,7 @@
+Members Present: All
+
+Topics Discussed:
+- Discussed basic layout of the website
+- Discussed different languages we will need
+- Choose a model to develop the site
+- Discussed using Jira to keep project organized
