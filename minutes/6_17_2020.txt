@@ -1,0 +1,4 @@
+Today we set up our Jira board with two issues: learn how to use Jira and brush up on our tech stack. As a team we decided it was best for us to
+take the time to understand how Jira works so we can use it effectively. Yafet offered to transfer the features from the project proposal
+to our Jira board and set them aside in the backlog. We agreed that on monday we will have our first sprint meeting and we will begin 
+designing our project and dividing up stories in order to create our website. 
