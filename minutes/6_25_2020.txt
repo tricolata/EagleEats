@@ -1,0 +1,6 @@
+Members Present: All
+
+Topics Discussed:
+- set up SRS
+- discussed specification for all components of our application
+- discussed which server our team will use 
