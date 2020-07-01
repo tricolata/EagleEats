@@ -9,7 +9,7 @@ class Review(object):
         self.user_id = user_id
 
     def __str__(self):
-        return 'Post(text={}, date={}, user_id={})'.format(
+        return 'Review(text={}, date={}, user_id={})'.format(
             self.text, self.date, self.user_id)
 
     def __repr__(self):
