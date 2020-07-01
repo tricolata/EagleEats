@@ -28,27 +28,27 @@ app = Flask(__name__)
 def index():
 	return render_template("index.html")
 
-@app.route("/signup")
-def signup():
-	return render_template("signup.html")
-
-""" triggered after submit from signup.html """
-@app.route("/register", methods=["POST"])
+""" registration route """
+""" GET request loads login/signup page, POST request adds new account to db"""
+@app.route("/register", methods=["GET", "POST"])
 def register():
-	database = "restaurant.db"
-	conn = create_connection(database)
+	if request.method == "GET":
+		return render_template("signup.html")
+	else:
+		database = "restaurant.db"
+		conn = create_connection(database)
 
-	""" request.form.get() accesses to input from html file """ 
+		""" request.form.get() accesses to input from html file """
 
-	name = request.form.get("name")
-	username = request.form.get("user_id")
-	email = request.form.get("email")
-	password = request.form.get("password")
-	phone = request.form.get("phone")
-	address = request.form.get("address")
+		name = request.form.get("name")
+		username = request.form.get("user_id")
+		email = request.form.get("email")
+		password = request.form.get("password")
+		phone = request.form.get("phone")
+		address = request.form.get("address")
 
-	with conn:
-		customer = (name, username, email, password, phone, address)
-		create_user(conn, customer)
+		with conn:
+			customer = (name, username, email, password, phone, address)
+			create_user(conn, customer)
 
-	return render_template("index.html")
+		return render_template("index.html")
