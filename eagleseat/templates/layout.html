@@ -3,8 +3,13 @@
 	<head>
 		<meta name="viewport" content="initial-scale=1, width=device-width">
 		<title>Eagles Eat</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
 	</head>
 	<body>
-		{% block body %}{% endblock %}
+		{% block body %}
+			{% block content %}
+
+			{% endblock %}
+		{% endblock %}
 	</body>
 </html>
