@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request
 import sqlite3
 from sqlite3 import Error
+from classes import MenuItem
 
 """ Create a database connection to SQLite database """
 def create_connection(db_name):
@@ -52,3 +53,16 @@ def register():
 			create_user(conn, customer)
 
 		return render_template("index.html")
+
+@app.route("/menu", methods=["GET"])
+def menu():
+	# TODO: Read items from somwehere
+	menu_items = [
+		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', 'static/img/garden-fresh-slate-compressed.jpg', 5.99),
+		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', 'static/img/pepperoni-slate-compressed.jpg', 5.99),
+		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', 'static/img/garden-fresh-slate-compressed.jpg', 5.99),
+		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', 'static/img/pepperoni-slate-compressed.jpg', 5.99),
+		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', 'static/img/pepperoni-slate-compressed.jpg', 5.99),
+	]
+
+	return render_template("menu.html", menu_items=menu_items)

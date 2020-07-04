@@ -1,0 +1,73 @@
+.menu-container {
+	font-family: sans-serif;
+
+
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+
+	height: 100%;
+	padding: 10px;
+}
+
+.menu-item {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+
+	height: calc(100% / 2 - 32px);
+	width: calc(100% / 4 - 32px);
+	margin: 10px;
+
+	border: 1px solid #bcbcbc;
+	border-radius: 6px;
+
+	font-size: 2vh;
+}
+
+
+/* Picture of food */
+.menu-item img {
+	/* dont resize image, just cover space */
+	object-fit: cover;
+
+	width: 100%;
+	height: 60%;
+}
+
+.menu-item .details {
+	display: flex;
+	flex-direction: column;
+
+	height: 30%;
+	padding: 10px;
+
+	overflow: hidden;
+}
+
+/* Name of food */
+.menu-item .details h3 {
+	margin: 0 0 .5em 0;
+}
+
+/* Description of food */
+.menu-item .details p {
+	margin: 0 0 .5em 0;
+}
+
+.menu-item button {
+	/* UNT Green from UNT Color Identiy Guide */
+	background-color: var(--unt-green);
+	color: white;
+
+	border: none;
+	width: 100%;
+	height: 10%;
+
+	border-radius: 0 0 5px 5px ;
+
+	font-size: 2vh;
+}
