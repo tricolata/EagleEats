@@ -1,100 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<link rel="stylesheet" type="text/css" href="/static/css/layout.css">
 		<meta name="viewport" content="initial-scale=1, width=device-width">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<title>Eagles Eat</title>
 	</head>
 	<body>
 		{% block body %}{% endblock %}
-		<style>
-			.footer{
-				position: fixed;
-  			padding: 10px 0;
-				box-sizing: border-box;
-				height: 25%;
-				width: 100vw;
-				left: 0;
-				bottom: 0;
-				overflow: hidden;
-  			background-color: rgb(110 110 110);
-				border-style: solid;
-				border-width: 4px;
-				border-color: rgb(26 191 68);
-			}
-			.footerelements{
-				display: block;
-				width:100%;
-				height: 100%;
-			}
-			.footerelements .logo{
-				width:40%;
-				height:100%;
-				float: left;
-				margin:0 auto;
-			}
-			.footerelements .logo img{
-				width:120px;
-				height:auto;
-			}
-			.footerelements .aboutus{
-				width: 20%;
-				height: 100%;
-				float: left;
-			}
-			.footerelements .aboutus p{
-				color: rgb(26 191 68);
-				width: 70%;
-				font-size: 15px;
-				margin-top: -17px;
-			}
-			.footerelements .contactus{
-				width: 20%;
-				height: 100%;
-				float: left;
-			}
-			.footerelements .contactus p{
-				color: rgb(26 191 68);
-				width: 100%;
-				font-size: 15px;
-			}
-			.footerelements .followus{
-				width: 20%;
-				height: 100%;
-				float: left;
-			}
-			.footerelements .followus li{
-				display: inline-block;
-				color: black;
-				text-decoration: none;
-				font-size: 20px;
-				padding:0 5px;
-			}
-			.fa-facebook{
-				color: rgb(26 191 68);
-			}
-			.fa-twitter{
-				color: rgb(26 191 68);
-			}
-			.fa-instagram{
-				color: rgb(26 191 68);
-			}
-		</style>
 		<div class="footer">
 				<div class="footerelements">
 					<div class="logo">
 						<img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/North_Texas_Mean_Green_logo.svg/1200px-North_Texas_Mean_Green_logo.svg.png" alt="UNT Eagles">
 					</div>
-					<div class="aboutus">
+					<div class="item">
 						<h1>About Us</h1>
 						<p>EaglesEats was the brainchild of hardworking and starving College students who find themselves too lazy to get their own food.</p>
 					</div>
-					<div class="contactus">
+					<div class="item">
 						<h1>Contact Us</h1>
 						<p>e-mail: Student@my.unt.edu</p>
 						<p>Phone: xxx-xxx-xxxx</p>
 					</div>
-					<div class="followus">
+					<div class="item">
 						<h1>Follow Us</h1>
 						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 						<li><a href="#"><i class="fa fa-instagram"></i></a></li>
