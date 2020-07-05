@@ -70,9 +70,10 @@ html, body {
 }
 
 #branding {
-	width: 10vw;
+	width: 33vw;
 
 	display: flex;
+	justify-content: center;
 	align-items: center;
 
 	color: var(--unt-green);
