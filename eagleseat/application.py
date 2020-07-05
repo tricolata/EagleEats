@@ -1,6 +1,6 @@
 """ Flask is a microframework to create web applications within python """
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, redirect, request, url_for
 import sqlite3
 from sqlite3 import Error
 from classes import MenuItem
@@ -27,11 +27,11 @@ app = Flask(__name__)
 """ route() tells flask what URL triggers this function """
 @app.route("/")
 def index():
-	return render_template("index.html")
+	return redirect(url_for("deals"))
 
 """ registration route """
 """ GET request loads login/signup page, POST request adds new account to db"""
-@app.route("/register", methods=["GET", "POST"])
+@app.route("/signup", methods=["GET", "POST"])
 def register():
 	if request.method == "GET":
 		return render_template("signup.html")
@@ -54,6 +54,16 @@ def register():
 
 		return render_template("index.html")
 
+@app.route("/login")
+def login():
+	return render_template("login.html")
+
+@app.route("/deals")
+def deals():
+	# TODO: get deals
+
+	return render_template("deals.html")
+
 @app.route("/menu", methods=["GET"])
 def menu():
 	# TODO: Read items from somwehere
@@ -66,3 +76,8 @@ def menu():
 	]
 
 	return render_template("menu.html", menu_items=menu_items)
+
+@app.route("/cart")
+def cart():
+	# TODO: read cart data
+	return render_template("cart.html")
