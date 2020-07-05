@@ -3,7 +3,6 @@ window.addEventListener('load', setActiveTab);
 function setActiveTab() {
     // get last segment of page path
     let pageName = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-    console.log(pageName);
     let activeTab = undefined;
     switch (pageName) {
         case 'deals': {
