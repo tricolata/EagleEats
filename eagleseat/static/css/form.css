@@ -72,7 +72,7 @@
     background-color: #00853E;
 }
 
-#register-prompt {
+.additional-item {
     width: 100%;
     margin: 16px 0px 10px 0;
     padding: 15px 20px;
@@ -84,14 +84,14 @@
     border-radius: 5px;
 }
 
-#register-prompt a {
+.additional-item a {
     text-decoration: none;
 }
 
-#register-prompt a:hover {
+.additional-item a:hover {
     text-decoration: underline;
 }
 
-#register-prompt a:visited {
+.additional-item a:visited {
     color: blue;
 }
