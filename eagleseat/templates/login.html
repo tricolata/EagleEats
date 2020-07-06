@@ -1,13 +1,22 @@
 {% extends "layout.html" %}
 
-{% block body %}
-  <h1>Sign in</h1>
-  <form action="/register" method="post">
-    <label for="username">Username: </label><br>
-    <input type="text" name="username" id="username"><br>
-    <label for="password">Password: </label><br>
-    <input type="password" name="password" id="password"><br><br>
-    <input type="submit">
-  </form>
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <h1>{% block title %}Log in to Eagle Eats{% endblock %}</h1>
+    <form action="/{% block dest %}login{% endblock %}" method="post">
+        {% block form_items %}
+            <label for="name">Name</label>
+            <input id="name" type="text" name="name" autocapitalize="on" autocorrect="off">
 
-  {% endblock %}
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" autocapitalize="off" autocorrect="off">
+        {% endblock %}
+        <input id="submit" type="submit" value="{% block submit_text %}Log In{% endblock %}">
+    </form>
+
+    {% block additional_items %}
+        <p id="register-prompt">
+            New to EagleEats? <a href="/signup" rel="noopener noreferrer">Create an account</a>.
+        </p>
+    {% endblock %}
+{% endblock %}
