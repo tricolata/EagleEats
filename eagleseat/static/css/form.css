@@ -69,7 +69,9 @@
     margin: 0 !important;
 
     color: white;
-    background-color: #00853E;
+    background-color: var(--unt-green);
+
+    cursor: pointer;
 }
 
 .additional-item {
