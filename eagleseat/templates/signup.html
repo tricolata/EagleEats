@@ -8,16 +8,16 @@
 
 {% block form_items %}
     <label for="name" class="required" >Name</label>
-    <input id="name" type="text" name="name" autocapitalize="on" autocorrect="off" required>
+    <input id="name" type="text" name="name" placeholder="first last" autocapitalize="on" autocorrect="off" required>
 
     <label for="email" class="required" >Email</label>
-    <input id="email" type="email" name="email" autocapitalize="off" autocorrect="off" required>
+    <input id="email" type="email" name="email" placeholder="example@email.com" autocapitalize="off" autocorrect="off" required>
 
     <label for="password" class="required" >Password</label>
-    <input id="password" type="password" name="password" require requiredd>
+    <input id="password" type="password" name="password" placeholder="password" required>
 
     <label for="phone" class="required" >Phone Number</label>
-    <input id="phone" type="tel" name="phone" required>
+    <input id="phone" type="tel" name="phone" placeholder="123-456-7890" required>
 {% endblock %}
 
 {% block additional_items %}<!-- No Additional Items -->{% endblock %}

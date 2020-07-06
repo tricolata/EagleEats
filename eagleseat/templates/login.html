@@ -7,11 +7,11 @@
 {% block submit_text %}Log In{% endblock %}
 
 {% block form_items %}
-    <label for="name">Name</label>
-    <input id="name" type="text" name="name" autocapitalize="on" autocorrect="off">
-
     <label for="email">Email</label>
-    <input id="email" type="email" name="email" autocapitalize="off" autocorrect="off">
+    <input id="email" type="email" name="email" placeholder="example@email.com" autocapitalize="off" autocorrect="off">
+
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" placeholder="password" autocapitalize="off" autocorrect="off">
 {% endblock %}
 
 {% block additional_items %}
