@@ -1,13 +1,21 @@
-{% extends "layout.html" %}
+{% extends "form.html" %}
 
-{% block body %}
-  <h1>Sign in</h1>
-  <form action="/register" method="post">
-    <label for="username">Username: </label><br>
-    <input type="text" name="username" id="username"><br>
-    <label for="password">Password: </label><br>
-    <input type="password" name="password" id="password"><br><br>
-    <input type="submit">
-  </form>
+{% block header %}Log in to Eagle Eats{% endblock %}
 
-  {% endblock %}
+{% block dest %}login{% endblock %}
+
+{% block submit_text %}Log In{% endblock %}
+
+{% block form_items %}
+    <label for="email">Email</label>
+    <input id="email" type="email" name="email" placeholder="example@email.com" autocapitalize="off" autocorrect="off">
+
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" placeholder="password" autocapitalize="off" autocorrect="off">
+{% endblock %}
+
+{% block additional_items %}
+    <p class="additional-item">
+        New to EagleEats? <a href="/signup" rel="noopener noreferrer">Create an account</a>.
+    </p>
+{% endblock %}

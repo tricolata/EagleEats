@@ -1,28 +1,23 @@
-{% extends "layout.html" %}
+{% extends "form.html" %}
 
-{% block body %}
-  <h1>Sign Up</h1>
-  <form action="/register" method="post">
-      <label for="name">Name: </label>
-      <input autocomplete="off" type="text" name="name" id="name" required> <br>
+{% block header %}Sign up for Eagle Eats{% endblock %}
 
-      <label for="user_id">Username: </label>
-      <input autocomplete="off" type="text" name="user_id" id="user_id" required> <br>
+{% block dest %}signup{% endblock %}
 
-      <label for="email">Email: </label>
-      <input autocomplete="off" type="email" name="email" id="email" required> <br>
+{% block submit_text %}Sign Up{% endblock %}
 
-      <label for="password">Password: </label>
-      <input autocomplete="off" type="text" name="password" id="password" required> <br>
+{% block form_items %}
+    <label for="name" class="required" >Name</label>
+    <input id="name" type="text" name="name" placeholder="first last" autocapitalize="on" autocorrect="off" required>
 
-      <!-- add confirm password function using javascript-->
+    <label for="email" class="required" >Email</label>
+    <input id="email" type="email" name="email" placeholder="example@email.com" autocapitalize="off" autocorrect="off" required>
 
-      <label for="phone">Phone: </label>
-      <input autocomplete="off" type="text" name="phone" id="phone" required> <br>
+    <label for="password" class="required" >Password</label>
+    <input id="password" type="password" name="password" placeholder="password" required>
 
-      <label for="address">Address: </label>
-      <input autocomplete="off" type="text" name="address" id="address" required> <br>
-
-      <input type="submit" value="Register">
-  </form>
+    <label for="phone" class="required" >Phone Number</label>
+    <input id="phone" type="tel" name="phone" placeholder="123-456-7890" required>
 {% endblock %}
+
+{% block additional_items %}<!-- No Additional Items -->{% endblock %}
