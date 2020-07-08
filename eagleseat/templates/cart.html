@@ -1,1 +1,33 @@
 {% extends "layout.html" %}
+
+{% block content %}
+<div id ="scroll">
+<link href="{{ url_for('static', filename='css/cart.css') }}" rel="stylesheet">
+	<div>
+        <h1>My Order</h1> 
+    </div>
+    <div>
+        <h2>Store: EagleEats 2121 W. Hickory St. Denton, TX 76201</h2>
+    </div>
+    <div>
+    <button class = "checkout" onclick="location.href='/menu'">Add More Food</button>
+    <button class = "moreFood" >Checkout</button>
+    </div>
+    <div class = "ridge">
+      <div>
+          <img src ='static/img/burger.jpg' alt="Burger" class = "burger">
+          <h3 class= "description">Mean Green Burger W/ Fries and a Drink</h3>        
+        </div>
+        <hr class = "divider">
+        <div class= "total">
+        <h4>Subtotal</h4>
+        <h4>Tax</h4>
+        <h4>Total</h4>
+        </div>
+        <div>
+        <button class = "delivery">Delivery</button>
+        <button class = "carryOut">Carry Out</button>
+        </div>
+    </div>
+ </div>
+{% endblock %}
