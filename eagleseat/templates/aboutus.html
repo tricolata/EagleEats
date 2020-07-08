@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='css/aboutus.css') }}" rel="stylesheet">
+<div class="aboutus">
+  <h1>About Us At EagleEats</h1>
+  <p>Bringing you that much closer to your favorite meals</p>
+</div>
+<div class="row">
+  <div class="members">
+    <h1>Jake Grossman</h1>
+    <p>Developer</p>
+    <img src="{{ url_for('static', filename='img/profile_pic.jpg') }}">
+  </div>
+  <div class="members">
+    <h1>Jake Simmerman</h1>
+    <p>Developer</p>
+    <img src="{{ url_for('static', filename='img/profile_pic.jpg') }}">
+  </div>
+  <div class="members">
+    <h1>Yafet</h1>
+    <p>Developer</p>
+    <img src="{{ url_for('static', filename='img/profile_pic.jpg') }}">
+  </div>
+  <div class="members">
+    <h1>Jacob Murillo</h1>
+    <p>Developer</p>
+    <img src="{{ url_for('static', filename='img/profile_pic.jpg') }}">
+  </div>
+</div>
+{% endblock %}

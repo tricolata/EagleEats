@@ -81,3 +81,7 @@ def menu():
 def cart():
 	# TODO: read cart data
 	return render_template("cart.html")
+
+@app.route("/aboutus")
+def aboutus():
+	return render_template("aboutus.html")
