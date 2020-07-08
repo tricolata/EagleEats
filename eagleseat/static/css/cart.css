@@ -1,0 +1,96 @@
+
+.ridge {
+    border-style: ridge;
+    height: 500px;
+    position: relative;
+}
+
+.burger{
+    width:150px;
+    height:150px;
+    float: left;
+    padding-left: 2em;
+    margin-right: 1em;
+    
+}
+.description {
+    align-items: center;
+}
+.divider {
+    margin-top:15em; 
+    margin-left:2em;
+    margin-right:2em;
+}
+.checkout {
+  background-color: #00853E; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  width: 600px;
+  bottom:2em;
+}
+.moreFood {
+    background-color: #00853E; /* Green */
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 600px;
+    float: right;
+    bottom: 2em;
+  }
+  .total{
+    
+    bottom:10px;
+    width:400px;
+    position:absolute;
+    border: 2px dotted;
+    right:2em;
+    padding-left:1em;
+    margin-bottom:15em;
+  }
+  .carryOut{
+    background-color: #00853E; /* Green */
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 600px;
+    float: right;
+    bottom: 2em;
+    margin-top:15em;
+  }
+  .delivery{
+    background-color: #00853E; /* Green */
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+    width: 600px;
+    margin-top:15em;
+  }
