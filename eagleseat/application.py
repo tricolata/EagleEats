@@ -75,13 +75,17 @@ def login():
 		sql = ''' SELECT password FROM customers WHERE email = ? '''
 		cur = conn.cursor()
 		cur.execute(sql, (email, ))
-		if not sha256_crypt.verify(password, cur.fetchone()[0]):
-			flash("Wrong email and/or password. Try again")
-			return redirect(url_for('login'))
-		else:
-			session['logged_in'] = True
-			session['email'] = email
-			return render_template("index.html")
+		db_password = cur.fetchone()
+		if db_password is not None:
+			if sha256_crypt.verify(password, db_password[0]):
+				session['logged_in'] = True
+				session['email'] = email
+				return redirect(url_for('index'))
+
+		# if reached, either there was no entry in db for supplied email
+		# or password is wrong. Either way, an incorrect login was supplied
+		flash("Wrong email and/or password. Try again")
+		return redirect(url_for('login'))
 	else:
 		return render_template("login.html")
 
