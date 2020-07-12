@@ -1,16 +1,14 @@
 """ Flask is a microframework to create web applications within python """
 
-from flask import Flask, render_template, redirect, request, url_for, flash
+from flask import Flask, render_template, redirect, request, url_for, flash, session
 from passlib.hash import sha256_crypt
 import sqlite3
 from sqlite3 import Error
-from classes import MenuItem
-from classes import User
+from classes import MenuItem, User
 import random
 import os
 
 
-used_ids = []
 """ Create a database connection to SQLite database """
 def create_connection(db_name):
 	conn = None
@@ -23,7 +21,7 @@ def create_connection(db_name):
 	return conn
 """ Create a new user into the customers table """
 def create_user(conn, user):
-	sql = ''' INSERT INTO customers(user_id, name, email, password, phone) VALUES (?,?,?,?,?) '''
+	sql = ''' INSERT INTO customers(name, email, password, phone) VALUES (?,?,?,?) '''
 	cur = conn.cursor()
 	cur.execute(sql, user)
 	return cur.lastrowid	# lastrowid attributes the cursor object to get back generated id
@@ -52,12 +50,6 @@ def register():
 		email = request.form.get("email")
 		password = sha256_crypt.encrypt(request.form.get("password"))
 		phone = request.form.get("phone")
-		# random() could give same number so this will check
-		r = random.randint(1,200000)
-		while r in used_ids:
-			r = random.randint(1,200000)
-		used_ids.append(r)
-		user_id = r
 
 		with conn:
 			sql = ''' SELECT * FROM customers where email = ? '''
@@ -67,7 +59,7 @@ def register():
 				flash("That email already exist, please log in or choose another")
 				return redirect(url_for('register'))
 			else:
-				customer = (user_id, name, email, password, phone)
+				customer = (name, email, password, phone)
 				create_user(conn, customer)
 				return render_template("index.html")
 
@@ -87,9 +79,16 @@ def login():
 			flash("Wrong email and/or password. Try again")
 			return redirect(url_for('login'))
 		else:
+			session['logged_in'] = True
+			session['email'] = email
 			return render_template("index.html")
 	else:
 		return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+	session['logged_in'] = False
+	return redirect(url_for('index'))
 @app.route("/deals")
 def deals():
 	# TODO: get deals
