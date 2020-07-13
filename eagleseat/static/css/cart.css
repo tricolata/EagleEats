@@ -1,96 +1,67 @@
 
-.ridge {
-    border-style: ridge;
-    height: 500px;
-    position: relative;
+.orderItem{
+  display:flex;
+  justify-content: space-between;
+}
+.orderItem div{
+  border: 1px #ccc solid;
+  padding: 10px;
+}
+.orderName{
+/*flex: 1;*/
+width: 30%;
 }
 
+.orderImg{
+flex: .8;
+width: 30%;
+}
 .burger{
-    width:150px;
-    height:150px;
-    float: left;
-    padding-left: 2em;
-    margin-right: 1em;
-    
+  width: 23%; 
+  height: auto;
 }
-.description {
-    align-items: center;
+.orderDesc{
+/*flex: 1;*/
+width: 30%;
+display: inline-block;
+vertical-align: top;
 }
-.divider {
-    margin-top:15em; 
-    margin-left:2em;
-    margin-right:2em;
+.orderPrice{
+  width: 30%;
+  justify-content: right;
+  text-align: right;
 }
-.checkout {
+.parent{
+  border: 1px #ccc solid;
+  padding: 10px;
+}
+.prices{
+  display:flex;
+  justify-content: flex-end;
+}
+.subtotal{
+  justify-content: center;
+  width:10%
+}
+.subtotalPrice{
+  margin-left:5em;
+  justify-content: flex-end;
+}
+.topButtons{
+  display: flex;
+  margin-bottom:.5em;
+}
+.topButton{
   background-color: #00853E; /* Green */
   border: none;
   color: white;
-  padding: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
   border-radius: 12px;
-  width: 600px;
-  bottom:2em;
+  width: 50%;
+  padding:1.3em;
+  border:1px solid #000000;
 }
-.moreFood {
-    background-color: #00853E; /* Green */
-    border: none;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 12px;
-    width: 600px;
-    float: right;
-    bottom: 2em;
-  }
-  .total{
-    
-    bottom:10px;
-    width:400px;
-    position:absolute;
-    border: 2px dotted;
-    right:2em;
-    padding-left:1em;
-    margin-bottom:15em;
-  }
-  .carryOut{
-    background-color: #00853E; /* Green */
-    border: none;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 12px;
-    width: 600px;
-    float: right;
-    bottom: 2em;
-    margin-top:15em;
-  }
-  .delivery{
-    background-color: #00853E; /* Green */
-    border: none;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 12px;
-    width: 600px;
-    margin-top:15em;
-  }
+
+/*.columns{
+  display: flex;
+  flex-direction: column;
+}*/

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div id ="scroll">
+
 <link href="{{ url_for('static', filename='css/cart.css') }}" rel="stylesheet">
 	<div>
         <h1>My Order</h1> 
@@ -9,25 +9,59 @@
     <div>
         <h2>Store: EagleEats 2121 W. Hickory St. Denton, TX 76201</h2>
     </div>
-    <div>
-    <button class = "checkout" onclick="location.href='/menu'">Add More Food</button>
-    <button class = "moreFood" >Checkout</button>
+    <div class = topButtons>
+        <button class =topButton onclick="location.href='/menu'">Add More Food</button>
+        <button class =topButton onclick="location.href='/menu'">Add More Food</button>
     </div>
-    <div class = "ridge">
-      <div>
-          <img src ='static/img/burger.jpg' alt="Burger" class = "burger">
-          <h3 class= "description">Mean Green Burger W/ Fries and a Drink</h3>        
+    <div class ="parent">
+        <div class= "orderName"> 
+            <h3> Mean Green Sloppy Joe</h3>
         </div>
-        <hr class = "divider">
-        <div class= "total">
-        <h4>Subtotal</h4>
-        <h4>Tax</h4>
-        <h4>Total</h4>
+        <div class = "orderItem">     
+          <div class ="orderImg">
+             <img src ='static/img/burger.jpg' alt="Burger" class = "burger">
+             <h4 class ="orderDesc"> Mean Green Sloppy Joe w/ fries and Drink </h4>
+          </div>
+        <div class ="orderPrice">
+            <h4> $4.99</h4>
         </div>
-        <div>
-        <button class = "delivery">Delivery</button>
-        <button class = "carryOut">Carry Out</button>
+        </div>
+    <div class = "orderItem">     
+        <div class ="orderImg">
+            <img src ='static/img/burger.jpg' alt="Burger" class = "burger">
+            <h4 class ="orderDesc"> Mean Green Sloppy Joe w/ fries and Drink </h4>
+        </div>
+        <div class ="orderPrice">
+            <h4> $4.99</h4>
         </div>
     </div>
- </div>
+    <hr>
+    <div class ="columns">
+    <div class="prices"> 
+        <div class = "subtotal">
+            <h4>Subtotal</h4>
+        </div>
+        <div class= "subtotalPrice">
+            <h4>$4.99</h4>
+        </div>
+    </div>
+    <div class="prices"> 
+        <div class = "subtotal">
+            <h4>Tax</h4>
+        </div>
+        <div class= "subtotalPrice">
+            <h4>$0.42</h4>
+        </div>
+    </div>
+    <div class="prices"> 
+        <div class = "subtotal">
+            <h4>Total</h4>
+        </div>
+        <div class= "subtotalPrice">
+            <h4>$5.41</h4>
+        </div>
+    </div>
+    </div>
+    </div> 
+    
 {% endblock %}
