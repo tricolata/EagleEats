@@ -1,0 +1,67 @@
+
+.orderItem{
+  display:flex;
+  justify-content: space-between;
+}
+.orderItem div{
+  border: 1px #ccc solid;
+  padding: 10px;
+}
+.orderName{
+/*flex: 1;*/
+width: 30%;
+}
+
+.orderImg{
+flex: .8;
+width: 30%;
+}
+.burger{
+  width: 23%; 
+  height: auto;
+}
+.orderDesc{
+/*flex: 1;*/
+width: 30%;
+display: inline-block;
+vertical-align: top;
+}
+.orderPrice{
+  width: 30%;
+  justify-content: right;
+  text-align: right;
+}
+.parent{
+  border: 1px #ccc solid;
+  padding: 10px;
+}
+.prices{
+  display:flex;
+  justify-content: flex-end;
+}
+.subtotal{
+  justify-content: center;
+  width:10%
+}
+.subtotalPrice{
+  margin-left:5em;
+  justify-content: flex-end;
+}
+.topButtons{
+  display: flex;
+  margin-bottom:.5em;
+}
+.topButton{
+  background-color: #00853E; /* Green */
+  border: none;
+  color: white;
+  border-radius: 12px;
+  width: 50%;
+  padding:1.3em;
+  border:1px solid #000000;
+}
+
+/*.columns{
+  display: flex;
+  flex-direction: column;
+}*/
