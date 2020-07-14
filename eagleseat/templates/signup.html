@@ -18,6 +18,11 @@
 
     <label for="phone" class="required" >Phone Number</label>
     <input id="phone" type="tel" name="phone" placeholder="123-456-7890" required>
+
 {% endblock %}
 
-{% block additional_items %}<!-- No Additional Items -->{% endblock %}
+{% block additional_items %}
+<p class="additional-item">
+    Already Have An Account? <a href="/login" rel="noopener noreferrer">Sign In </a>
+</p>
+{% endblock %}

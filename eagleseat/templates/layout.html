@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
 	</head>
 	<body>
+
 		<!-- navbar -->
 		<div id="navbar">
 			<div id="left-wing">
@@ -20,8 +21,12 @@
 				<span>Eats</span>
 			</div>
 			<div id="right-wing">
-				<button id="login-button" onclick="location.href='/login'">Login</button>
-				<button id="signup-button" onclick="location.href='/signup'">Sign up</button>
+				{% if session['logged_in'] %}
+					<button id="logout-button" onclick="location.href='/logout'">Logout</button>
+				{% else %}
+					<button id="login-button" onclick="location.href='/login'">Login</button>
+					<button id="signup-button" onclick="location.href='/signup'">Sign up</button>
+				{% endif %}
 			</div>
 		</div>
 		<div id="content">

@@ -7,6 +7,15 @@
         {% block form_items %}{% endblock %}
         <input id="submit" type="submit" value="{% block submit_text %}{% endblock %}">
     </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+      {% endif %}
+    {%endwith%}
 
     {% block additional_items %}{% endblock %}
 {% endblock %}
