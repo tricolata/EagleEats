@@ -103,9 +103,7 @@ html, body {
 }
 
 .footer{
-  position: relative;
-	clear: both;
-	margin-top: 40em;
+  margin-top: 70px;
 
   display:flex;
   justify-content: space-around;
