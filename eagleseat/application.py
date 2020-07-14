@@ -103,19 +103,23 @@ def deals():
 def menu():
 	# TODO: Read items from somwehere
 	menu_items = [
-		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', 'static/img/garden-fresh-slate-compressed.jpg', 5.99),
-		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', 'static/img/pepperoni-slate-compressed.jpg', 5.99),
-		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', 'static/img/garden-fresh-slate-compressed.jpg', 5.99),
-		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', 'static/img/pepperoni-slate-compressed.jpg', 5.99),
-		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', 'static/img/pepperoni-slate-compressed.jpg', 5.99),
+		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', '/garden-fresh-slate-compressed.jpg', 1, ['Pepperoni', 'Cheese']),
+		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', '/pepperoni-slate-compressed.jpg', 2, ['Pepperoni1', 'Cheese2']),
+		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', '/garden-fresh-slate-compressed.jpg', 3, ['Anger', 'Pepperoni', 'Cheese']),
+		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', '/pepperoni-slate-compressed.jpg', 3, ['Pepperoni', 'Chicken']),
+		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', '/pepperoni-slate-compressed.jpg', 4, ['Bread', 'Bones']),
 	]
 
 	return render_template("menu.html", menu_items=menu_items)
 
-@app.route("/cart")
+@app.route("/cart", methods=["GET", "POST"])
 def cart():
-	# TODO: read cart data
-	return render_template("cart.html")
+	if request.method == "POST":
+		# TODO: modify cart data
+		return redirect(url_for('menu'))
+	else:
+		# TODO: read cart data
+		return render_template("cart.html")
 
 @app.route("/aboutus")
 def aboutus():

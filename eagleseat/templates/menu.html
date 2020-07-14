@@ -10,7 +10,12 @@
                 <h2>{{ item.name }}</h2>
                 <p>${{ item.price }}</p>
             </div>
-            <button>Customize</button>
+            <button onclick="buildCustomizer('{{ item.name }}', {{ item.options }})">Customize</button>
         </div>
     {% endfor %}
+    <div id="customizer">
+        <div id="option-panel">
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/menu.js') }}">
 {% endblock %}
