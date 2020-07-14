@@ -53,7 +53,7 @@ html, body {
 
 #left-wing {
 	position: relative;
-	
+
 	flex: 1;
 
 	left: 20px;
@@ -103,7 +103,7 @@ html, body {
 }
 
 .footer{
-  position: fixed;
+  margin-top: 70px;
 
   display:flex;
   justify-content: space-around;
@@ -115,8 +115,9 @@ html, body {
   left: 0;
   bottom: 0;
 
-  background-color: rgb(110 110 110);
-  border: 4px solid rgb(26 191 68);
+  background-color: #FCFCFC;
+	box-shadow: 0px 2px 60px rgba(0, 0, 0, 0.15);;
+
 }
 .footerelements{
   display: block;
@@ -127,26 +128,29 @@ html, body {
   width:40%;
   height:100%;
   float: left;
-  margin:0 auto;
+  margin:10px 20px;
 }
 .footerelements .logo img{
   width:120px;
   height:auto;
 }
 .footerelements .item{
-  width: 20%;
+	font-family: 'Montserrat', sans-serif;
+  width: 18%;
   height: 100%;
   float: left;
   margin-right: 0;
 }
 .footerelements .item h1{
   font-size: 20px;
-  color: rgb(26 191 68);
+  color: var(--unt-green);
   display: block;
   width: 100%;
+	padding-bottom: 10px;
 }
+
 .footerelements .item p{
-  color: rgb(26 191 68);
+  color: var(--unt-green);
   width: 70%;
   font-size: 15px;
   margin-top: -17px;
@@ -158,5 +162,8 @@ html, body {
   padding:0 5px;
 }
 .footerelements .item i{
-  color: rgb(26 191 68);
+  color: var(--unt-green);
+}
+.footerelements .item a{
+	text-decoration: none;
 }
