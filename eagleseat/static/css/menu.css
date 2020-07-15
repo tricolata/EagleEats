@@ -106,7 +106,8 @@
 	z-index: 999;
 }
 
-#customizer #option-panel {
+/* control panel */
+#option-panel {
 	position: absolute;
 
 	top: 10vh;
@@ -139,7 +140,8 @@
 	cursor: pointer;
 }
 
-#customizer #option-panel h1 {
+/* title of option panel */
+#option-panel h1 {
 	margin: 0;
 
 	width: 100%;
@@ -152,11 +154,13 @@
 	line-height: 2em;
 }
 
-#customizer #option-panel h1 span {
+/* underlined food name */
+#option-panel h1 span {
 	text-decoration: underline;
 }
 
-#customizer .option-labels {
+/* amount names (none, lite, reg, xtra) */
+#option-panel .option-labels {
 	padding-right: 50%;
 
 	display: inline-flex;
@@ -169,7 +173,7 @@
 	line-height: 38px;
 }
 
-#customizer .option-labels p {
+#option-panel .option-labels p {
 	margin: 0;
 
 	width: 25%;
@@ -177,14 +181,15 @@
 	text-align: center;
 }
 
-#customizer .options .option {
+/* each option (tomatoes, onions, etc) */
+#option-panel .options .option {
 	height: 38px;
 
 	display: flex;
 	justify-content: space-around;
 }
 
-#customizer .options .option p {
+#option-panel .options .option p {
 	margin: 0;
 
 	height: 38px;
@@ -194,15 +199,18 @@
 	line-height: 38px;
 }
 
-#customizer .options .option:nth-of-type(even) {
+/* contrast adjacent rows */
+#option-panel .options .option:nth-of-type(even) {
 	background-color: #eee;
 }
 
-#customizer .options .option:last-of-type {
+/* horizontal seperator between options and submit button */
+#option-panel .options .option:last-of-type {
 	box-shadow: 0 1px 0 #e1e4e8;
 }
 
-#customizer #add-button {
+/* submit button */
+#option-panel [type='submit'] {
 	margin: 8px 10%;
 
 	width: 80%;
@@ -221,6 +229,14 @@
 	cursor: pointer;
 }
 
+/* Custom Styled Radio Buttons =============== */
+/* When a label for a radio button is clicked, */
+/* it acts is if you clicked the radio button  */
+/* itself. So, if we draw a new radio button   */
+/* using '::before' and '::after' pseudo-      */
+/* elements positioned on the radio button     */
+/* labels, these styled pseudo-elements can    */
+/* act as the radio buttons themselves         */
 .option-selection {
 	position: relative;
 
@@ -232,6 +248,7 @@
 	align-items: center;
 }
 
+/* Move original button off screen */
 .option-selection [type='radio']:checked,
 .option-selection [type='radio']:not(:checked) {
 	position: absolute;
