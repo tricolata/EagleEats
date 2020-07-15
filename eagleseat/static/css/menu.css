@@ -1,297 +1,300 @@
 #content {
+	width: 80%;
 
-    width: 80%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
 
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-
-    font-family: 'Montserrat', sans-serif;
-
+	font-family: 'Montserrat', sans-serif;
 }
 
 .menu-item {
-    margin: 30px;
+	margin: 30px;
 
-    /* size of menu-item-banner.png */
-    width: 330px;
-    height: 370px;
+	/* size of menu-item-banner.png */
+	width: 330px;
+	height: 370px;
 
+	display: flex;
+	flex-direction: column;
 
-    display: flex;
-    flex-direction: column;
+	background-image: url('../img/menu-item-banner.png');
 
-    background-image: url('../img/menu-item-banner.png');
-
-    /* custom css properties */
-    --banner-border-size: 30px;
+	/* custom css properties */
+	--banner-border-size: 30px;
 }
 
 .menu-item img {
-    margin: var(--banner-border-size) var(--banner-border-size) 0 var(--banner-border-size);
+	margin: var(--banner-border-size) var(--banner-border-size) 0 var(--banner-border-size);
 
-    width: calc(100% - var(--banner-border-size) * 2);
-    height: calc(100% - var(--banner-border-size) * 4 - 60px);
+	width: calc(100% - var(--banner-border-size) * 2);
+	height: calc(100% - var(--banner-border-size) * 4 - 60px);
 }
 
 .menu-item-details {
-    margin: 0 var(--banner-border-size) 0 var(--banner-border-size);
+	margin: 0 var(--banner-border-size) 0 var(--banner-border-size);
 
-    width: calc(100% - var(--banner-border-size) * 2);
+	width: calc(100% - var(--banner-border-size) * 2);
 
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    color: #FCFCFC;
-
+	color: #FCFCFC;
 }
 
 .menu-item-details h2 {
-    margin: 0;
-    height: 50px;
+	margin: 0;
 
-    font-size: 20px;
-    line-height: 50px;
-    text-decoration: underline;
+	height: 50px;
+
+	font-size: 20px;
+	line-height: 50px;
+	text-decoration: underline;
 }
 
 .menu-item-details p {
-    margin: 0;
-    height: 50px;
+	margin: 0;
 
-    font-size: 20px;
-    line-height: 50px;
-    text-align: right;
+	height: 50px;
+
+	font-size: 20px;
+	line-height: 50px;
+	text-align: right;
 }
 
 .menu-item button {
-    margin: 0 var(--banner-border-size) 0 var(--banner-border-size);
+	margin: 0 var(--banner-border-size) 0 var(--banner-border-size);
 
-    width: calc(100% - var(--banner-border-size) * 2);
-    height: 30px;
+	width: calc(100% - var(--banner-border-size) * 2);
+	height: 30px;
 
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 30px;
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 30px;
 
-    text-transform: uppercase;
+	text-transform: uppercase;
 
-    color: var(--unt-green);
-    background-color: #FCFCFC;
+	color: var(--unt-green);
+	background-color: #FCFCFC;
 
-    border-radius: 20px;
+	border-radius: 20px;
 
-    border: none;
+	border: none;
 
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .menu-item button:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 /* customizer popup */
 #customizer {
-    position: fixed;
+	position: fixed;
+	top: 0;
+	left: 0;
 
-    display: none;
+	width: 100vw;
+	height: 100vh;
 
-    top: 0;
-    left: 0;
+	display: none;
 
-    width: 100vw;
-    height: 100vh;
+	/* 60% opacity black used here so  */
+	/* options panel have full opacity */
+	background-color: rgba(0, 0, 0, 0.6);
 
-    /* 60% opacity black used here so  */
-    /* options panel have full opacity */
-    background-color: rgba(0, 0, 0, 0.6);
-
-    z-index: 999;
+	z-index: 999;
 }
 
 #customizer #option-panel {
-    position: absolute;
+	position: absolute;
 
-    top: 10vh;
-    left: calc(33vw / 2);
+	top: 10vh;
+	left: calc(33vw / 2);
 
-    width: 66vw;
+	width: 66vw;
 
-    background-color: white;
+	background-color: white;
 }
 
 #close-button {
-    position: absolute;
+	position: absolute;
+	top: .2em;
+	right: .2em;
 
-    top: .2em;
-    right: .2em;
+	height: 1.1em;
+	width: 1.1em;
 
-    height: 1.1em;
-    width: 1.1em;
+	color: var(--unt-green);
+	background-color: #FCFCFC;
 
-    color: var(--unt-green);
-    background-color: #FCFCFC;
+	border: none;
+	border-radius: 50%;
 
-    border: none;
-    border-radius: 50%;
+	font-size: 1.5em;
+	line-height: 1.1em;
 
-    font-size: 1.5em;
-    line-height: 1.1em;
+	transform: rotate(45deg);
 
-    transform: rotate(45deg);
-
-    cursor: pointer;
+	cursor: pointer;
 }
 
 #customizer #option-panel h1 {
-    margin: 0;
+	margin: 0;
 
-    width: 100%;
-    height: 2em;
+	width: 100%;
+	height: 2em;
 
-    color: #FCFCFC;
-    background-color: var(--unt-green);
+	color: #FCFCFC;
+	background-color: var(--unt-green);
 
-    text-align: center;
-    line-height: 2em;
+	text-align: center;
+	line-height: 2em;
 }
 
 #customizer #option-panel h1 span {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 #customizer .option-labels {
-    padding-right: 50%;
+	padding-right: 50%;
 
-    display: inline-flex;
+	display: inline-flex;
 
-    width: 50%;
-    height: 38px;
+	width: 50%;
+	height: 38px;
 
-    background-color: #eee;
+	background-color: #eee;
 
-    line-height: 38px;
+	line-height: 38px;
 }
 
 #customizer .option-labels p {
-    margin: 0;
-    width: 25%;
-    text-align: center;
+	margin: 0;
+
+	width: 25%;
+
+	text-align: center;
 }
 
 #customizer .options .option {
-    display: flex;
-    justify-content: space-around;
+	height: 38px;
 
-    height: 38px;
+	display: flex;
+	justify-content: space-around;
 }
 
 #customizer .options .option p {
-    margin: 0;
+	margin: 0;
 
-    height: 38px;
-    width: 50%;
+	height: 38px;
+	width: 50%;
 
-    text-align: center;
-    line-height: 38px;
+	text-align: center;
+	line-height: 38px;
 }
 
 #customizer .options .option:nth-of-type(even) {
-    background-color: #eee;
+	background-color: #eee;
 }
 
 #customizer .options .option:last-of-type {
-    box-shadow: 0 1px 0 #e1e4e8;
+	box-shadow: 0 1px 0 #e1e4e8;
 }
 
 #customizer #add-button {
-    margin: 8px 10%;
+	margin: 8px 10%;
 
-    width: 80%;
-    height: 32px;
+	width: 80%;
+	height: 32px;
 
-    color: #FCFCFC;
-    background-color: var(--unt-green);
+	color: #FCFCFC;
+	background-color: var(--unt-green);
 
-    border: none;
-    border-radius: 6px;
+	border: none;
+	border-radius: 6px;
 
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
+	font-size: 16px;
+	font-weight: bold;
+	text-transform: uppercase;
 
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .option-selection {
-    position: relative;
+	position: relative;
 
-    height: 38px;
-    width: 50%;
+	height: 38px;
+	width: 50%;
 
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 }
 
 .option-selection [type='radio']:checked,
 .option-selection [type='radio']:not(:checked) {
-    position: absolute;
-    left: -9999px;
+	position: absolute;
+
+	left: -9999px;
 }
 
 .option-selection [type='radio']:checked + label,
 .option-selection [type='radio']:not(:checked) + label {
-    position: relative;
-    height: 20px;
-    width: 25%;
-    cursor: pointer;
-    line-height: 20px;
-    display: inline-block;
-    color: #666;
+	position: relative;
+
+	height: 20px;
+	width: 25%;
+	display: inline-block;
+
+	line-height: 20px;
+
+	color: #666;
+
+	cursor: pointer;
 }
 
 .option-selection [type='radio']:checked + label::before,
 .option-selection [type='radio']:not(:checked) + label::before {
-    position: absolute;
-    left: calc(50% - 10px);
-    top: 0;
+	position: absolute;
+	left: calc(50% - 10px);
+	top: 0;
 
-    width: 18px;
-    height: 18px;
+	width: 18px;
+	height: 18px;
 
-    content: '';
+	content: '';
 
-    border: 1px solid #e1e4e8;
-    border-radius: 100%;
+	border: 1px solid #e1e4e8;
+	border-radius: 100%;
 
-    background-color: #FCFCFC;
+	background-color: #FCFCFC;
 }
 
 .option-selection [type='radio']:checked + label::after,
 .option-selection [type='radio']:not(:checked) + label::after {
-    position: absolute;
-    left: calc(50% - 10px + 3px);
-    top: 3px;
+	position: absolute;
+	left: calc(50% - 10px + 3px);
+	top: 3px;
 
-    width: 14px;
-    height: 14px;
+	width: 14px;
+	height: 14px;
 
-    content: '';
+	content: '';
 
-    border-radius: 100%;
+	border-radius: 100%;
 
-    background-color: var(--unt-green);
+	background-color: var(--unt-green);
 
-    transition: all 0.2s ease;
+	transition: all 0.2s ease;
 }
 
 .option-selection [type='radio']:not(:checked) + label::after {
-    opacity: 0;
-    transform: scale(0);
+	opacity: 0;
+	transform: scale(0);
 }
 
 .option-selection [type='radio']:checked + label::after {
-    opacity: 1;
-    transform: scale(1);
+	opacity: 1;
+	transform: scale(1);
 }
