@@ -1,0 +1,26 @@
+# Meeting Minutes for July 15th, 2020
+
+## What Have We Done?
+* Front End:
+    - Log in/Sign up
+    - Menu
+    - Cart (ongoing)
+    - Footer
+
+* Back End:
+    - Log in/Sign up
+
+## What Do We Need to Do?
+* Front End:
+    - Finish cart
+    - If page URL not recognized,
+      default to underline branding
+    - That's it (?)
+
+* Back End
+    - *!!! Set up database scheme !!!*
+    - Add items to cart
+    - Save cart (cookies/db?)
+    - E-Commerce
+    - Populate deals page
+    - Order tracker
