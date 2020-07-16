@@ -51,7 +51,7 @@ def login():
 			if sha256_crypt.verify(password, user.password):
 				session['logged_in'] = True
 				session['email'] = email
-				return render_template("index.html")
+				return redirect(url_for('index'))
 		else:
 			flash("Wrong email and/or password. Try again")
 			return redirect(url_for('login'))
