@@ -79,6 +79,9 @@ html, body {
 	color: var(--unt-green);
 
 	cursor: pointer;
+
+	transition: box-shadow .33s;
+	box-shadow: none;
 }
 
 #branding img {
