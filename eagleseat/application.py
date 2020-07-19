@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, url_for, flash, ses
 from passlib.hash import sha256_crypt
 import sqlite3
 from sqlite3 import Error
-from classes import MenuItem, User
+from classes import MenuItem, User, OrderAmount
 import random
 import os
 

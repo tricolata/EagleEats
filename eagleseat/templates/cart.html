@@ -11,7 +11,7 @@
     </div>
     <div class = topButtons>
         <button class =topButton onclick="location.href='/menu'">Add More Food</button>
-        <button id ="checkout" class =topButton onclick="location.href='/menu'">Checkout</button>
+        <button id ="checkout" class =topButton onclick="location.href='/checkout'">Checkout</button>
     </div>
     <div class ="parent">
         <div class= "orderName"> 
@@ -21,7 +21,7 @@
         <div class = "orderItem">     
           <div class ="orderImg">
              <img src ="{{item.img}}" alt="Burger" class = "burger">
-             <h4 class ="orderDesc">{{item.text}} </h4>
+             <h4 class ="orderDesc">{{item.name}} </h4>
           </div>
         <div class ="orderPrice">
             <h4> ${{item.price}}</h4>
