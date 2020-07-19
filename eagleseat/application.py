@@ -120,3 +120,10 @@ def cart():
 @app.route("/aboutus")
 def aboutus():
 	return render_template("aboutus.html")
+
+@app.route("/tracker/<order_id>")
+def tracker(order_id):
+	# TODO: Get order from DB
+	order = None
+
+	return render_template("tracker.html", order=order, attempted_id=order_id)

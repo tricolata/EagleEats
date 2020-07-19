@@ -7,6 +7,9 @@ html, body {
 	/* custom css properties for UNT colors */
 	--unt-green: #00853E;
 	--unt-green-light: #3fa36e;
+	--unt-green-dark: #00592a;
+
+	font-family: 'Montserrat', sans-serif;
 }
 
 body {
