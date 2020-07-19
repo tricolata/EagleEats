@@ -22,6 +22,7 @@
 			</div>
 			<div id="right-wing">
 				{% if session['logged_in'] %}
+					<button id="account-button" onclick="location.href='/account'">Account</button>
 					<button id="logout-button" onclick="location.href='/logout'">Logout</button>
 				{% else %}
 					<button id="login-button" onclick="location.href='/login'">Login</button>

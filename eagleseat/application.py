@@ -89,5 +89,18 @@ def cart():
 def aboutus():
 	return render_template("aboutus.html")
 
+@app.route("/account")
+def account():
+	if request.method == 'GET':
+		if not session['logged_in']:
+			return redirect(url_for('index'))
+		else:
+			# FIXME: Get User from DB
+			user = User.query.filter_by(email=session['email']).first()
+
+			return render_template('account.html', user=user)
+	else:
+		pass
+
 if __name__ == '__main__':
 	app.run()
