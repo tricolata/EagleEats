@@ -95,3 +95,19 @@ class Employee(User):
 
 	def __repr__(self):
 		return self.__str__()
+
+#this will take care of the orderAmount fields in the cart
+class OrderAmount(object):
+	def __init__(self):
+		self.subTotal = 0.0
+		self.TAX = .0825
+		self.salesTax=0.0
+		self.total = 0.0
+		
+
+	def __str__(self):
+		return 'OrderAmount(subTotal={}, TAX={}, total{})'.format(
+			self.subTotal, self.TAX, self.total)
+
+	def __repr__(self):
+		return self.__str__()

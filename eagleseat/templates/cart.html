@@ -11,38 +11,38 @@
     </div>
     <div class = topButtons>
         <button class =topButton onclick="location.href='/menu'">Add More Food</button>
-        <button class =topButton onclick="location.href='/menu'">Add More Food</button>
+        <button id ="checkout" class =topButton onclick="location.href='/menu'">Checkout</button>
     </div>
     <div class ="parent">
         <div class= "orderName"> 
-            <h3> Mean Green Sloppy Joe</h3>
+            <h3>Jacob's Order</h3>
         </div>
+        {%for item in menu_items %}
         <div class = "orderItem">     
           <div class ="orderImg">
-             <img src ='static/img/burger.jpg' alt="Burger" class = "burger">
-             <h4 class ="orderDesc"> Mean Green Sloppy Joe w/ fries and Drink </h4>
+             <img src ="{{item.img}}" alt="Burger" class = "burger">
+             <h4 class ="orderDesc">{{item.text}} </h4>
           </div>
         <div class ="orderPrice">
-            <h4> $4.99</h4>
+            <h4> ${{item.price}}</h4>
+            <h5 class ="softText">qty: 1</h5> <!--Here we need to work around adding quantities-->
+            <a class="softText" href="/menu">edit</a>
         </div>
         </div>
-    <div class = "orderItem">     
-        <div class ="orderImg">
-            <img src ='static/img/burger.jpg' alt="Burger" class = "burger">
-            <h4 class ="orderDesc"> Mean Green Sloppy Joe w/ fries and Drink </h4>
-        </div>
-        <div class ="orderPrice">
-            <h4> $4.99</h4>
-        </div>
-    </div>
+        {% endfor %}
     <hr>
+    <div class ="attempt">
+        <div id="recommendation" class ="orderImg">
+            <img src ='static/img/pepperoni-slate-compressed.jpg' alt="Burger" class = "recommendationImg">
+            <h4 class ="orderDesc"> Try this CHEEZY PIZZA </h4>
+         </div>
     <div class ="columns">
     <div class="prices"> 
         <div class = "subtotal">
             <h4>Subtotal</h4>
         </div>
         <div class= "subtotalPrice">
-            <h4>$4.99</h4>
+            <h4>${{ orderAmount.subTotal }}</h4>
         </div>
     </div>
     <div class="prices"> 
@@ -50,7 +50,7 @@
             <h4>Tax</h4>
         </div>
         <div class= "subtotalPrice">
-            <h4>$0.42</h4>
+            <h4>${{ orderAmount.salesTax }}</h4>
         </div>
     </div>
     <div class="prices"> 
@@ -58,8 +58,9 @@
             <h4>Total</h4>
         </div>
         <div class= "subtotalPrice">
-            <h4>$5.41</h4>
+            <h4>${{ orderAmount.total }}</h4>
         </div>
+    </div>
     </div>
     </div>
     </div> 

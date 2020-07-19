@@ -114,8 +114,25 @@ def menu():
 
 @app.route("/cart")
 def cart():
-	# TODO: read cart data
-	return render_template("cart.html")
+	menu_items = [
+		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', 'static/img/burger.jpg', 5.99),
+		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', 'static/img/burger.jpg', 5.99),
+		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', 'static/img/burger.jpg', 5.99),
+		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', 'static/img/burger.jpg', 5.99),
+		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', 'static/img/burger.jpg', 5.99),
+	]
+	orderAmount = OrderAmount()
+	for item in menu_items:
+		orderAmount.subTotal += item.price
+	
+	orderAmount.subTotal =(orderAmount.subTotal)
+	print(orderAmount.subTotal)
+	orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
+	orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
+	orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
+	orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
+	orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
+	return render_template("cart.html", menu_items=menu_items, orderAmount=orderAmount)
 
 @app.route("/aboutus")
 def aboutus():
