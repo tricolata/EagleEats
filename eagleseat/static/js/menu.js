@@ -18,6 +18,16 @@ function buildCustomizer(itemName, options) {
     let form = document.createElement('form');
     form.action = '/cart';
     form.method = 'post';
+
+    // create dummy form element for itemName
+    const nameInput = document.createElement('input');
+    nameInput.type = 'hidden';
+    nameInput.name = 'name';
+    nameInput.value = itemName;
+
+    // append dummy input
+    form.appendChild(nameInput);
+
     form.classList.add('options');
 
     // option labels
