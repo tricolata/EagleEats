@@ -71,11 +71,11 @@ def deals():
 def menu():
 	# TODO: Read items from somwehere
 	menu_items = [
-		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', '/garden-fresh-slate-compressed.jpg', 1, ['Pepperoni', 'Cheese']),
-		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', '/pepperoni-slate-compressed.jpg', 2, ['Pepperoni1', 'Cheese2']),
-		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', '/garden-fresh-slate-compressed.jpg', 3, ['Anger', 'Pepperoni', 'Cheese']),
-		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', '/pepperoni-slate-compressed.jpg', 3, ['Pepperoni', 'Chicken']),
-		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', '/pepperoni-slate-compressed.jpg', 4, ['Bread', 'Bones']),
+		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', '/garden-fresh-slate-compressed.jpg', 1, ['Pepperoni', 'Cheese'], 'entree'),
+		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', '/pepperoni-slate-compressed.jpg', 2, ['Pepperoni1', 'Cheese2'], 'entree'),
+		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', '/garden-fresh-slate-compressed.jpg', 3, ['Anger', 'Pepperoni', 'Cheese'], 'side'),
+		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', '/pepperoni-slate-compressed.jpg', 3, ['Pepperoni', 'Chicken'], 'dessert'),
+		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', '/pepperoni-slate-compressed.jpg', 4, ['Bread', 'Bones'], 'drink'),
 	]
 
 	return render_template("menu.html", menu_items=menu_items)

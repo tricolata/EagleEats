@@ -95,3 +95,43 @@ function destroyCustomizer() {
     // to be sent accidentally
     optionPanel.innerHTML = '';
 }
+
+// set default category to entree
+changeCategory('entree');
+function changeCategory(category) {
+    // all menu items that are NOT in category
+    let otherItems = document.querySelectorAll('.menu-item:not(.' + category + ')');
+
+    // all meny items that are in category
+    let categoryItems = document.querySelectorAll('.menu-item.' + category);
+
+    // hide all items in otherItems
+    for (item of otherItems) {
+        item.style.display = 'none'
+    }
+
+    // show all items in categoryItems
+    for (item of categoryItems) {
+        // clear display, let css define
+        item.style.display = ''
+    }
+
+    // css selector of the button for the new category
+    let selector = '#' + category + '-button';
+
+    console.log(selector);
+
+    // the active category
+    let activeCategoryButton = document.querySelector(selector);
+
+    // the other categories' buttons
+    let otherCategoryButtons = document.querySelectorAll('.menu-navbar button:not(' + selector + ')');
+
+    // set active button
+    activeCategoryButton.classList.add('active');
+
+    // unset all other buttons
+    for (button of otherCategoryButtons) {
+        button.classList.remove('active');
+    }
+}

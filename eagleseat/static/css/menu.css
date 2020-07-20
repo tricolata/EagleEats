@@ -8,6 +8,19 @@
 	font-family: 'Montserrat', sans-serif;
 }
 
+.menu-navbar {
+    margin-top: 3rem;
+    box-shadow: none;
+}
+
+.menu-navbar button:hover {
+    box-shadow: inset 0 -5px 0 0 #555;
+}
+
+.menu-navbar button.active {
+    box-shadow: inset 0 -5px 0 0 #333 !important;
+}
+
 .menu-item {
 	margin: 30px;
 

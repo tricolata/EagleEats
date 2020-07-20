@@ -20,12 +20,13 @@ class Review(object):
 
 # A Menu Item
 class MenuItem(object):
-	def __init__(self, name, text, img, price, options):
+	def __init__(self, name, text, img, price, options, category):
 		self.name = name
 		self.text = text
 		self.img = img
 		self.price = price
 		self.options = options
+		self.category = category
 
 	def __str__(self):
 		return 'MenuItem(name={}, text={}, img={}, price={}, options={}'.format(
