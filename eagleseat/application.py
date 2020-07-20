@@ -52,9 +52,8 @@ def login():
 				session['logged_in'] = True
 				session['email'] = email
 				return redirect(url_for('index'))
-		else:
-			flash("Wrong email and/or password. Try again")
-			return redirect(url_for('login'))
+		flash("Wrong email and/or password. Try again")
+		return redirect(url_for('login'))
 
 @app.route("/logout")
 def logout():
