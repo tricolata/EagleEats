@@ -29,6 +29,11 @@ function setActiveTab() {
             activeTab = document.querySelector('#cart-button');
             break;
         }
+
+        default: {
+            activeTab = document.querySelector('#branding');
+            break;
+        }
     }
 
     activeTab.classList.add('active');
