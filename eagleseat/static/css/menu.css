@@ -213,7 +213,7 @@
 }
 
 /* contrast adjacent rows */
-#option-panel .options .option:nth-of-type(even) {
+#option-panel .options .option:nth-of-type(odd) {
 	background-color: #eee;
 }
 

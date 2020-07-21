@@ -1,3 +1,5 @@
+import json
+
 """ Flask is a microframework to create web applications within python """
 
 from flask import Flask, render_template, redirect, request, url_for, flash, session
@@ -51,6 +53,7 @@ def login():
 			if sha256_crypt.verify(password, user.password):
 				session['logged_in'] = True
 				session['email'] = email
+				init_cart()
 				return redirect(url_for('index'))
 		else:
 			flash("Wrong email and/or password. Try again")
@@ -71,23 +74,85 @@ def deals():
 def menu():
 	# TODO: Read items from somwehere
 	menu_items = [
-		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', '/garden-fresh-slate-compressed.jpg', 1, ['Pepperoni', 'Cheese'], 'entree'),
-		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', '/pepperoni-slate-compressed.jpg', 2, ['Pepperoni1', 'Cheese2'], 'entree'),
-		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', '/garden-fresh-slate-compressed.jpg', 3, ['Anger', 'Pepperoni', 'Cheese'], 'side'),
-		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', '/pepperoni-slate-compressed.jpg', 3, ['Pepperoni', 'Chicken'], 'dessert'),
-		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', '/pepperoni-slate-compressed.jpg', 4, ['Bread', 'Bones'], 'drink'),
+		MenuItem(0, 'Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 5.99, '{"options":["Ranch"]}', 'entree', 'false'),
+		MenuItem(1, 'French Fries', 'Description', 'pepperoni-slate-compressed.jpg', 1.99, None, 'side', 'true'),
+		MenuItem(2, 'Ice Cream', 'Description', 'garden-fresh-slate-compressed.jpg', 2.99, '{"options":["Fudge", "Caramel", "Cookie Dough"]}', 'dessert', 'true'),
+		MenuItem(3, 'Coca Cola', 'Description', 'pepperoni-slate-compressed.jpg', 0.99, None, 'drink', 'true'),
 	]
-
 	return render_template("menu.html", menu_items=menu_items)
+
+# FIXME TODO XXX: TEMPORARY ROUTES FOR HELPING DEVELOPMENT
+@app.route("/cart/json")
+def cart_json():
+	return session['cart']
+
+@app.route("/cart/empty")
+def empty_cart_route():
+	empty_cart()
+	return redirect(url_for('cart_json'))
+# FIXME TODO XXX
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
 	if request.method == "POST":
-		# TODO: modify cart data
+		id = request.form.get('id')
+
+		options = []
+		for field in request.form:
+			# already grabbed ID, so skip it
+			if field == 'id':
+				continue
+
+			# everything else is an option string
+			field_value = request.form.get(field)
+			if field_value == 'None':
+				option = 'No ' + field
+			else:
+				option = field_value + ' ' + field
+
+			options.append(option)
+
+		add_to_cart(id, options)
+
+		# return to menu
 		return redirect(url_for('menu'))
 	else:
 		# TODO: read cart data
 		return render_template("cart.html")
+
+def init_cart():
+	# json boilerplate
+	session['cart'] = '{"items":[]}'
+
+def add_to_cart(id, options):
+	item = {
+		"id": id,
+		"options": options
+	}
+
+	cart = json.loads(session['cart'])
+
+	cart['items'].append(item)
+
+	session['cart'] = json.dumps(cart)
+
+def remove_from_cart(pos):
+	if 0 < pos < len(cart['items']):
+		cart = json.loads(session['cart'])
+
+		del cart['items'][pos]
+
+		session['cart'] = json.dumps(cart)
+
+def empty_cart():
+	cart = json.loads(session['cart'])
+
+	while len(cart['items']) > 0:
+		del cart['items'][0]
+
+	session['cart'] = json.dumps(cart)
+
+	return session['cart']
 
 @app.route("/aboutus")
 def aboutus():

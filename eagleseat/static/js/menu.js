@@ -1,4 +1,4 @@
-function buildCustomizer(itemName, options) {
+function buildCustomizer(itemName, itemId, options, hasSize) {
     let customizer = document.querySelector('#customizer');
     let optionPanel = document.querySelector('#option-panel');
 
@@ -19,32 +19,52 @@ function buildCustomizer(itemName, options) {
     form.action = '/cart';
     form.method = 'post';
 
-    // create dummy form element for itemName
-    const nameInput = document.createElement('input');
-    nameInput.type = 'hidden';
-    nameInput.name = 'name';
-    nameInput.value = itemName;
+    // create dummy form element for itemId
+    const idInput = document.createElement('input');
+    idInput.type = 'hidden';
+    idInput.name = 'id';
+    idInput.value = itemId;
 
     // append dummy input
-    form.appendChild(nameInput);
+    form.appendChild(idInput);
 
     form.classList.add('options');
 
-    // option labels
-    let optionLabels = document.createElement('div');
-    optionLabels.classList.add('option-labels');
-    
-    for (mod of ['None', 'Lite', 'Reg', 'Xtra']) {
-        let label = document.createElement('p');
-        label.innerText = mod;
-        optionLabels.appendChild(label);
+    // size
+    if (hasSize) {
+        let sizeLabels = document.createElement('div');
+        sizeLabels.classList.add('option-labels');
+
+        for (size of ['Small', 'Medium', 'Large', 'Giant']) {
+            let label = document.createElement('p');
+            label.innerText = size
+            sizeLabels.appendChild(label);
+        }
+
+        form.appendChild(sizeLabels);
+
+        // size option radio buttons
+        form.appendChild(buildOption('Size'));
     }
 
-    optionPanel.appendChild(optionLabels);
-
     // options
-    for (option of options) {
-        form.appendChild(buildOption(option));
+    if (options !== 'None') {
+        // option labels
+        let optionLabels = document.createElement('div');
+        optionLabels.classList.add('option-labels');
+
+        for (mod of ['None', 'Lite', 'Regular', 'Extra']) {
+            let label = document.createElement('p');
+            label.innerText = mod;
+            optionLabels.appendChild(label);
+        }
+
+        form.appendChild(optionLabels);
+
+        let optionsJSON = JSON.parse(options);
+        for (option of optionsJSON.options) {
+            form.appendChild(buildOption(option));
+        }
     }
 
     // submit button
@@ -58,6 +78,12 @@ function buildCustomizer(itemName, options) {
 
     // show customizer
     customizer.style.display = 'block';
+
+    // remove focus from customize button
+    setTimeout(() => {
+        document.querySelector('form input[type="submit"]').focus()
+        document.querySelector('form input[type="submit"]').blur()
+    }, 0);
 }
 
 function buildOption(option) {
@@ -67,7 +93,13 @@ function buildOption(option) {
     let optionSelection = document.createElement('div');
     optionSelection.classList.add('option-selection');
 
-    for (mod of ['none', 'lite', 'reg', 'xtra']) {
+    if (option === "Size") {
+        optionNames = ['Small', 'Medium', 'Large', 'Giant'];
+    } else {
+        optionNames = ['None', 'Lite', 'Regular', 'Extra'];
+    }
+
+    for (mod of optionNames) {
         let input = document.createElement('input');
         input.type = 'radio';
         input.id = option + '-' + mod;
@@ -75,7 +107,7 @@ function buildOption(option) {
         input.name = option;
 
         // default to regular amount
-        if (mod === 'reg') {
+        if (mod === 'Regular' || mod === 'Medium') {
             input.checked = true;
         }
 
