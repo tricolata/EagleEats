@@ -3,11 +3,21 @@
 from flask import Flask, render_template, redirect, request, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'c3bc4f31ea3e2837690951d1ae7e8c63'	# import secrets secrets.token_hex(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///restaurant.db'
 db = SQLAlchemy(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_USERNAME'] = 'eagle.eats.2020@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Password!!'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
 
 from classes import MenuItem, User, Order
 
@@ -35,6 +45,11 @@ def register():
 		user = User(name=name, email=email, password=password, phone=phone)
 		db.session.add(user)
 		db.session.commit()
+
+		msg = Message('EagleEats', sender='eagle.eats.2020@gmail.com', recipients=[email])
+		msg.body="Thank you for registering with EagleEats"
+		msg.html=render_template("reg_email.html")
+		mail.send(msg)
 		return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
