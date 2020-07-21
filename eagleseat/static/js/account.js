@@ -1,12 +1,3 @@
-// set eventlisteners for input fields
-for (input of document.querySelectorAll('input')) {
-    if (input.type == 'password') {
-        input.addEventListener('input', updateRequired);
-    } else {
-        input.addEventListener('input', updateSubmittable);
-    }
-}
-
 // set event listeners for password fields
 for (input of document.querySelectorAll('input[type="password"]')) {
     input.addEventListener('input', updateRequired);
@@ -19,11 +10,7 @@ function updateRequired() {
     if (isPasswordRequired()) {
         // for each password field
         for (input of passwordInputs) {
-            if (input.value.length > 0) {
-                for (i of passwordInputs) {
-                    i.required = true;
-                }
-            }
+            input.required = true;
         }
     } else {
         // if we've reached here, none of the password fields are filled
