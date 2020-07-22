@@ -6,11 +6,25 @@ from flask import Flask, render_template, redirect, request, url_for, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 
+import os
+from dotenv import load_dotenv
+
+# load .env
+load_dotenv()
+secret_key = os.getenv('SECRET_KEY')
+database_file = os.getenv('DATABASE_FILE')
+merchant_id = os.getenv('MERCHANT_ID')
+
+print(secret_key)
+print(database_file)
+print(merchant_id)
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'c3bc4f31ea3e2837690951d1ae7e8c63'	# import secrets secrets.token_hex(16)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///restaurant.db'
+app.config['SECRET_KEY'] = secret_key # import secrets secrets.token_hex(16)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_file
 db = SQLAlchemy(app)
 
+from charge_card import charge
 from classes import MenuItem, User, Order
 
 """ route() tells flask what URL triggers this function """
@@ -55,13 +69,13 @@ def login():
 				session['email'] = email
 				init_cart()
 				return redirect(url_for('index'))
-		else:
-			flash("Wrong email and/or password. Try again")
-			return redirect(url_for('login'))
+		flash("Wrong email and/or password. Try again")
+		return redirect(url_for('login'))
 
 @app.route("/logout")
 def logout():
 	session['logged_in'] = False
+	session['email'] = None
 	return redirect(url_for('index'))
 
 @app.route("/deals")
@@ -176,6 +190,60 @@ def empty_cart():
 @app.route("/aboutus")
 def aboutus():
 	return render_template("aboutus.html")
+
+@app.route("/account", methods=["GET", "POST"])
+def account():
+	if session.get('logged_in') is not None:
+		if request.method == 'GET':
+			if not session['logged_in']:
+				return redirect(url_for('index'))
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+
+				return render_template('account.html', user=user)
+		else:
+			if not session['logged_in']:
+				return redirect(url_for('index'));
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+
+				if user is not None:
+					# update email
+					email = request.form.get('email')
+					if user.email != email:
+						# if email not already in system
+						if User.query.filter_by(email=email).first() is not None:
+							flash('That email already exists, please try another')
+							return redirect(url_for('account'))
+						else:
+							user.email = email
+							session['email'] = email
+
+					# update password
+					old_password = request.form.get('old-password');
+
+					# if passwords are present
+					if len(old_password) > 0:
+						if sha256_crypt.verify(old_password, user.password):
+							password = sha256_crypt.encrypt(request.form.get('new-password'))
+							user.password = password
+						else:
+							flash('Incorrect password. Try again')
+							return redirect(url_for('account'))
+
+					# update phone and name
+					phone = request.form.get('phone')
+					name = request.form.get('name')
+
+					user.phone = phone
+					user.name = name
+
+					# commit user to db
+					db.session.commit()
+
+			return redirect(url_for('index'))
+	else:
+		return redirect(url_for('index'))
 
 if __name__ == '__main__':
 	app.run()
