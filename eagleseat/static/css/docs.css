@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+html {
+    height: 100%;
+    margin: 0 auto;
+
+
+    font-size: 18px;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 3rem auto;
+    padding: 3rem 6rem;
+
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #d8dee2;
+    border-radius: 25px;
+
+    width: 50%;
+
+    font-family: 'Source Sans Pro', serif;
+}
+
+/* replace header margin with padding */
+/* so links land better */
+h1 {
+    margin: 0;
+    padding: 0.67em 0;
+}
+
+h2 {
+    margin: 0;
+    padding: 0.83em 0;
+}
+
+h3 {
+    margin: 0;
+    padding: 1em 0;
+}
+
+h4 {
+    margin: 0;
+    padding: 1.33em 0;
+}
+
+h5 {
+    margin: 0;
+    padding: 1.67em 0;
+}
+
+h6 {
+    margin: 0;
+    padding: 2.33em 0;
+}
+
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Libre Baskerville', serif;
+    /* margin-bottom: 0; */
+}
+
+a {
+    color: blue;
+    text-decoration: none;
+}
+
+a:visited {
+    color: blue;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    border: 1px solid #d8dee2;
+    border-radius: 12px;
+    width: 100%;
+}
+
+/* format inline code */
+code {
+    padding: .0625em .125em;
+    background-color: #F0F0F0;
+
+    font-family: 'Inconsolata', monospace;
+}
+
+
+/* replace li bullet with caret (\u003E, GREATER-THAN SIGN) */
+ul {
+    list-style: none;
+}
+
+li::before {
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    content: '\03E \020';
+    color: #555;
+}

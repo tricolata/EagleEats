@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 
 import os
+import markdown
+import markdown.extensions.fenced_code # adds code block support
 from dotenv import load_dotenv
 
 # load .env
@@ -29,6 +31,30 @@ from classes import MenuItem, User, Order
 @app.route("/")
 def index():
 	return redirect(url_for("deals"))
+
+""" Documentation Route """
+""" Renders README.md   """
+@app.route("/docs", methods=["GET"])
+def docs():
+    readme_file = open("../README.md", "r")
+    md_html_string= markdown.markdown(
+        readme_file.read(), extensions=['fenced_code']
+    )
+
+    # Document Styling
+    md_html_string += '<link rel="stylesheet" href="' + url_for('static', filename='css/docs.css') + '">'
+
+    # Code Highlighter CDN
+    md_html_string += '<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">'
+    md_html_string += '<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>'
+
+    # Set Highlighting for <pre><code> blocks
+    md_html_string += '<script>hljs.initHighlightingOnLoad();</script>'
+
+    # Tagging javascript
+    md_html_string += '<script src="' + url_for('static', filename='js/docs.js') + '"></script>'
+
+    return md_html_string
 
 """ registration route """
 """ GET request loads login/signup page, POST request adds new account to db"""

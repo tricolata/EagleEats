@@ -1,6 +1,7 @@
 # EagleEats
-![](eagleseat/static/img/preview.png)
+Created by: **Jacob Murillo**, **Jake Simmerman**, **Yafet Kubrom**, and **Jake Grossman**
 
+![](/static/img/preview.png)
 # Table of Contents
 * [Setup and Installation](#setup-and-installation)
     * [Requirements](#requirements)
@@ -31,16 +32,22 @@ cd csce-3444-project
 ### Installing Packages
 Install the required pip packages with the following command
 
-`pip3 install -r requirements.txt`
+```
+pip3 install -r requirements.txt
+```
 
 ## Running
 First, `cd` into the `eagleseat` directory:
 
-`cd eagleseat`
+```
+cd eagleseat
+```
 
 Then, start the flask server:
 
-`python3 -m flask run`
+```
+python3 -m flask run
+```
 
 # Documentation
 
