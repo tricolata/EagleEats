@@ -64,7 +64,7 @@ The cart is a JSON list of menu item IDs and option strings, stored in the
 
 ```javascript
 {
-    // list of menu items
+    // list of cart items
     "items": [
         {
             // id of menu item
