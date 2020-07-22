@@ -9,16 +9,16 @@
 }
 
 .menu-navbar {
-    margin-top: 3rem;
-    box-shadow: none;
+	margin-top: 3rem;
+	box-shadow: none;
 }
 
 .menu-navbar button:hover {
-    box-shadow: inset 0 -5px 0 0 #555;
+	box-shadow: inset 0 -5px 0 0 #555;
 }
 
 .menu-navbar button.active {
-    box-shadow: inset 0 -5px 0 0 #333 !important;
+	box-shadow: inset 0 -5px 0 0 #333 !important;
 }
 
 .menu-item {
@@ -192,6 +192,7 @@
 	width: 25%;
 
 	text-align: center;
+	text-transform: capitalize;
 }
 
 /* each option (tomatoes, onions, etc) */
@@ -210,6 +211,7 @@
 
 	text-align: center;
 	line-height: 38px;
+	text-transform: capitalize;
 }
 
 /* contrast adjacent rows */
@@ -246,10 +248,10 @@
 /* When a label for a radio button is clicked, */
 /* it acts is if you clicked the radio button  */
 /* itself. So, if we draw a new radio button   */
-/* using '::before' and '::after' pseudo-      */
-/* elements positioned on the radio button     */
-/* labels, these styled pseudo-elements can    */
-/* act as the radio buttons themselves         */
+/* using '::before' and '::after' pseudo-	   */
+/* elements positioned on the radio button	   */
+/* labels, these styled pseudo-elements can	   */
+/* act as the radio buttons themselves		   */
 .option-selection {
 	position: relative;
 

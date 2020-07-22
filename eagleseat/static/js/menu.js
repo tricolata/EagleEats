@@ -35,7 +35,7 @@ function buildCustomizer(itemName, itemId, options, hasSize) {
         let sizeLabels = document.createElement('div');
         sizeLabels.classList.add('option-labels');
 
-        for (size of ['Small', 'Medium', 'Large', 'Giant']) {
+        for (size of ['small', 'medium', 'large', 'giant']) {
             let label = document.createElement('p');
             label.innerText = size
             sizeLabels.appendChild(label);
@@ -44,7 +44,7 @@ function buildCustomizer(itemName, itemId, options, hasSize) {
         form.appendChild(sizeLabels);
 
         // size option radio buttons
-        form.appendChild(buildOption('Size'));
+        form.appendChild(buildOption('size'));
     }
 
     // options
@@ -53,7 +53,7 @@ function buildCustomizer(itemName, itemId, options, hasSize) {
         let optionLabels = document.createElement('div');
         optionLabels.classList.add('option-labels');
 
-        for (mod of ['None', 'Lite', 'Regular', 'Extra']) {
+        for (mod of ['none', 'lite', 'regular', 'extra']) {
             let label = document.createElement('p');
             label.innerText = mod;
             optionLabels.appendChild(label);
@@ -93,10 +93,10 @@ function buildOption(option) {
     let optionSelection = document.createElement('div');
     optionSelection.classList.add('option-selection');
 
-    if (option === "Size") {
-        optionNames = ['Small', 'Medium', 'Large', 'Giant'];
+    if (option === "size") {
+        optionNames = ['small', 'medium', 'large', 'giant'];
     } else {
-        optionNames = ['None', 'Lite', 'Regular', 'Extra'];
+        optionNames = ['none', 'lite', 'regular', 'extra'];
     }
 
     for (mod of optionNames) {
@@ -107,7 +107,7 @@ function buildOption(option) {
         input.name = option;
 
         // default to regular amount
-        if (mod === 'Regular' || mod === 'Medium') {
+        if (mod === 'regular' || mod === 'medium') {
             input.checked = true;
         }
 

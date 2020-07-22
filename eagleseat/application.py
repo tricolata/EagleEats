@@ -92,6 +92,14 @@ def empty_cart_route():
 	return redirect(url_for('cart_json'))
 # FIXME TODO XXX
 
+def build_option_string(option, value):
+	# Use `No` instead of `None` in option string
+	# e.g. None Pickles -> No Pickles
+	if value == 'None':
+		return 'No ' + option
+	else:
+		return value.capitalize() + ' ' + option.capitalize()
+
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
 	if request.method == "POST":
@@ -103,14 +111,25 @@ def cart():
 			if field == 'id':
 				continue
 
-			# everything else is an option string
 			field_value = request.form.get(field)
-			if field_value == 'None':
-				option = 'No ' + field
-			else:
-				option = field_value + ' ' + field
 
-			options.append(option)
+			# if field is a size, then value is added to ID to get
+			# the 'real' ID of the menu item
+			if field == 'size':
+				# calculate 'real' ID of size item
+				if field_value == 'small':
+					id = str(int(id) + 0)
+				elif field_value == 'medium':
+					id = str(int(id) + 1)
+				elif field_value == 'large':
+					id = str(int(id) + 2)
+				elif field_value == 'giant':
+					id = str(int(id) + 3)
+			else:
+				# everything else is an option string
+				# NOTE: only add modifications (e.g. not 'Regular')
+				if field_value != 'regular':
+					options.append(build_option_string(field, field_value));
 
 		add_to_cart(id, options)
 
