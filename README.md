@@ -45,7 +45,7 @@ Then, start the flask server:
 # Documentation
 
 ## Environment Variables
-Environment variables to be used during the program are to be stored in a `.env`
+Environment variables used during the program are to be stored in a `.env`
 file inside of the `eagleseat` directory. An example file (`.env.example` ) is included.
 
 If you would like to use the example file, run the following inside of the `eagleseat` directory:
@@ -59,4 +59,31 @@ If you would like to use the example file, run the following inside of the `eagl
 []: # TODO: Write Database Structure Documentation
 
 ### Cart Structure
-[]: # TODO: Write Cart Structure Documentation
+The cart is a JSON list of menu item IDs and option strings, stored in the
+`cart` session variable. For example:
+
+```json
+    {
+        // list of menu items
+        "items": [
+            {
+                // id of menu item
+                "id": 23,
+
+                // list of option strings for menu item
+                "options": [
+                    "No Pickles",
+                    "Extra Sour Cream",
+                    "Lite Ketchup"
+                ]
+            },
+            {
+                // id of another menu item
+                "id": 2,
+
+                // not every item needs modification options
+                "options: []
+            }
+        ]
+    }
+```
