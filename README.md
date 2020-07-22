@@ -24,8 +24,8 @@
 Clone and navigate to the repository:
 
 ```
-   git clone https://github.com/yafetkubrom/csce-3444-project/
-   cd csce-3444-project
+git clone https://github.com/yafetkubrom/csce-3444-project/
+cd csce-3444-project
 ```
 
 ### Installing Packages
@@ -62,28 +62,28 @@ If you would like to use the example file, run the following inside of the `eagl
 The cart is a JSON list of menu item IDs and option strings, stored in the
 `cart` session variable. For example:
 
-```json
-    {
-        // list of menu items
-        "items": [
-            {
-                // id of menu item
-                "id": 23,
+```javascript
+{
+    // list of menu items
+    "items": [
+        {
+            // id of menu item
+            "id": 23,
 
-                // list of option strings for menu item
-                "options": [
-                    "No Pickles",
-                    "Extra Sour Cream",
-                    "Lite Ketchup"
-                ]
-            },
-            {
-                // id of another menu item
-                "id": 2,
+            // list of option strings for menu item
+            "options": [
+                "No Pickles",
+                "Extra Sour Cream",
+                "Lite Ketchup"
+            ]
+        },
+        {
+            // id of another menu item
+            "id": 2,
 
-                // not every item needs modification options
-                "options: []
-            }
-        ]
-    }
+            // not every item needs modification options
+            "options: []
+        }
+    ]
+}
 ```
