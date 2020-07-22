@@ -15,10 +15,6 @@ secret_key = os.getenv('SECRET_KEY')
 database_file = os.getenv('DATABASE_FILE')
 merchant_id = os.getenv('MERCHANT_ID')
 
-print(secret_key)
-print(database_file)
-print(merchant_id)
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secret_key # import secrets secrets.token_hex(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_file
