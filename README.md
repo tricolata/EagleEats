@@ -57,7 +57,9 @@ file inside of the `eagleseat` directory. An example file (`.env.example` ) is i
 
 If you would like to use the example file, run the following inside of the `eagleseat` directory:
 
-`mv .env.example .env`
+```
+mv .env.example .env
+```
 
 ## Data Storage and Exchange
 []: # TODO: Write Data Storage and Exchange Documentation
