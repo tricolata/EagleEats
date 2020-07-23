@@ -1,13 +1,10 @@
 """ Flask is a microframework to create web applications within python """
 
-from flask import Flask, render_template, redirect, request, url_for, flash, session
-from passlib.hash import sha256_crypt
+from flask import Flask, render_template, redirect, request, url_for
 import sqlite3
 from sqlite3 import Error
-from classes import MenuItem, User, OrderAmount
-import random
-import os
-
+from classes import MenuItem
+from classes import OrderAmount, User, Customer
 
 """ Create a database connection to SQLite database """
 def create_connection(db_name):
@@ -21,13 +18,12 @@ def create_connection(db_name):
 	return conn
 """ Create a new user into the customers table """
 def create_user(conn, user):
-	sql = ''' INSERT INTO customers(name, email, password, phone) VALUES (?,?,?,?) '''
+	sql = ''' INSERT INTO customers(name, user_id, email, password, phone, address) VALUES (?,?,?,?,?,?) '''
 	cur = conn.cursor()
 	cur.execute(sql, user)
 	return cur.lastrowid	# lastrowid attributes the cursor object to get back generated id
 
 app = Flask(__name__)
-app.secret_key = os.urandom(12)
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
@@ -47,52 +43,22 @@ def register():
 		""" request.form.get() accesses to input from html file """
 
 		name = request.form.get("name")
-		email = request.form.get("email")
-		password = sha256_crypt.encrypt(request.form.get("password"))
-		phone = request.form.get("phone")
-
-		with conn:
-			sql = ''' SELECT * FROM customers where email = ? '''
-			cur = conn.cursor()
-			cur.execute(sql, (email, ))
-			if cur.fetchone():
-				flash("That email already exist, please log in or choose another")
-				return redirect(url_for('register'))
-			else:
-				customer = (name, email, password, phone)
-				create_user(conn, customer)
-				return render_template("index.html")
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-	if request.method == "POST":
-		database = "restaurant.db"
-		conn = create_connection(database)
-
+		username = request.form.get("user_id")
 		email = request.form.get("email")
 		password = request.form.get("password")
+		phone = request.form.get("phone")
+		address = request.form.get("address")
 
-		sql = ''' SELECT password FROM customers WHERE email = ? '''
-		cur = conn.cursor()
-		cur.execute(sql, (email, ))
-		db_password = cur.fetchone()
-		if db_password is not None:
-			if sha256_crypt.verify(password, db_password[0]):
-				session['logged_in'] = True
-				session['email'] = email
-				return redirect(url_for('index'))
+		with conn:
+			customer = (name, username, email, password, phone, address)
+			create_user(conn, customer)
 
-		# if reached, either there was no entry in db for supplied email
-		# or password is wrong. Either way, an incorrect login was supplied
-		flash("Wrong email and/or password. Try again")
-		return redirect(url_for('login'))
-	else:
-		return render_template("login.html")
+		return render_template("index.html")
 
-@app.route("/logout")
-def logout():
-	session['logged_in'] = False
-	return redirect(url_for('index'))
+@app.route("/login")
+def login():
+	return render_template("login.html")
+
 @app.route("/deals")
 def deals():
 	# TODO: get deals
@@ -112,14 +78,14 @@ def menu():
 
 	return render_template("menu.html", menu_items=menu_items)
 
+
+
 @app.route("/cart")
 def cart():
 	menu_items = [
 		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', 'static/img/burger.jpg', 5.99),
 		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', 'static/img/burger.jpg', 5.99),
-		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', 'static/img/burger.jpg', 5.99),
-		MenuItem('Smol Pizza Pie', 'Pepperoni but smol', 'static/img/burger.jpg', 5.99),
-		MenuItem('Baked Potatoes', 'I like to eat potatoes but not french fries', 'static/img/burger.jpg', 5.99),
+		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', 'static/img/burger.jpg', 5.99)
 	]
 	orderAmount = OrderAmount()
 	for item in menu_items:
@@ -134,11 +100,6 @@ def cart():
 	orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
 	return render_template("cart.html", menu_items=menu_items, orderAmount=orderAmount)
 
-@app.route("/aboutus")
-def aboutus():
-	return render_template("aboutus.html")
-
-
 @app.route("/checkout", methods=["POST", "GET"])
 def checkout():
 	menu_items = [
@@ -151,16 +112,22 @@ def checkout():
 		orderAmount.subTotal += item.price
 	orderAmount.total= '{:.2f}'.format((orderAmount.TAX * orderAmount.subTotal) + orderAmount.subTotal)
 
-	customer = Customer("Jacob Murilsslo","1234","jacob@mail.com","dsds","000-000-000","riverside tx")
+	customer = Customer("Jacob Murillo","1234","jacob@mail.com","dsds","000-000-000","riverside tx")
+	customer.name = "Jacob Murillo"
+
 	amount = float(orderAmount.total)
 	
 	if request.method == "POST":
-		card_number = request.form.get("cardNumber")
-		expiration_date = request.form.get("expDate")
-		print(card_number, expiration_date, amount)
-		return redirect(url_for('index'))
-
-		
+		option = request.form['transaction']
+		print(option)
+		if option =="creditCard":
+			card_number = request.form.get("cardNumber")
+			expiration_date = request.form.get("expDate")
 	
-	print(card_number, expiration_date, amount)
+			print(card_number, expiration_date, amount)
+			return redirect(url_for('index'))
+		else:
+			return redirect(url_for('index'))
+
+	
 	return render_template("checkout.html", menu_items=menu_items, orderAmount=orderAmount, customer=customer)

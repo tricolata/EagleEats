@@ -1,0 +1,94 @@
+{% extends "form.html" %}
+
+{% block header %}Finish Checking Out{% endblock %}
+
+{% block dest %}checkout{% endblock %}
+
+{% block submit_text %}Checkout{% endblock %}
+
+{% block form_items %}
+
+    <div>
+        <p style="text-align: center;">Order for {{ customer.name }}</p>
+        <p id="opener">Please choose a payment method</p>
+    </div>
+    
+        <div class="option">
+            <div class="credit">
+                <input onclick="myFunction()" type="radio" id="creditCard1" name="transaction" value="creditCard">
+                <label for="creditCard1">Credit Card</label>
+            </div>
+            <div class="cash">
+                <input onclick="myFunction2()" type="radio" id="cash1" name="transaction" value="cash">
+                <label for="cash1">Cash</label>
+            </div>
+        </div>
+        
+        <span id="creditCard">
+        <label  for="cardNumber" >Card Number</label>
+        <input  type="text" name="cardNumber" placeholder="####-####-####-####" autocapitalize="off" autocorrect="off">
+        
+        <label for="expDate">Expiration Date</label>
+        <input id="expDate" type="text" name="expDate" placeholder="YYYY-MM" autocapitalize="off" autocorrect="off">
+        </span>
+        <p id="cash" >Great! Prepare to pay when they arrive.</p>
+        
+        
+    <script>
+        function myFunction() {
+          var x = document.getElementById("creditCard");
+          var y = document.getElementById("opener");
+          var z = document.getElementById("cash");
+          x.style.display="none";
+          if (x.style.display == "none") {
+            x.style.display = "flex";
+            y.style.display="none";
+            z.style.display="none";
+          }  
+        }
+        function myFunction2() {
+          var x = document.getElementById("cash");
+          var y = document.getElementById("opener");
+          var z = document.getElementById("creditCard");
+          x.style.display="none";
+          
+          if (x.style.display == "none") {
+            x.style.display = "block";
+            y.style.display="none";
+            z.style.display="none";
+          }  
+        }
+    </script>
+
+{% endblock %}
+
+{% block additional_items %}
+<div class="additional-item">
+    
+    <p><a id="view-order" onclick="viewOrder()">Order Summary</a></p>
+
+    <div id="orderSummary">
+    {% for item in menu_items %}
+        <div class = "orderSummary">
+            <p class = "orderSumChild">{{ item.name }}</p>
+            <p class = "orderSumChild1">${{ item.price }}</p>
+        </div>
+    {% endfor %}
+  
+    <div class = "orderSummary">
+        <p class="orderSumChild" style="font-weight:bold;">Total</p>
+        <p class="orderSumChild1" style="font-weight:bold;"> ${{orderAmount.total}} </p>
+    </div>
+    </div>
+</div>
+<script>
+    function viewOrder() {
+      var x = document.getElementById("orderSummary");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+    </script>
+{% endblock %}
