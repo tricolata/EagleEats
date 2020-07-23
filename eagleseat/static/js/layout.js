@@ -5,8 +5,7 @@ function setActiveTab() {
     let pageName = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
     let activeTab = undefined;
     switch (pageName) {
-        case 'deals': {
-            activeTab = document.querySelector('#deals-button');
+        case 'deals': { activeTab = document.querySelector('#deals-button');
             break;
         }
 
@@ -22,6 +21,11 @@ function setActiveTab() {
 
         case 'signup': {
             activeTab = document.querySelector('#signup-button');
+            break;
+        }
+
+        case 'account': {
+            activeTab = document.querySelector('#account-button');
             break;
         }
 

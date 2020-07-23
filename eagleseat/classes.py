@@ -1,3 +1,5 @@
+from app import db
+from datetime import datetime
 # Review, Order, and User definitions
 
 
@@ -31,43 +33,27 @@ class MenuItem(object):
 	def __repr__(self):
 		return self.__str__()
 
-# A food order
-class Order(object):
-	def __init__(self, order_id, date, status, customer_id, employee_id):
-		self.order_id = order_id
-		self.date = date
-		self.status = status
-		self.customer_id = customer_id
-		self.employee_id = employee_id
+class User(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(255), nullable=False)
+	email = db.Column(db.String(255), nullable=False)
+	password = db.Column(db.String(255), nullable=False)
+	phone = db.Column(db.String(255), nullable=False)
+	orders = db.relationship('Order', backref='author', lazy=True)
 
-	def __str__(self):
-		return 'Order(order_id={}, date={}, status={}, customer_id={}, employee_id={}'.format(
-			self.order_id, self.date, self.status, self.customer_id,
-			self.employee_id)
 
 	def __repr__(self):
-		return self.__str__()
+		return f"User('{self.name}', '{self.email}', '{self.password}' ,'{self.phone}')"
 
-
-# A generic site user
-class User(object):
-	def __init__(self, name, user_id, email, password):
-		self.name = name
-		self.user_id = user_id
-
-		# email pulls double duty as email and username
-		self.email = email
-
-		# hashed and salted password
-		self.password = password
-
-	def __str__(self):
-		return 'User(name={}, user_id={}, email={}, password={})'.format(
-			self.name, self.user_id, self.email, self.password)
+class Order(db.Model):
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+	order_num = db.Column(db.Integer, primary_key=True)
+	food_id = db.Column(db.String(255), nullable=False)
+	data_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	status = db.Column(db.String(20), nullable=False)
 
 	def __repr__(self):
-		return self.__str__()
-
+		return f"Order('{self.food_id}','{self.data_posted}', '{self.status}')"
 
 class Customer(User):
 	def __init__(self, name, user_id, email, password, phone, address):
@@ -111,3 +97,44 @@ class OrderAmount(object):
 
 	def __repr__(self):
 		return self.__str__()
+
+'''
+
+# A food order
+class Order(object):
+	def __init__(self, order_id, date, status, customer_id, employee_id):
+		self.order_id = order_id
+		self.date = date
+		self.status = status
+		self.customer_id = customer_id
+		self.employee_id = employee_id
+
+	def __str__(self):
+		return 'Order(order_id={}, date={}, status={}, customer_id={}, employee_id={}'.format(
+			self.order_id, self.date, self.status, self.customer_id,
+			self.employee_id)
+
+	def __repr__(self):
+		return self.__str__()
+
+
+# A generic site user
+class User(object):
+	def __init__(self, name, user_id, email, password):
+		self.name = name
+		self.user_id = user_id
+
+		# email pulls double duty as email and username
+		self.email = email
+
+		# hashed and salted password
+		self.password = password
+
+	def __str__(self):
+		return 'User(name={}, user_id={}, email={}, password={})'.format(
+			self.name, self.user_id, self.email, self.password)
+
+	def __repr__(self):
+		return self.__str__()
+
+'''
