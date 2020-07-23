@@ -90,6 +90,12 @@ code {
 
     font-family: 'Inconsolata', monospace;
 }
+/* filter syntax highlighting languages */
+code:not(.javascript),
+code:not(.javascript) span {
+    color: black !important;
+    font-weight: normal !important;
+}
 
 
 /* replace li bullet with caret (\u003E, GREATER-THAN SIGN) */
