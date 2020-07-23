@@ -30,7 +30,7 @@ cd csce-3444-project
 ```
 
 ### Installing Packages
-Install the required pip packages with the following command
+Install the required pip packages with the following command:
 
 ```
 pip3 install -r requirements.txt
