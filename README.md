@@ -55,7 +55,7 @@ python3 -m flask run
 Environment variables used during the program are to be stored in a `.env`
 file inside of the `eagleseat` directory. An example file (`.env.example` ) is included.
 
-If you would like to use the example file, run the following inside of the `eagleseat` directory:
+To use the example file, run the following inside of the `eagleseat` directory:
 
 ```
 mv .env.example .env
@@ -91,7 +91,7 @@ The cart is a JSON list of menu item IDs and option strings, stored in the
             "id": 2,
 
             // not every item needs modification options
-            "options: []
+            "options": []
         }
     ]
 }
