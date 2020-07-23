@@ -3,7 +3,8 @@
 from flask import Flask, render_template, redirect, request, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
-from classes import OrderAmount, User, Customer
+
+
 
 import os
 from dotenv import load_dotenv
@@ -24,7 +25,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_file
 db = SQLAlchemy(app)
 
 from charge_card import charge
-from classes import MenuItem, User, Order
+from classes import MenuItem, User, Order, OrderAmount, Customer
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
@@ -128,8 +129,8 @@ def checkout():
 		orderAmount.subTotal += item.price
 	orderAmount.total= '{:.2f}'.format((orderAmount.TAX * orderAmount.subTotal) + orderAmount.subTotal)
 
-	customer = Customer("Jacob Murillo","1234","jacob@mail.com","dsds","000-000-000","riverside tx")
-	customer.name = "Jacob Murillo"
+	user = User(name="Jacob Murillo",email="jacob@mail.com",password="1234",phone="000-000-000")
+	user.name = "Jacob Murillo"
 
 	amount = float(orderAmount.total)
 	
@@ -140,13 +141,13 @@ def checkout():
 			card_number = request.form.get("cardNumber")
 			expiration_date = request.form.get("expDate")
 	
-			print(card_number, expiration_date, amount)
+			charge(card_number,expiration_date, amount, merchant_id)
 			return redirect(url_for('index'))
 		else:
 			return redirect(url_for('index'))
 
 	
-	return render_template("checkout.html", menu_items=menu_items, orderAmount=orderAmount, customer=customer)
+	return render_template("checkout.html", menu_items=menu_items, orderAmount=orderAmount, customer=user)
 
 
 @app.route("/aboutus")
