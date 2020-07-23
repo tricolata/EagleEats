@@ -5,9 +5,22 @@ from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 from flask_mail import Mail, Message
 
+import os
+from dotenv import load_dotenv
+
+# load .env
+load_dotenv()
+secret_key = os.getenv('SECRET_KEY')
+database_file = os.getenv('DATABASE_FILE')
+merchant_id = os.getenv('MERCHANT_ID')
+
+print(secret_key)
+print(database_file)
+print(merchant_id)
+
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'c3bc4f31ea3e2837690951d1ae7e8c63'	# import secrets secrets.token_hex(16)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///restaurant.db'
+app.config['SECRET_KEY'] = secret_key # import secrets secrets.token_hex(16)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + database_file
 db = SQLAlchemy(app)
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
@@ -19,6 +32,7 @@ app.config['MAIL_USE_SSL'] = True
 
 mail = Mail(app)
 
+from charge_card import charge
 from classes import MenuItem, User, Order
 
 """ route() tells flask what URL triggers this function """
