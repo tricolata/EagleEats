@@ -67,13 +67,13 @@ def login():
 				session['logged_in'] = True
 				session['email'] = email
 				return redirect(url_for('index'))
-		else:
-			flash("Wrong email and/or password. Try again")
-			return redirect(url_for('login'))
+		flash("Wrong email and/or password. Try again")
+		return redirect(url_for('login'))
 
 @app.route("/logout")
 def logout():
 	session['logged_in'] = False
+	session['email'] = None
 	return redirect(url_for('index'))
 
 @app.route("/deals")
@@ -103,6 +103,60 @@ def cart():
 @app.route("/aboutus")
 def aboutus():
 	return render_template("aboutus.html")
+
+@app.route("/account", methods=["GET", "POST"])
+def account():
+	if session.get('logged_in') is not None:
+		if request.method == 'GET':
+			if not session['logged_in']:
+				return redirect(url_for('index'))
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+
+				return render_template('account.html', user=user)
+		else:
+			if not session['logged_in']:
+				return redirect(url_for('index'));
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+
+				if user is not None:
+					# update email
+					email = request.form.get('email')
+					if user.email != email:
+						# if email not already in system
+						if User.query.filter_by(email=email).first() is not None:
+							flash('That email already exists, please try another')
+							return redirect(url_for('account'))
+						else:
+							user.email = email
+							session['email'] = email
+
+					# update password
+					old_password = request.form.get('old-password');
+
+					# if passwords are present
+					if len(old_password) > 0:
+						if sha256_crypt.verify(old_password, user.password):
+							password = sha256_crypt.encrypt(request.form.get('new-password'))
+							user.password = password
+						else:
+							flash('Incorrect password. Try again')
+							return redirect(url_for('account'))
+
+					# update phone and name
+					phone = request.form.get('phone')
+					name = request.form.get('name')
+
+					user.phone = phone
+					user.name = name
+
+					# commit user to db
+					db.session.commit()
+
+			return redirect(url_for('index'))
+	else:
+		return redirect(url_for('index'))
 
 if __name__ == '__main__':
 	app.run()
