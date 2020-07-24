@@ -202,6 +202,10 @@ def empty_cart():
 def aboutus():
 	return render_template("aboutus.html")
 
+@app.route("/confirmation")
+def confirmation():
+	return render_template("confirmation_page.html")
+
 @app.route("/account", methods=["GET", "POST"])
 def account():
 	if session.get('logged_in') is not None:

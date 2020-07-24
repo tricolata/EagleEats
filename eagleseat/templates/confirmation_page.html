@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='css/confirmation_page.css') }}" rel="stylesheet">
+<div class = "left">
+  <h1>Thank you for your order</h1>
+  <ul style= "list-style:none;">
+    <li>Order Number</li>
+    <li>Order Date</li>
+    <li>Customer</li>
+  </ul>
+</div>
+<div class = "right">
+  <h1>Order Summary</h1>
+  <ul style= "list-style:none;">
+    <li>Subtotal</li>
+    <li>Shipping</li>
+    <li>Discounts</li>
+    <li>Tax</li>
+    <li>Order Total</li>
+  </ul>
+  <h2>Items Ordered</h2>
+  <ul style= "list-style:none;">
+    <li>Cheeseburger</li>
+    <li>Coke</li>
+  </ul>
+</div>
+{% endblock %}
