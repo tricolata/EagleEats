@@ -202,9 +202,19 @@ def empty_cart():
 def aboutus():
 	return render_template("aboutus.html")
 
-@app.route("/confirmation")
+@app.route("/confirmation", methods=["GET", "POST"])
 def confirmation():
-	return render_template("confirmation_page.html")
+	if session.get('logged_in') is not None:
+		if request.method == 'GET':
+			if not session['logged_in']:
+				return redirect(url_for('login.html'))
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+				return render_template("confirmation_page.html", user=user)
+
+				if Order.query.filter_by(order_num=session['order_num']).first():
+					order = Order.query.filter_by(order_num=session['order_num']).first()
+					return render_template("confirmation_page.html", order=order)
 
 @app.route("/account", methods=["GET", "POST"])
 def account():
