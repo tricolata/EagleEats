@@ -13,8 +13,8 @@ from dotenv import load_dotenv
 # load .env
 load_dotenv()
 secret_key = os.getenv('SECRET_KEY')
-#database_file = os.getenv('DATABASE_FILE')
-database_file = "restaurant.db"
+database_file = os.getenv('DATABASE_FILE')
+#database_file = "restaurant.db"
 merchant_id = os.getenv('MERCHANT_ID')
 
 app = Flask(__name__)
