@@ -52,7 +52,8 @@ html, body{
 .right li{
   padding-bottom: 40px;
 }
-p{
+.left p{
+  margin:0;
   padding-right: 100px;
   float:right;
 }

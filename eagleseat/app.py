@@ -207,7 +207,7 @@ def confirmation():
 	if session.get('logged_in') is not None:
 		if request.method == 'GET':
 			if not session['logged_in']:
-				return redirect(url_for('login.html'))
+				return redirect(url_for('login'))
 			else:
 				user = User.query.filter_by(email=session['email']).first()
 				return render_template("confirmation_page.html", user=user)
