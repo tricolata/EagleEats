@@ -109,32 +109,11 @@ def menu():
 	return render_template("menu.html", menu_items=menu_items)
 
 
-@app.route("/cart")
-def cart():
-	menu_items = [
-		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', 'static/img/burger.jpg', 5.99),
-		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', 'static/img/burger.jpg', 5.99),
-		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', 'static/img/burger.jpg', 5.99)
-	]
-	orderAmount = OrderAmount()
-	for item in menu_items:
-		orderAmount.subTotal += item.price
-	
-	orderAmount.subTotal =(orderAmount.subTotal)
-	print(orderAmount.subTotal)
-	orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
-	orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
-	orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
-	orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
-	orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
-	return render_template("cart.html", menu_items=menu_items, orderAmount=orderAmount)
 
 @app.route("/checkout", methods=["POST", "GET"])
 def checkout():
 	menu_items = [
-		MenuItem('Chipotle Crispers', 'Crispy coated fried chicken tenders coated in a sweet and spicy honey chipotle sauce.', 'static/img/burger.jpg', 5.99),
-		MenuItem('Pizza Pie', 'Pepperoni, clean and simple', 'static/img/burger.jpg', 5.99),
-		MenuItem('Angry Pizza Pie', 'Pepperoni Angry Peppers Mushroom Olives Chives', 'static/img/burger.jpg', 5.99)
+		MenuItem(0, 'Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 5.99, '{"options":["Ranch"]}', 'entree', 'false')
 	]
 	orderAmount=OrderAmount()
 	for item in menu_items:
@@ -209,15 +188,26 @@ def cart():
 				# everything else is an option string
 				# NOTE: only add modifications (e.g. not 'Regular')
 				if field_value != 'regular':
-					options.append(build_option_string(field, field_value));
+					options.append(build_option_string(field, field_value))
 
 		add_to_cart(id, options)
-
 		# return to menu
 		return redirect(url_for('menu'))
 	else:
-		# TODO: read cart data
-		return render_template("cart.html")
+		orderAmount = OrderAmount()
+		cart = json.loads(session['cart'])
+
+		for item in cart['items']:
+			orderAmount.subTotal += item.price
+			print(item['id'])
+	
+		orderAmount.subTotal =(orderAmount.subTotal)
+		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
+		orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
+		orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
+		orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
+		orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
+		return render_template("cart.html", menu_items = menu_items ,orderAmount=orderAmount)
 
 def init_cart():
 	# json boilerplate
@@ -232,6 +222,7 @@ def add_to_cart(id, options):
 	cart = json.loads(session['cart'])
 
 	cart['items'].append(item)
+	#look here to write for loop to understand how to consume 
 
 	session['cart'] = json.dumps(cart)
 
