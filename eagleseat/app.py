@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 secret_key = os.getenv('SECRET_KEY')
 database_file = os.getenv('DATABASE_FILE')
+#database_file = "restaurant.db"
 merchant_id = os.getenv('MERCHANT_ID')
 
 app = Flask(__name__)
@@ -33,7 +34,9 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 from charge_card import charge
-from classes import MenuItem, User, Order, OrderAmount, Customer
+from classes import MenuItemDb, User, Order, OrderAmount, Customer
+db.create_all()
+menu_items = MenuItemDb.query.group_by(MenuItemDb.name).all()
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
@@ -100,12 +103,7 @@ def deals():
 @app.route("/menu", methods=["GET"])
 def menu():
 	# TODO: Read items from somwehere
-	menu_items = [
-		MenuItem(0, 'Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 5.99, '{"options":["Ranch"]}', 'entree', 'false'),
-		MenuItem(1, 'French Fries', 'Description', 'pepperoni-slate-compressed.jpg', 1.99, None, 'side', 'true'),
-		MenuItem(2, 'Ice Cream', 'Description', 'garden-fresh-slate-compressed.jpg', 2.99, '{"options":["Fudge", "Caramel", "Cookie Dough"]}', 'dessert', 'true'),
-		MenuItem(3, 'Coca Cola', 'Description', 'pepperoni-slate-compressed.jpg', 0.99, None, 'drink', 'true'),
-	]
+
 	return render_template("menu.html", menu_items=menu_items)
 
 
