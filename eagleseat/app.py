@@ -110,13 +110,12 @@ def menu():
 
 @app.route("/checkout", methods=["POST", "GET"])
 def checkout():
+	
 	orderAmount = OrderAmount()
-	cart = json.loads(session['cart'])
-	cart_item = []
-	for item in cart['items']:
-		orderAmount.subTotal += menu_items[int(item['id']) - 1].price
-		print(item['id'])
-		cart_item.append(menu_items[int(item['id']) -1 ])
+	cart_item =access_cart()
+	for item in cart_item:
+		orderAmount.subTotal += item.price
+	
 	orderAmount.total= '{:.2f}'.format((orderAmount.TAX * orderAmount.subTotal) + orderAmount.subTotal)
 
 	user = User.query.filter_by(email=session['email']).first()
@@ -194,13 +193,10 @@ def cart():
 		return redirect(url_for('menu'))
 	else:
 		orderAmount = OrderAmount()
-		cart = json.loads(session['cart'])
-		cart_item = []
-		for item in cart['items']:
-			orderAmount.subTotal += menu_items[int(item['id']) - 1].price
-			print(item['id'])
-			cart_item.append(menu_items[int(item['id']) -1 ])
-	
+		cart_item =access_cart()
+		for item in cart_item:
+			orderAmount.subTotal += item.price
+			
 		orderAmount.subTotal =(orderAmount.subTotal)
 		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
 		orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
@@ -243,6 +239,13 @@ def empty_cart():
 	session['cart'] = json.dumps(cart)
 
 	return session['cart']
+
+def access_cart():
+	cart = json.loads(session['cart'])
+	cart_item = []
+	for item in cart['items']:
+		cart_item.append(menu_items[int(item['id']) -1 ])
+	return cart_item
 
 @app.route("/aboutus")
 def aboutus():
