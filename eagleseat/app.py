@@ -36,7 +36,7 @@ mail = Mail(app)
 from charge_card import charge
 from classes import MenuItemDb, User, Order, OrderAmount, Customer
 db.create_all()
-menu_items = MenuItemDb.query.group_by(MenuItemDb.name).all()
+menu_items = MenuItemDb.query.all()
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
@@ -103,23 +103,23 @@ def deals():
 @app.route("/menu", methods=["GET"])
 def menu():
 	# TODO: Read items from somwehere
-
+	
 	return render_template("menu.html", menu_items=menu_items)
 
 
 
 @app.route("/checkout", methods=["POST", "GET"])
 def checkout():
-	menu_items = [
-		MenuItem(0, 'Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 5.99, '{"options":["Ranch"]}', 'entree', 'false')
-	]
-	orderAmount=OrderAmount()
-	for item in menu_items:
-		orderAmount.subTotal += item.price
+	orderAmount = OrderAmount()
+	cart = json.loads(session['cart'])
+	cart_item = []
+	for item in cart['items']:
+		orderAmount.subTotal += menu_items[int(item['id']) - 1].price
+		print(item['id'])
+		cart_item.append(menu_items[int(item['id']) -1 ])
 	orderAmount.total= '{:.2f}'.format((orderAmount.TAX * orderAmount.subTotal) + orderAmount.subTotal)
 
-	user = User(name="Jacob Murillo",email="jacob@mail.com",password="1234",phone="000-000-000")
-	user.name = "Jacob Murillo"
+	user = User.query.filter_by(email=session['email']).first()
 
 	amount = float(orderAmount.total)
 	
@@ -131,12 +131,13 @@ def checkout():
 			expiration_date = request.form.get("expDate")
 	
 			charge(card_number,expiration_date, amount, merchant_id)
+			empty_cart()
 			return redirect(url_for('index'))
 		else:
 			return redirect(url_for('index'))
 
 	
-	return render_template("checkout.html", menu_items=menu_items, orderAmount=orderAmount, customer=user)
+	return render_template("checkout.html", cart_item=cart_item, orderAmount=orderAmount, customer=user)
 
 # FIXME TODO XXX: TEMPORARY ROUTES FOR HELPING DEVELOPMENT
 @app.route("/cart/json")
@@ -194,10 +195,11 @@ def cart():
 	else:
 		orderAmount = OrderAmount()
 		cart = json.loads(session['cart'])
-
+		cart_item = []
 		for item in cart['items']:
-			orderAmount.subTotal += item.price
+			orderAmount.subTotal += menu_items[int(item['id']) - 1].price
 			print(item['id'])
+			cart_item.append(menu_items[int(item['id']) -1 ])
 	
 		orderAmount.subTotal =(orderAmount.subTotal)
 		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
@@ -205,7 +207,7 @@ def cart():
 		orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
 		orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
 		orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
-		return render_template("cart.html", menu_items = menu_items ,orderAmount=orderAmount)
+		return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount)
 
 def init_cart():
 	# json boilerplate

@@ -68,7 +68,7 @@
     <p><a id="view-order" onclick="viewOrder()">Order Summary</a></p>
 
     <div id="orderSummary">
-    {% for item in menu_items %}
+    {% for item in cart_item %}
         <div class = "orderSummary">
             <p class = "orderSumChild">{{ item.name }}</p>
             <p class = "orderSumChild1">${{ item.price }}</p>

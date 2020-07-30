@@ -17,7 +17,7 @@
         <div class= "orderName"> 
             <h3>Jacob's Order</h3>
         </div>
-        {%for item in menu_items %}
+        {%for item in cart_item %}
         <div class = "orderItem">     
           <div class ="orderImg">
              <img src ="{{ url_for('static', filename='img/' + item.img) }}" alt="Burger" class = "burger">
