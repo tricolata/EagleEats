@@ -130,10 +130,11 @@ def checkout():
 			expiration_date = request.form.get("expDate")
 	
 			charge(card_number,expiration_date, amount, merchant_id)
-			empty_cart()
 			return redirect(url_for('index'))
 		else:
 			return redirect(url_for('index'))
+
+	empty_cart()
 
 	
 	return render_template("checkout.html", cart_item=cart_item, orderAmount=orderAmount, customer=user)
