@@ -24,7 +24,7 @@ function showCard() {
   function viewOrder() {
     var x = document.getElementById("orderSummary");
     
-    if (x.style.display == "none") {
+    if (window.getComputedStyle(x).display == "none") {
       x.style.display = "block";
     } else {
       x.style.display = "none";
