@@ -15,12 +15,12 @@
     </div>
     <div class ="parent">
         <div class= "orderName"> 
-            <h3>Jacob's Order</h3>
+            <h3>{{user.name}} Order</h3>
         </div>
         {%for item in cart_item %}
         <div class = "orderItem">     
           <div class ="orderImg">
-             <img src ="{{ url_for('static', filename='img/' + item.img) }}" alt="Burger" class = "burger">
+             <img src ="{{ url_for('static', filename='img/' + item.img) }}" alt={{item.name}} class = "burger">
              <h4 class ="orderDesc">{{item.name}} </h4>
           </div>
         <div class ="orderPrice">

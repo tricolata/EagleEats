@@ -166,6 +166,9 @@ hr {
 
     border-color: #e1e4e8;
 }
+#view-order{
+    cursor:pointer;
+}
 
 @keyframes wiggle {
     0% { transform: translate(1px, 1px) rotate(0deg); }

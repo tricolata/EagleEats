@@ -11,7 +11,7 @@
 }
 .orderName{
 /*flex: 1;*/
-  width: 30%;
+  width: 45%;
   margin-left:10px;
   font-size: 1.7em;
 }
@@ -81,9 +81,9 @@
 }
 #checkout.topButton{
   background-color: white;
-  color:#00853E;
+  color:var(--unt-green);
   border:1.5px solid #00853E;
-  color:black;
+  
 }
 hr {
   background-color:d8dee2;

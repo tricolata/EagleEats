@@ -15,11 +15,11 @@
     
         <div class="option">
             <div class="credit">
-                <input onclick="myFunction()" type="radio" id="creditCard1" name="transaction" value="creditCard">
+                <input onclick="showCard()" type="radio" id="creditCard1" name="transaction" value="creditCard">
                 <label for="creditCard1">Credit Card</label>
             </div>
             <div class="cash">
-                <input onclick="myFunction2()" type="radio" id="cash1" name="transaction" value="cash">
+                <input onclick="showCash()" type="radio" id="cash1" name="transaction" value="cash">
                 <label for="cash1">Cash</label>
             </div>
         </div>
@@ -31,34 +31,10 @@
         <label for="expDate">Expiration Date</label>
         <input id="expDate" type="text" name="expDate" placeholder="YYYY-MM" autocapitalize="off" autocorrect="off">
         </span>
-        <p id="cash" >Great! Prepare to pay when they arrive.</p>
+        <p id="cash" >Great! Prepare to pay when you arrive.</p>
         
         
-    <script>
-        function myFunction() {
-          var x = document.getElementById("creditCard");
-          var y = document.getElementById("opener");
-          var z = document.getElementById("cash");
-          x.style.display="none";
-          if (x.style.display == "none") {
-            x.style.display = "flex";
-            y.style.display="none";
-            z.style.display="none";
-          }  
-        }
-        function myFunction2() {
-          var x = document.getElementById("cash");
-          var y = document.getElementById("opener");
-          var z = document.getElementById("creditCard");
-          x.style.display="none";
-          
-          if (x.style.display == "none") {
-            x.style.display = "block";
-            y.style.display="none";
-            z.style.display="none";
-          }  
-        }
-    </script>
+    <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
 
 {% endblock %}
 
@@ -81,14 +57,5 @@
     </div>
     </div>
 </div>
-<script>
-    function viewOrder() {
-      var x = document.getElementById("orderSummary");
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }
-    }
-    </script>
+  
 {% endblock %}

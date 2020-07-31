@@ -194,6 +194,7 @@ def cart():
 	else:
 		orderAmount = OrderAmount()
 		cart_item =access_cart()
+		user = User.query.filter_by(email=session['email']).first()
 		for item in cart_item:
 			orderAmount.subTotal += item.price
 			
@@ -203,7 +204,7 @@ def cart():
 		orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
 		orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
 		orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
-		return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount)
+		return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
 
 def init_cart():
 	# json boilerplate
@@ -218,7 +219,7 @@ def add_to_cart(id, options):
 	cart = json.loads(session['cart'])
 
 	cart['items'].append(item)
-	#look here to write for loop to understand how to consume 
+
 
 	session['cart'] = json.dumps(cart)
 
