@@ -7,12 +7,20 @@ from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 from flask_mail import Mail, Message
 
-import os
-import random
-from dotenv import load_dotenv
 
-# load .env
-load_dotenv()
+import os
+import os.path
+from dotenv import load_dotenv
+import random
+
+# load .env if exists
+if os.path.exists('.env'):
+    load_dotenv()
+else:
+    # load .env.example if no .env is present
+    print('.env file not found, using example file...')
+    load_dotenv(dotenv_path='.env.example')
+
 secret_key = os.getenv('SECRET_KEY')
 database_file = os.getenv('DATABASE_FILE')
 #database_file = "restaurant.db"
@@ -33,9 +41,9 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 from charge_card import charge
-from classes import MenuItemDb, User, Order
+from classes import MenuItemDb, User, Order, OrderAmount, Customer
 db.create_all()
-menu_items = MenuItemDb.query.group_by(MenuItemDb.name).all()
+menu_items = MenuItemDb.query.all()
 
 # randomly pick 4 deal items
 deal_items = []
@@ -111,7 +119,47 @@ def deals():
 def menu():
 	# TODO: Read items from somwehere
 
-	return render_template("menu.html", menu_items=menu_items)
+	menu_items_filtered = []
+	unique_names = []
+	for item in menu_items:
+		if item.name not in unique_names:
+			menu_items_filtered.append(item)
+			unique_names.append(item.name)
+	
+	return render_template("menu.html", menu_items=menu_items_filtered)
+
+
+
+@app.route("/checkout", methods=["POST", "GET"])
+def checkout():
+	
+	orderAmount = OrderAmount()
+	cart_item =access_cart()
+	for item in cart_item:
+		orderAmount.subTotal += item.price
+	
+	orderAmount.total= '{:.2f}'.format((orderAmount.TAX * orderAmount.subTotal) + orderAmount.subTotal)
+
+	user = User.query.filter_by(email=session['email']).first()
+
+	amount = float(orderAmount.total)
+	
+	if request.method == "POST":
+		option = request.form['transaction']
+		print(option)
+		if option =="creditCard":
+			card_number = request.form.get("cardNumber")
+			expiration_date = request.form.get("expDate")
+	
+			charge(card_number,expiration_date, amount, merchant_id)
+			return redirect(url_for('index'))
+		else:
+			return redirect(url_for('index'))
+
+	empty_cart()
+
+	
+	return render_template("checkout.html", cart_item=cart_item, orderAmount=orderAmount, customer=user)
 
 # FIXME TODO XXX: TEMPORARY ROUTES FOR HELPING DEVELOPMENT
 @app.route("/cart/json")
@@ -161,15 +209,25 @@ def cart():
 				# everything else is an option string
 				# NOTE: only add modifications (e.g. not 'Regular')
 				if field_value != 'regular':
-					options.append(build_option_string(field, field_value));
+					options.append(build_option_string(field, field_value))
 
 		add_to_cart(id, options)
-
 		# return to menu
 		return redirect(url_for('menu'))
 	else:
-		# TODO: read cart data
-		return render_template("cart.html")
+		orderAmount = OrderAmount()
+		cart_item =access_cart()
+		user = User.query.filter_by(email=session['email']).first()
+		for item in cart_item:
+			orderAmount.subTotal += item.price
+			
+		orderAmount.subTotal =(orderAmount.subTotal)
+		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
+		orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
+		orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
+		orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
+		orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
+		return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
 
 def init_cart():
 	# json boilerplate
@@ -184,6 +242,7 @@ def add_to_cart(id, options):
 	cart = json.loads(session['cart'])
 
 	cart['items'].append(item)
+
 
 	session['cart'] = json.dumps(cart)
 
@@ -204,6 +263,13 @@ def empty_cart():
 	session['cart'] = json.dumps(cart)
 
 	return session['cart']
+
+def access_cart():
+	cart = json.loads(session['cart'])
+	cart_item = []
+	for item in cart['items']:
+		cart_item.append(menu_items[int(item['id']) -1 ])
+	return cart_item
 
 @app.route("/aboutus")
 def aboutus():

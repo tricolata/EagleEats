@@ -83,7 +83,7 @@
 
     cursor: pointer;
 }
-}
+
 
 .additional-item {
     width: 100%;
@@ -109,12 +109,65 @@
     color: blue;
 }
 
+.orderSummary{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.orderSumChild{
+    flex:5;
+    text-align: left;
+}
+.orderSumChild1{
+    flex:1;
+    text-align: left;
+    align-items: flex-end;
+}
+.option{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+}
+.credit{
+    flex:1;
+    
+}
+.cash{
+    flex:1;
+}
+span#creditCard{
+    
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+p#cash{
+    display:none;
+    text-align: center;
+    
+}
+p#opener{
+    font-weight: bold;
+    text-align: center;
+}
+
+#orderSummary{
+    display:none;
+}
 hr {
     width: 100%;
 
     border-width: 0 0 1px 0;
 
     border-color: #e1e4e8;
+}
+#view-order{
+    cursor:pointer;
 }
 
 @keyframes wiggle {
