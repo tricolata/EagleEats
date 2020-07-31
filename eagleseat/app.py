@@ -8,6 +8,7 @@ from passlib.hash import sha256_crypt
 from flask_mail import Mail, Message
 
 import os
+import random
 from dotenv import load_dotenv
 
 # load .env
@@ -35,6 +36,16 @@ from charge_card import charge
 from classes import MenuItemDb, User, Order
 db.create_all()
 menu_items = MenuItemDb.query.group_by(MenuItemDb.name).all()
+
+# randomly pick 4 deal items
+deal_items = []
+while len(deal_items) < 2:
+	# get random item from menu_items
+	deal_item = random.choice(menu_items)
+
+	# add deal_item if it is not already in deal_items
+	if deal_item not in deal_items:
+		deal_items.append(deal_item)
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
@@ -94,9 +105,7 @@ def logout():
 
 @app.route("/deals")
 def deals():
-	# TODO: get deals
-
-	return render_template("deals.html")
+	return render_template("menu.html", menu_items=deal_items)
 
 @app.route("/menu", methods=["GET"])
 def menu():
