@@ -103,8 +103,15 @@ def deals():
 @app.route("/menu", methods=["GET"])
 def menu():
 	# TODO: Read items from somwehere
+
+	menu_items_filtered = []
+	unique_names = []
+	for item in menu_items:
+		if item.name not in unique_names:
+			menu_items_filtered.append(item)
+			unique_names.append(item.name)
 	
-	return render_template("menu.html", menu_items=menu_items)
+	return render_template("menu.html", menu_items=menu_items_filtered)
 
 
 
