@@ -2,6 +2,23 @@
 
 <!-- style block with '#content' -->
 {% block content %}
+    {% if delivery_method is none %}
+        <div id="delivery-method">
+            <h1>Delivery Method</h1>
+            <div class="option">
+                <button onclick="setDeliveryMethod('delivery')">
+                    <!-- car icon -->
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                    Delivery
+                </button>
+                <button onclick="setDeliveryMethod('takeout')">
+                    <!-- person icon -->
+                    <i class='fa fa-user' aria-hidden="true"></i>
+                    Takeout
+                </button>
+            </div>
+        </div>
+    {% endif %}
 	<link href="{{ url_for('static', filename='css/menu.css') }}" rel="stylesheet">
 	<!-- Category Navbar -->
 	<div class="navbar menu-navbar">

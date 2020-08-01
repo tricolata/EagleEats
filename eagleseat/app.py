@@ -74,6 +74,7 @@ def food_manager():
 			db.session.commit()
 
 food_manager_thread = threading.Thread(target=food_manager)
+food_manager_thread.daemon = True # this thread dies when main thread dies
 food_manager_thread.start()
 
 """ route() tells flask what URL triggers this function """
@@ -140,16 +141,14 @@ def deals():
 
 @app.route("/menu", methods=["GET"])
 def menu():
-	# TODO: Read items from somwehere
-
 	menu_items_filtered = []
 	unique_names = []
 	for item in menu_items:
 		if item.name not in unique_names:
 			menu_items_filtered.append(item)
 			unique_names.append(item.name)
-	
-	return render_template("menu.html", menu_items=menu_items_filtered)
+
+	return render_template("menu.html", menu_items=menu_items_filtered, delivery_method=session.get('delivery_method'))
 
 
 
@@ -246,11 +245,19 @@ def build_option_string(option, value):
 def cart():
 	if request.method == "POST":
 		id = request.form.get('id')
+		if session.get('delivery_method') is None:
+			delivery_method = request.form.get('deliveryMethod')
+			session['delivery_method'] = delivery_method
+			set_delivery_method(delivery_method)
 
 		options = []
 		for field in request.form:
 			# already grabbed ID, so skip it
 			if field == 'id':
+				continue
+
+			# already grabbed deliveryMethod, so skip it
+			if field == 'deliveryMethod':
 				continue
 
 			field_value = request.form.get(field)
@@ -295,6 +302,11 @@ def init_cart():
 	# json boilerplate
 	session['cart'] = '{"delivery_method": "","items":[]}'
 
+def set_delivery_method(method):
+	cart = json.loads(session['cart'])
+	cart['delivery_method'] = method
+	session['cart'] = json.dumps(cart)
+
 def add_to_cart(id, options):
 	item = {
 		"id": id,
@@ -321,6 +333,8 @@ def empty_cart():
 
 	while len(cart['items']) > 0:
 		del cart['items'][0]
+
+	session.pop('delivery_method', None)
 
 	init_cart()
 
@@ -390,6 +404,3 @@ def account():
 			return redirect(url_for('index'))
 	else:
 		return redirect(url_for('index'))
-
-if __name__ == '__main__':
-	app.run()
