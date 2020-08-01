@@ -123,34 +123,73 @@ def menu():
 
 @app.route("/checkout", methods=["POST", "GET"])
 def checkout():
-	
-	orderAmount = OrderAmount()
-	cart_item =access_cart()
-	for item in cart_item:
-		orderAmount.subTotal += item.price
-	
-	orderAmount.total= '{:.2f}'.format((orderAmount.TAX * orderAmount.subTotal) + orderAmount.subTotal)
+	cart_items = access_cart()
+	order = construct_order()
+	if order is not None:
+		order_price = '{:.2f}'.format(float(order.total_price() * 1.0825)) # with tax
+	else:
+		order_price = 0
+	user = User.query.filter_by(email=session.get('email')).first()
 
-	user = User.query.filter_by(email=session['email']).first()
+	if request.method == 'POST':
+		if order is not None:
+			payment_type = request.form['transaction']
+			if payment_type == 'creditCard':
+				card_number = request.form.get('cardNumber')
+				expiration_date = request.form.get('expDate')
 
-	amount = float(orderAmount.total)
-	
-	if request.method == "POST":
-		option = request.form['transaction']
-		print(option)
-		if option =="creditCard":
-			card_number = request.form.get("cardNumber")
-			expiration_date = request.form.get("expDate")
-	
-			charge(card_number,expiration_date, amount, merchant_id)
-			return redirect(url_for('index'))
+				trans_response = charge(card_number, expiration_date, order_price, merchant_id)
+
+				# if card was charged successfully
+				# if trans_response[0]:
+				if True:
+					# add to current order table
+					db.session.add(order)
+					db.session.commit()
+
+					empty_cart()
+
+					return 'This will redirect to confirmation soon'
+				else:
+					flash('Card could not be charged succesfully')
+					return redirect(url_for('checkout'))
+			else:
+				# add to current order table
+				db.session.add(order)
+				db.session.commit()
+
+				empty_cart()
+				return 'This will redirect to confirmation soon'
 		else:
-			return redirect(url_for('index'))
+			flash('No items in order')
+			return redirect(url_for('checkout'))
+	else:
+		return render_template("checkout.html", cart_item=cart_items, orderAmount=order_price, customer=user)
 
-	empty_cart()
+# constructs and returns an order instance
+# based on the cart and current user
+def construct_order():
+	cart_json = session.get('cart')
+	user_email = session.get('email')
+	user = User.query.filter_by(email=user_email).first()
+	if (cart_json is not None and user is not None):
+		cart_items = access_cart()
+		delivery_method = json.loads(session['cart'])['delivery_method']
 
-	
-	return render_template("checkout.html", cart_item=cart_item, orderAmount=orderAmount, customer=user)
+		if len(cart_items) > 0:
+			order = Order(
+				user_id=user.id,
+				food_list=cart_json,
+				delivery_method=delivery_method,
+			)
+
+			return order
+
+	# if we have not returned yet then at least one of the following is true:
+	# 1.) cart_json is None
+	# 2.) user for current email is None
+	# 3.) cart is empty
+	return None
 
 # FIXME TODO XXX: TEMPORARY ROUTES FOR HELPING DEVELOPMENT
 @app.route("/cart/json")
@@ -222,7 +261,7 @@ def cart():
 
 def init_cart():
 	# json boilerplate
-	session['cart'] = '{"items":[]}'
+	session['cart'] = '{"delivery_method": "","items":[]}'
 
 def add_to_cart(id, options):
 	item = {
@@ -251,7 +290,7 @@ def empty_cart():
 	while len(cart['items']) > 0:
 		del cart['items'][0]
 
-	session['cart'] = json.dumps(cart)
+	init_cart()
 
 	return session['cart']
 

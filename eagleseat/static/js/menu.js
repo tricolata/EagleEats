@@ -1,4 +1,4 @@
-function buildCustomizer(itemName, itemId, options, hasSize) {
+function buildCustomizer(itemName, itemId, options, size) {
     let customizer = document.querySelector('#customizer');
     let optionPanel = document.querySelector('#option-panel');
 
@@ -31,7 +31,7 @@ function buildCustomizer(itemName, itemId, options, hasSize) {
     form.classList.add('options');
 
     // size
-    if (hasSize) {
+    if (size != 'None') {
         let sizeLabels = document.createElement('div');
         sizeLabels.classList.add('option-labels');
 

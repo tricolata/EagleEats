@@ -33,9 +33,9 @@ def charge(card_number, expiration_date, amount, merchant_id):
 	response = createtransactioncontroller.getresponse()
 
 	if (response.messages.resultCode=="Ok"):
-		return ("Transaction ID : %s" % response.transactionResponse.transId)
+		return (True, "Transaction ID : %s" % response.transactionResponse.transId)
 	else:
-		return ("response code: %s" % response.messages.resultCode)
+		return (False, "response code: %s" % response.messages.resultCode)
 
 '''
 #Custom transaction data - feel free to define your own!
