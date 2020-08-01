@@ -259,7 +259,7 @@ def access_cart():
 	cart = json.loads(session['cart'])
 	cart_item = []
 	for item in cart['items']:
-		cart_item.append(menu_items[int(item['id']) -1 ])
+		cart_item.append(menu_items[int(item['id'])])
 	return cart_item
 
 @app.route("/aboutus")
