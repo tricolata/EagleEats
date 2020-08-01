@@ -42,7 +42,7 @@ mail = Mail(app)
 from charge_card import charge
 from classes import *
 db.create_all()
-menu_items = MenuItemDb.query.all()
+menu_items = MenuItem.query.all()
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
