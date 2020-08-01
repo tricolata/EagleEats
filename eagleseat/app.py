@@ -40,7 +40,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 from charge_card import charge
-from classes import MenuItemDb, User, Order, OrderAmount, Customer
+from classes import *
 db.create_all()
 menu_items = MenuItemDb.query.all()
 
