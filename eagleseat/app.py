@@ -49,29 +49,33 @@ menu_items = MenuItem.query.order_by(MenuItem.id.asc()).all()
 # food processing
 def food_manager():
 	while True:
-		first_order = Order.query.order_by(Order.id.asc()).first()
+		current_order = Order.query.filter_by(status='received').order_by(Order.id.asc()).first()
 
-		if first_order == None:
+		if current_order == None:
 			# wait 1 minute before trying again
 			time.sleep(5)
 		else:
-			print(f'cooking order {first_order.id}...')
+			print(f'cooking order {current_order.id}...')
 
-			food_list = json.loads(first_order.food_list)
+			food_list = json.loads(current_order.food_list)
 
 			# calculate cook time
 			total_cook_time = 0
 			for item in food_list['items']:
 				total_cook_time += menu_items[int(item['id'])].cook_time
 
+			# update status
+			current_order.status = 'cooking'
+			db.session.commit()
+
 			# "cook" food
 			time.sleep(total_cook_time)
 
-			print(f'finished cooking order {first_order.id}!')
-
-			# then, remove this order from the db
-			db.session.delete(first_order)
+			# update status
+			current_order.status = 'ready'
 			db.session.commit()
+
+			print(f'finished cooking order {current_order.id}!')
 
 food_manager_thread = threading.Thread(target=food_manager)
 food_manager_thread.daemon = True # this thread dies when main thread dies
