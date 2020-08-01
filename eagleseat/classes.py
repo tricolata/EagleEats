@@ -58,6 +58,7 @@ class MenuItem(db.Model):
 	price = db.Column(db.Integer, nullable=False)
 	options = db.Column(db.String(255), nullable=True)
 	category = db.Column(db.String(255), nullable=False)
+	cook_time = db.Column(db.Integer, nullable=False)
 	size = db.Column(db.String(8), nullable=True)
 
 	def __repr__(self):

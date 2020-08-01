@@ -7,10 +7,10 @@ db.session.commit()
 # list of menu items. schema:
 # [name, description, img url, price, options json, category, sized]
 menu_items = [
-	['Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 6.99,'{"options":["Ranch"]}', 'entree', False],
-	['French Fries', 'Description', 'pepperoni-slate-compressed.jpg', 1.99, None,'side', True],
-	['Ice Cream', 'Description', 'garden-fresh-slate-compressed.jpg', 2.99,'{"options":["Fudge", "Caramel", "Cookie Dough"]}', 'dessert', True],
-	['Coca Cola', 'Description', 'pepperoni-slate-compressed.jpg', 0.99, None, 'drink', True]
+	['Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 6.99,'{"options":["Ranch"]}', 'entree', 3, False],
+	['French Fries', 'Description', 'pepperoni-slate-compressed.jpg', 1.99, None,'side', 3, True],
+	['Ice Cream', 'Description', 'garden-fresh-slate-compressed.jpg', 2.99,'{"options":["Fudge", "Caramel", "Cookie Dough"]}', 'dessert', 3, True],
+	['Coca Cola', 'Description', 'pepperoni-slate-compressed.jpg', 0.99, None, 'drink', 3, True]
 ]
 
 # start from 0
@@ -29,6 +29,7 @@ for info in menu_items:
 				price = info[3],
 				options = info[4],
 				category = info[5],
+				cook_time = info[6],
 				size = size
 			)
 
@@ -43,6 +44,7 @@ for info in menu_items:
 			price = info[3],
 			options = info[4],
 			category = info[5],
+			cook_time = info[6],
 			size = None
 		)
 

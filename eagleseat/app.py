@@ -11,6 +11,8 @@ from flask_mail import Mail, Message
 import os
 import os.path
 from dotenv import load_dotenv
+import threading
+import time
 
 # load .env if exists
 if os.path.exists('.env'):
@@ -42,7 +44,37 @@ mail = Mail(app)
 from charge_card import charge
 from classes import *
 db.create_all()
-menu_items = MenuItem.query.all()
+menu_items = MenuItem.query.order_by(MenuItem.id.asc()).all()
+
+# food processing
+def food_manager():
+	while True:
+		first_order = Order.query.order_by(Order.id.asc()).first()
+
+		if first_order == None:
+			# wait 1 minute before trying again
+			time.sleep(5)
+		else:
+			print(f'cooking order {first_order.id}...')
+
+			food_list = json.loads(first_order.food_list)
+
+			# calculate cook time
+			total_cook_time = 0
+			for item in food_list['items']:
+				total_cook_time += menu_items[int(item['id'])].cook_time
+
+			# "cook" food
+			time.sleep(total_cook_time)
+
+			print(f'finished cooking order {first_order.id}!')
+
+			# then, remove this order from the db
+			db.session.delete(first_order)
+			db.session.commit()
+
+food_manager_thread = threading.Thread(target=food_manager)
+food_manager_thread.start()
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
