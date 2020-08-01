@@ -16,6 +16,6 @@ m = MenuItemDb(id=0, name=first[0], text=first[1], img=first[2], price=first[3],
 db.session.add(m)
 
 for menu in menus:
-    m = MenuItemDb(name=menu[0], text=menu[1], img=menu[2], price=menu[3], options=menu[4], category=menu[5], sized=menu[6])
-    db.session.add(m)
+	m = MenuItemDb(name=menu[0], text=menu[1], img=menu[2], price=menu[3], options=menu[4], category=menu[5], sized=menu[6])
+	db.session.add(m)
 db.session.commit()

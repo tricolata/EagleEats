@@ -71,7 +71,7 @@ class MenuItemDb(db.Model):
 	sized = db.Column(db.Boolean, nullable=False)
 
 	def __repr__(self):
-	    return f"MenuItemDb('{self.name}','{self.text}', '{self.img}', '{self.price}')"
+		return f"MenuItemDb('{self.name}','{self.text}', '{self.img}', '{self.price}')"
 
 
 class Customer(User):

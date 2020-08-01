@@ -14,11 +14,11 @@ from dotenv import load_dotenv
 
 # load .env if exists
 if os.path.exists('.env'):
-    load_dotenv()
+	load_dotenv()
 else:
-    # load .env.example if no .env is present
-    print('.env file not found, using example file...')
-    load_dotenv(dotenv_path='.env.example')
+	# load .env.example if no .env is present
+	print('.env file not found, using example file...')
+	load_dotenv(dotenv_path='.env.example')
 
 secret_key = os.getenv('SECRET_KEY')
 database_file = os.getenv('DATABASE_FILE')
