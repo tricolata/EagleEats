@@ -5,7 +5,7 @@
 <div class = "left">
   <h1>Thank you for your order</h1>
   <ul style= "list-style:none;">
-    <li>Order Number</li>
+    <li>Order Number{{ order.order_num }}</li>
     <li>Phone Number<p>{{ user.phone }}</p></li>
     <li>Customer<p>{{ user.name }}</p></li>
   </ul>
@@ -13,15 +13,18 @@
 <div class = "right">
   <h1>Order Summary</h1>
   <ul style= "list-style:none;">
-    <li>Subtotal</li>
-    <li>Shipping</li>
-    <li>Discounts</li>
-    <li>Tax</li>
-    <li>Order Total</li>
+    <li>Subtotal<p>{{ orderAmount.subTotal }}</p></li>
+    <li>Shipping<p>Free Delivery</p></li>
+    <li>Discounts<p>None</p></li>
+    <li>Tax{{ orderAmount.salesTax }}</li>
+    <li>Order Total{{ orderAmount.total }}</li>
   </ul>
+
   <h2>Items Ordered</h2>
+  {% for item in cart_item %}
   <ul style= "list-style:none;">
-    <li>TEST</li>
+    <li>{{ item.name }}</li>
   </ul>
+  {% endfor %}
 </div>
 {% endblock %}

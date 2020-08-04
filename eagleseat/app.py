@@ -210,7 +210,18 @@ def confirmation():
 				return redirect(url_for('login'))
 			else:
 				user = User.query.filter_by(email=session['email']).first()
-				return render_template("confirmation_page.html", user=user)
+				orderAmount = OrderAmount()
+				cart_item =access_cart()
+				for item in cart_item:
+					orderAmount.subTotal += item.price
+
+					orderAmount.subTotal =(orderAmount.subTotal)
+					orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
+					orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
+					orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
+					orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
+					orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
+				return render_template("confirmation_page.html", user=user, cart_item = cart_item, orderAmount=orderAmount)
 
 				if Order.query.filter_by(order_num=session['order_num']).first():
 					order = Order.query.filter_by(order_num=session['order_num']).first()
