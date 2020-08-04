@@ -15,15 +15,22 @@ html, body {
 body {
 	display: flex;
 	flex-direction: column;
-}
-
-#navbar {
-	display: flex;
-
-	width: 100vw;
-	height: 7.5vh;
 
 	background-color: #FCFCFC;
+}
+
+.navbar:not(.menu-navbar) {
+    position: relative;
+    z-index: 999;
+}
+
+.navbar {
+	display: flex;
+
+	width: 100%;
+	height: 7.5vh;
+
+    background-color: none;
 	color: #333;
 
 	font-family: 'Montserrat', sans-serif;
@@ -34,7 +41,7 @@ body {
 	box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.15);
 }
 
-#navbar button {
+.navbar button {
 	background-color: inherit;
 	color: inherit;
 
@@ -49,13 +56,17 @@ body {
 	box-shadow: none;
 }
 
-#navbar button:hover {
+.navbar button:hover {
 	box-shadow: inset 0 -5px 0px 0px var(--unt-green-light);
 	cursor: pointer;
 }
 
+.navbar button:focus {
+    outline: 0;
+}
+
 /* active for current page */
-#navbar .active {
+.navbar .active {
 	box-shadow: inset 0 -5px 0px 0px var(--unt-green) !important;
 }
 
@@ -118,6 +129,7 @@ body {
 
 .footer{
   display:flex;
+  position: relative;
   justify-content: space-around;
   align-items: center;
   overflow: hidden;

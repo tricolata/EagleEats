@@ -28,6 +28,8 @@
 }
 
 #content form {
+    margin-bottom: 2rem;
+
     width: 100%;
     padding: 20px;
 
@@ -38,6 +40,12 @@
 
     border: 1px solid #d8dee2;
     border-radius: 5px;
+}
+
+/* sub headers */
+#content form h2 {
+    font-size: 16px;
+    margin-bottom: 0;
 }
 
 #content form label {
@@ -55,6 +63,8 @@
 }
 
 #content form input {
+    position: relative;
+
     padding: 5px 12px;
     margin: 0 0 16px;
 
@@ -73,6 +83,7 @@
 
     cursor: pointer;
 }
+
 
 .additional-item {
     width: 100%;
@@ -96,4 +107,83 @@
 
 .additional-item a:visited {
     color: blue;
+}
+
+.orderSummary{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.orderSumChild{
+    flex:5;
+    text-align: left;
+}
+.orderSumChild1{
+    flex:1;
+    text-align: left;
+    align-items: flex-end;
+}
+.option{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+}
+.credit{
+    flex:1;
+    
+}
+.cash{
+    flex:1;
+}
+span#creditCard{
+    
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+p#cash{
+    display:none;
+    text-align: center;
+    
+}
+p#opener{
+    font-weight: bold;
+    text-align: center;
+}
+
+#orderSummary{
+    display:none;
+}
+hr {
+    width: 100%;
+
+    border-width: 0 0 1px 0;
+
+    border-color: #e1e4e8;
+}
+#view-order{
+    cursor:pointer;
+}
+
+@keyframes wiggle {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+input:invalid {
+    animation-iteration-count: infinite;
 }

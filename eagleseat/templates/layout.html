@@ -5,11 +5,14 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<title>Eagles Eat</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
 	</head>
 	<body>
 
 		<!-- navbar -->
-		<div id="navbar">
+		<div class="navbar">
 			<div id="left-wing">
 				<button id="deals-button" onclick="location.href='/deals'">Deals</button>
 				<button id="menu-button" onclick="location.href='/menu'">Menu</button>
@@ -22,6 +25,7 @@
 			</div>
 			<div id="right-wing">
 				{% if session['logged_in'] %}
+					<button id="account-button" onclick="location.href='/account'">Account</button>
 					<button id="logout-button" onclick="location.href='/logout'">Logout</button>
 				{% else %}
 					<button id="login-button" onclick="location.href='/login'">Login</button>
