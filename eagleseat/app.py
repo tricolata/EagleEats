@@ -464,3 +464,10 @@ def tracker(order_id):
 	expected_time = order.date_posted + timedelta(seconds=total_cook_time)
 
 	return render_template('tracker.html', order=order, items=items, expected_time=expected_time.strftime('%I:%M%p'))
+
+@app.errorhandler(404)
+def page_not_found(e):
+	return render_template('404.html')
+
+if __name__ == '__main__':
+	app.run()

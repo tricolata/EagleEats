@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tracker.css') }}">
+    <div id="not-found">
+        <i class="fa fa-question-circle"></i>
+        <p>Sorry, we couldn't find a page with that URL!</p>
+        <a href="/menu" rel="noopener noreferrer">Go to Menu</a>
+    </div>
+{% endblock %}
