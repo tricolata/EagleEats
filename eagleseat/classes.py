@@ -1,5 +1,6 @@
 from app import db
 from datetime import datetime
+import json
 # Review, Order, and User definitions
 
 
@@ -17,33 +18,22 @@ class Review(object):
 	def __repr__(self):
 		return self.__str__()
 
-
-# A Menu Item
-class MenuItem(object):
-	def __init__(self, id, name, text, img, price, options, category, sized):
-		self.id = id
-		self.name = name
-		self.text = text
-		self.img = img
-		self.price = price
-		self.options = options
-		self.category = category
-		self.sized = sized
-
-	def __str__(self):
-		return 'MenuItem(id={}, name={}, text={}, img={}, price={}, options={}, category={}, sized={}'.format(
-			self.id, self.name, self.text, self.img, self.price, self.options, self.category, self.sized)
-
-	def __repr__(self):
-		return self.__str__()
-
 class Order(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-	food_id = db.Column(db.String(255), db.ForeignKey('menu_item_db.id'), nullable=False)
-	data_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-	status = db.Column(db.String(20), nullable=False)
-	total_price = db.Column(db.Integer, nullable=False)
+	food_list = db.Column(db.String(512), nullable=False)
+	date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	delivery_method = db.Column(db.String(8), nullable=False)
+	status = db.Column(db.String(20), nullable=False, default='received')
+
+	def total_price(self):
+		sum = 0
+		food_items = json.loads(self.food_list)['items']
+		for item in food_items:
+			menu_item = MenuItem.query.filter_by(id=item['id']).first()
+			sum += menu_item.price
+
+		return sum
 
 	def __repr__(self):
 		return f"Order('{self.user_id}','{self.food_id}','{self.data_posted}', '{self.status}')"
@@ -60,7 +50,7 @@ class User(db.Model):
 	def __repr__(self):
 		return f"User('{self.name}', '{self.email}', '{self.password}' ,'{self.phone}')"
 
-class MenuItemDb(db.Model):
+class MenuItem(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(255), nullable=False)
 	text = db.Column(db.String(255), nullable=False)
@@ -68,7 +58,8 @@ class MenuItemDb(db.Model):
 	price = db.Column(db.Integer, nullable=False)
 	options = db.Column(db.String(255), nullable=True)
 	category = db.Column(db.String(255), nullable=False)
-	sized = db.Column(db.Boolean, nullable=False)
+	cook_time = db.Column(db.Integer, nullable=False)
+	size = db.Column(db.String(8), nullable=True)
 
 	def __repr__(self):
 		return f"MenuItemDb('{self.name}','{self.text}', '{self.img}', '{self.price}')"
