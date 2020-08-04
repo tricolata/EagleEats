@@ -154,7 +154,7 @@ def deals():
 		flash('You must be logged in to place an order')
 		return redirect(url_for('login'))
 	else:
-		return render_template("menu.html", menu_items=deal_items)
+		return render_template("menu.html", menu_items=deal_items, delivery_method=session.get('delivery_method'))
 
 @app.route("/menu", methods=["GET"])
 def menu():
