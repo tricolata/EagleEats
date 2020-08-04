@@ -1,4 +1,14 @@
-function buildCustomizer(itemName, itemId, options, hasSize) {
+var deliveryMethod;
+
+function setDeliveryMethod(method) {
+    deliveryMethod= method;
+    console.log(deliveryMethod);
+
+    let deliveryOptionPane = document.getElementById('delivery-method');
+    deliveryOptionPane.parentNode.removeChild(deliveryOptionPane);
+}
+
+function buildCustomizer(itemName, itemId, options, size) {
     let customizer = document.querySelector('#customizer');
     let optionPanel = document.querySelector('#option-panel');
 
@@ -19,19 +29,25 @@ function buildCustomizer(itemName, itemId, options, hasSize) {
     form.action = '/cart';
     form.method = 'post';
 
-    // create dummy form element for itemId
+    // create dummy form element for itemId and deliveryMethod
     const idInput = document.createElement('input');
     idInput.type = 'hidden';
     idInput.name = 'id';
     idInput.value = itemId;
 
-    // append dummy input
+    const deliveryInput = document.createElement('input');
+    deliveryInput.type = 'hidden';
+    deliveryInput.name = 'deliveryMethod';
+    deliveryInput.value = deliveryMethod;
+
+    // append dummy inputs
     form.appendChild(idInput);
+    form.appendChild(deliveryInput);
 
     form.classList.add('options');
 
     // size
-    if (hasSize) {
+    if (size != 'None') {
         let sizeLabels = document.createElement('div');
         sizeLabels.classList.add('option-labels');
 

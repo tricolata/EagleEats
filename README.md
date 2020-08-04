@@ -48,9 +48,8 @@ Then, start the flask server:
 Environment variables used during the program are to be stored in a `.env`
 file inside of the `eagleseat` directory. An example file (`.env.example` ) is included.
 
-If you would like to use the example file, run the following inside of the `eagleseat` directory:
+The example file will be used if no `.env` file is present
 
-`mv .env.example .env`
 
 ## Data Storage and Exchange
 []: # TODO: Write Data Storage and Exchange Documentation

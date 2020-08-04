@@ -16,6 +16,11 @@ body {
 	background-color: #FCFCFC;
 }
 
+.navbar:not(.menu-navbar) {
+    position: relative;
+    z-index: 999;
+}
+
 .navbar {
 	display: flex;
 
@@ -121,6 +126,7 @@ body {
 
 .footer{
   display:flex;
+  position: relative;
   justify-content: space-around;
   align-items: center;
   overflow: hidden;

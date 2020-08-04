@@ -5,37 +5,37 @@ from decimal import*
 
 
 def charge(card_number, expiration_date, amount, merchant_id):
-    merchantAuth = apicontractsv1.merchantAuthenticationType()
-    merchantAuth.name = '4K24xbCW'
-    merchantAuth.transactionKey = '8m39rKgQ92C4MRvx'
+	merchantAuth = apicontractsv1.merchantAuthenticationType()
+	merchantAuth.name = '4K24xbCW'
+	merchantAuth.transactionKey = '8m39rKgQ92C4MRvx'
 
-    creditCard = apicontractsv1.creditCardType()
-    creditCard.cardNumber = card_number
-    creditCard.expirationDate = expiration_date
+	creditCard = apicontractsv1.creditCardType()
+	creditCard.cardNumber = card_number
+	creditCard.expirationDate = expiration_date
 
-    payment = apicontractsv1.paymentType()
-    payment.creditCard = creditCard
+	payment = apicontractsv1.paymentType()
+	payment.creditCard = creditCard
 
-    transactionrequest = apicontractsv1.transactionRequestType()
-    transactionrequest.transactionType ="authCaptureTransaction"
-    transactionrequest.amount = Decimal(amount)
-    transactionrequest.payment = payment
+	transactionrequest = apicontractsv1.transactionRequestType()
+	transactionrequest.transactionType ="authCaptureTransaction"
+	transactionrequest.amount = Decimal(amount)
+	transactionrequest.payment = payment
 
 
-    createtransactionrequest = apicontractsv1.createTransactionRequest()
-    createtransactionrequest.merchantAuthentication = merchantAuth
-    createtransactionrequest.refId = merchant_id
+	createtransactionrequest = apicontractsv1.createTransactionRequest()
+	createtransactionrequest.merchantAuthentication = merchantAuth
+	createtransactionrequest.refId = merchant_id
 
-    createtransactionrequest.transactionRequest = transactionrequest
-    createtransactioncontroller = createTransactionController(createtransactionrequest)
-    createtransactioncontroller.execute()
+	createtransactionrequest.transactionRequest = transactionrequest
+	createtransactioncontroller = createTransactionController(createtransactionrequest)
+	createtransactioncontroller.execute()
 
-    response = createtransactioncontroller.getresponse()
+	response = createtransactioncontroller.getresponse()
 
-    if (response.messages.resultCode=="Ok"):
-        return ("Transaction ID : %s" % response.transactionResponse.transId)
-    else:
-        return ("response code: %s" % response.messages.resultCode)
+	if (response.messages.resultCode=="Ok"):
+		return (True, "Transaction ID : %s" % response.transactionResponse.transId)
+	else:
+		return (False, "response code: %s" % response.messages.resultCode)
 
 '''
 #Custom transaction data - feel free to define your own!
