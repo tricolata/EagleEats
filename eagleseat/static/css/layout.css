@@ -12,8 +12,12 @@ html, body {
 	font-family: 'Montserrat', sans-serif;
 }
 
-button {
+button:hover {
     cursor: pointer;
+}
+
+button[disabled]:hover {
+    cursor: not-allowed !important;
 }
 
 body {
@@ -144,7 +148,7 @@ body {
   bottom: 0;
 
   background-color: #FCFCFC;
-	box-shadow: 0px 2px 60px rgba(0, 0, 0, 0.15);;
+	box-shadow: 0px 2px 32px rgba(0, 0, 0, 0.15);;
 
 }
 .footerelements{
