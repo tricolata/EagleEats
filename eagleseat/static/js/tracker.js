@@ -1,11 +1,14 @@
 // apply 'active' class as appropriate
-//
-// stage is a number from 1-4 where:
-// 1 indicates the order has been received
-// 2 indicates the order is being made
-// 3 indicates the order is ready for pickup/being delivered
-// 4 indicates the order is complete
-function setStage(stage) {
+function setStage(status) {
+    let stage;
+
+    switch (status) {
+        case 'received': stage = 1; break;
+        case 'cooking': stage = 2; break;
+        case 'ready': stage = 3; break;
+        case 'complete': stage = 4; break;
+    }
+
     for (let i = 1; i <= stage; i++) {
         document.querySelector('.stage.stage' + i).classList.add('active');
 

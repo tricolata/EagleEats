@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 from flask_mail import Mail, Message
 
-
+from datetime import timedelta
 import os
 import os.path
 from dotenv import load_dotenv
@@ -417,3 +417,42 @@ def account():
 			return redirect(url_for('index'))
 	else:
 		return redirect(url_for('index'))
+
+@app.route("/tracker/<order_id>", methods=["GET"])
+def tracker(order_id):
+	order = Order.query.filter_by(id=order_id).first();
+
+	# handle order not found
+	if order is None:
+		return render_template('tracker.html', order=None, attempted_id=order_id)
+
+	order_items = json.loads(order.food_list);
+	
+	items = []
+	total_cook_time = 0
+	# construct food list
+	for item_json in order_items['items']:
+		# item dict
+		item = {}
+
+		item_name = menu_items[int(item_json['id'])].name
+
+		size = menu_items[int(item_json['id'])].size
+		if size is not None:
+			item_name = size + ' ' + item_name
+
+		item['name'] = item_name
+
+		mods = []
+		for option in item_json['options']:
+			mods.append(option)
+
+		item['mods'] = mods
+
+		total_cook_time += menu_items[int(item_json['id'])].cook_time
+
+		items.append(item)
+
+	expected_time = order.date_posted + timedelta(seconds=total_cook_time)
+
+	return render_template('tracker.html', order=order, items=items, expected_time=expected_time.strftime('%I:%M%p'))

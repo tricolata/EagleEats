@@ -4,21 +4,26 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tracker.css') }}">
     {% if order is not none %}
         <div id="status">
-            <h1>Order #{{ order.order_id }}</h1>
-            {% if order.status == 1 %}
+            <h1>Order #{{ (order.id|string).rjust(8, '0') }}</h1>
+            {% if order.status == 'received' %}
                 <h2>
                     Your order has been received and<br>
                     will be prepared soon.
                 </h2>
                 <i class="fa fa-home" aria-hidden="true"></i>
-            {% elif order.status == 2 %}
+            {% elif order.status == 'cooking' %}
                 <h2>Your order is being prepared!</h2>
-                {% if order.delivery_method == 'curbside' %}
-                    Estimated pickup time: <strong>{{ order.expected_time }}</strong>
+                {% if order.delivery_method == 'takeout' %}
+                    Estimated pickup time: <strong>{{ expected_time }}</strong>
                 {% endif %}
                 <i class="fa fa-cutlery" aria-hidden="true"></i>
-            {% elif order.status == 3 %}
-                {% if order.delivery_method == 'curbside' %}
+            {% elif order.status == 'ready' %}
+                {% if order.delivery_method == 'delivery' %}
+                    <h2>
+                        Your food is on it's way!
+                    </h2>
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                {% else %}
                     <h2>
                         Your food is ready for pickup!
                     </h2>
@@ -26,14 +31,6 @@
                         Give us a ring at 022-713-7645 once you're here!
                     </p>
                     <i class="fa fa-phone" aria-hidden="true"></i>
-                {% else %}
-                    <h2>
-                        Your food is on it's way!
-                    </h2>
-                    <p>
-                        Estimated delivery time: <strong>{{ order.expected_time }}</strong>
-                    </p>
-                    <i class="fa fa-car" aria-hidden="true"></i>
                 {% endif %}
             {% else %}
                 <h2>Your order has been completed!</h2>
@@ -50,7 +47,7 @@
                 <div class="label stage1">Received</div>
                 <div class="label stage2">Cooking</div>
                 <div class="label stage3">
-                    {% if order.delivery_method == 'curbside' %}
+                    {% if order.delivery_method == 'takeout' %}
                         Ready
                     {% else %}
                         On the Way
@@ -68,7 +65,7 @@
         <div id="order-details">
             <h3>Your order:</h1>
             <ul>
-                {% for item in order.order_items %}
+                {% for item in items %}
                     <li>
                         {{ item.name }}
                         {% if item.mods is not none %}
@@ -86,12 +83,12 @@
 
     <!-- set stage on window load -->
     <script>
-        window.onload = setStage({{ order.status }});
+        window.onload = setStage('{{ order.status }}');
     </script>
     {% else %}
         <div id="not-found">
             <i class="fa fa-question-circle"></i>
-            <h2>Order #{{ attempted_id }}</h2>
+            <h2>Order #{{ attempted_id.rjust(8, '0') }}</h2>
             <p>Sorry, we couldn't find an order with that ID!</p>
             <a href="/menu" rel="noopener noreferrer">Return to Menu</a>
         </div>
