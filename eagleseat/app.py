@@ -11,6 +11,7 @@ from flask_mail import Mail, Message
 import os
 import os.path
 from dotenv import load_dotenv
+import random
 import threading
 import time
 
@@ -81,6 +82,16 @@ food_manager_thread = threading.Thread(target=food_manager)
 food_manager_thread.daemon = True # this thread dies when main thread dies
 food_manager_thread.start()
 
+# randomly pick 4 deal items
+deal_items = []
+while len(deal_items) < 2:
+	# get random item from menu_items
+	deal_item = random.choice(menu_items)
+
+	# add deal_item if it is not already in deal_items
+	if deal_item not in deal_items:
+		deal_items.append(deal_item)
+
 """ route() tells flask what URL triggers this function """
 @app.route("/")
 def index():
@@ -139,9 +150,7 @@ def logout():
 
 @app.route("/deals")
 def deals():
-	# TODO: get deals
-
-	return render_template("deals.html")
+	return render_template("menu.html", menu_items=deal_items)
 
 @app.route("/menu", methods=["GET"])
 def menu():

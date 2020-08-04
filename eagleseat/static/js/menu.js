@@ -154,8 +154,35 @@ function destroyCustomizer() {
     optionPanel.innerHTML = '';
 }
 
-// set default category to entree
-changeCategory('entree');
+// remove any category with no items in it
+removeEmptyCategories(['entree', 'side', 'dessert', 'drink']);
+function removeEmptyCategories(affectedCategories) {
+    let numItems = 0;
+
+    for (category of affectedCategories) {
+        numItems = document.querySelectorAll('.menu-item.' + category).length
+        if (numItems == 0) {
+            // no items in category, remove button
+            removeEmptyCategory(category);
+        }
+    }
+}
+
+// remove passed category button
+function removeEmptyCategory(category) {
+    let categoryButton = document.querySelector('#' + category + '-button');
+
+    // remove category button
+    categoryButton.parentNode.removeChild(categoryButton);
+}
+
+// set default category to first category
+let firstCategoryButtonId = document.querySelector('.menu-navbar button').id;
+
+// category name (singular) is category button text up to '-button'
+let suffixIndex = firstCategoryButtonId.indexOf('-button');
+let firstCategoryName = firstCategoryButtonId.substring(0, suffixIndex);
+changeCategory(firstCategoryName);
 function changeCategory(category) {
     // all menu items that are NOT in category
     let otherItems = document.querySelectorAll('.menu-item:not(.' + category + ')');
@@ -176,8 +203,6 @@ function changeCategory(category) {
 
     // css selector of the button for the new category
     let selector = '#' + category + '-button';
-
-    console.log(selector);
 
     // the active category
     let activeCategoryButton = document.querySelector(selector);
