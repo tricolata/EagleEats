@@ -5,7 +5,7 @@ db.session.query(MenuItem).delete()
 db.session.commit()
 
 # list of menu items. schema:
-# [name, description, img url, price, options json, category, sized]
+# [name, description, img url, price, options json, category, cook_time, sized]
 menu_items = [
 	['Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 6.99,'{"options":["Ranch"]}', 'entree', 3, False],
 	['French Fries', 'Description', 'pepperoni-slate-compressed.jpg', 1.99, None,'side', 3, True],
