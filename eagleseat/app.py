@@ -193,7 +193,7 @@ def checkout():
 
 					empty_cart()
 
-					return 'This will redirect to confirmation soon'
+					return confirmation
 				else:
 					flash('Card could not be charged succesfully')
 					return redirect(url_for('checkout'))
@@ -203,7 +203,7 @@ def checkout():
 				db.session.commit()
 
 				empty_cart()
-				return 'This will redirect to confirmation soon'
+				return confirmation
 		else:
 			flash('No items in order')
 			return redirect(url_for('checkout'))
@@ -302,7 +302,7 @@ def cart():
 		user = User.query.filter_by(email=session['email']).first()
 		for item in cart_item:
 			orderAmount.subTotal += item.price
-			
+
 		orderAmount.subTotal =(orderAmount.subTotal)
 		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
 		orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
