@@ -27,7 +27,12 @@ menu_items = [
 	['Chips and Queso', 'Description', 'queso.jpg', 3.99, None, 'side', 3, False],
 	['Hot Wings', 'Description', 'hotwings.jpg', 6.99, None, 'side', 3, False],
 	['Red Velvet Cake', 'Description', 'redVelvet.jpg', 3.99, None, 'dessert', 3, False],
-
+	['Sprite', 'Description', 'sprite.jpg', 0.99, None, 'drink', 3, True],
+	['Root Beer', 'Description', 'rootBeer.svg', 0.99, None, 'drink', 3, True],
+	['Hi-C Fruit Punch', 'Description', 'hic.png', 0.99, None, 'drink', 3, True],
+	['Sweet Tea', 'Description', 'sweetTea.jpg', 0.99, None, 'drink', 3, True],
+	['Dr. Pepper', 'Description', 'drPep.jpg', 0.99, None, 'drink', 3, True],
+	
 ]
 
 # start from 0
