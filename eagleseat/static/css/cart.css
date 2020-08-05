@@ -2,29 +2,37 @@
 .orderItem{
   display:flex;
   justify-content: space-between;
+  
 }
 .orderItem div{
-  border: 1px #ccc solid;
+  width:auto;
+  border-radius: 5px;
   padding: 10px;
 }
 .orderName{
 /*flex: 1;*/
-width: 30%;
+  width: 45%;
+  margin-left:10px;
+  font-size: 1.7em;
 }
 
 .orderImg{
-flex: .8;
-width: 30%;
+  flex: .8;
+  width: 30%;
 }
 .burger{
-  width: 23%; 
+  width: 12%; 
   height: auto;
+  border-radius:5px;
+  border:3px solid var(--unt-green);
 }
 .orderDesc{
 /*flex: 1;*/
-width: 30%;
-display: inline-block;
-vertical-align: top;
+  width: auto;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 1.3em;
+  margin-left:-4px;
 }
 .orderPrice{
   width: 30%;
@@ -32,8 +40,14 @@ vertical-align: top;
   text-align: right;
 }
 .parent{
-  border: 1px #ccc solid;
+  font-family: sans-serif;
+  background-color: white;
+
+  border: 1px solid #333;
+  border-radius: 12px;
   padding: 10px;
+  font-weight: bold;
+  margin-bottom:2em;
 }
 .prices{
   display:flex;
@@ -41,27 +55,64 @@ vertical-align: top;
 }
 .subtotal{
   justify-content: center;
-  width:10%
+  width:10%;
+  justify-content: space-between;
+  flex: .2;
+  text-align: left;
 }
 .subtotalPrice{
-  margin-left:5em;
+  flex:.1;
   justify-content: flex-end;
 }
 .topButtons{
   display: flex;
   margin-bottom:.5em;
+  justify-content: space-between;
 }
 .topButton{
   background-color: #00853E; /* Green */
   border: none;
   color: white;
   border-radius: 12px;
-  width: 50%;
+  width: 45%;
   padding:1.3em;
-  border:1px solid #000000;
+  
+  font-weight: bold;
+}
+#checkout.topButton{
+  background-color: white;
+  color:var(--unt-green);
+  border:1.5px solid #00853E;
+  
+}
+hr {
+  background-color:d8dee2;
 }
 
-/*.columns{
-  display: flex;
-  flex-direction: column;
-}*/
+.softText{
+  margin-top:-1.3em;
+  font-weight:1;
+  font-size:.85em;
+}
+
+.softText a {
+  margin-top:-1.3em;
+  
+}
+.attempt{
+  display:flex;
+  justify-content: space-between;
+}
+#recommendation .recommendationImg{
+  width:25%;
+  height: auto;
+  border-radius:5px;
+  
+}
+#recommendation.orderImg{
+  flex:1.5;
+  padding:1em;
+}
+.columns{
+  flex:2;
+}

@@ -1,4 +1,6 @@
 #content {
+    position: relative;
+
 	width: 80%;
 
 	display: flex;
@@ -6,6 +8,55 @@
 	justify-content: space-evenly;
 
 	font-family: 'Montserrat', sans-serif;
+}
+
+#delivery-method {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: #FCFCFC;
+}
+
+#delivery-method h1 {
+    text-align: center;
+}
+
+#delivery-method .option {
+    height: 40%;
+    width: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#delivery-method .option button {
+    margin: 1.25rem;
+
+    width: 50%;
+    height: calc(100% - 1.25rem);
+
+    color: white;
+    background-color: var(--unt-green);
+
+    border: none;
+    border-radius: 1rem;
+
+    font-size: 1.5rem;
+
+    transition: background-color .2s;
+}
+
+#delivery-method .option button:hover {
+    cursor: pointer;
+    background-color: var(--unt-green-light);
 }
 
 .menu-navbar {

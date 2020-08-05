@@ -1,4 +1,14 @@
-function buildCustomizer(itemName, itemId, options, hasSize) {
+var deliveryMethod;
+
+function setDeliveryMethod(method) {
+    deliveryMethod= method;
+    console.log(deliveryMethod);
+
+    let deliveryOptionPane = document.getElementById('delivery-method');
+    deliveryOptionPane.parentNode.removeChild(deliveryOptionPane);
+}
+
+function buildCustomizer(itemName, itemId, options, size) {
     let customizer = document.querySelector('#customizer');
     let optionPanel = document.querySelector('#option-panel');
 
@@ -19,19 +29,25 @@ function buildCustomizer(itemName, itemId, options, hasSize) {
     form.action = '/cart';
     form.method = 'post';
 
-    // create dummy form element for itemId
+    // create dummy form element for itemId and deliveryMethod
     const idInput = document.createElement('input');
     idInput.type = 'hidden';
     idInput.name = 'id';
     idInput.value = itemId;
 
-    // append dummy input
+    const deliveryInput = document.createElement('input');
+    deliveryInput.type = 'hidden';
+    deliveryInput.name = 'deliveryMethod';
+    deliveryInput.value = deliveryMethod;
+
+    // append dummy inputs
     form.appendChild(idInput);
+    form.appendChild(deliveryInput);
 
     form.classList.add('options');
 
     // size
-    if (hasSize) {
+    if (size != 'None') {
         let sizeLabels = document.createElement('div');
         sizeLabels.classList.add('option-labels');
 
@@ -138,8 +154,35 @@ function destroyCustomizer() {
     optionPanel.innerHTML = '';
 }
 
-// set default category to entree
-changeCategory('entree');
+// remove any category with no items in it
+removeEmptyCategories(['entree', 'side', 'dessert', 'drink']);
+function removeEmptyCategories(affectedCategories) {
+    let numItems = 0;
+
+    for (category of affectedCategories) {
+        numItems = document.querySelectorAll('.menu-item.' + category).length
+        if (numItems == 0) {
+            // no items in category, remove button
+            removeEmptyCategory(category);
+        }
+    }
+}
+
+// remove passed category button
+function removeEmptyCategory(category) {
+    let categoryButton = document.querySelector('#' + category + '-button');
+
+    // remove category button
+    categoryButton.parentNode.removeChild(categoryButton);
+}
+
+// set default category to first category
+let firstCategoryButtonId = document.querySelector('.menu-navbar button').id;
+
+// category name (singular) is category button text up to '-button'
+let suffixIndex = firstCategoryButtonId.indexOf('-button');
+let firstCategoryName = firstCategoryButtonId.substring(0, suffixIndex);
+changeCategory(firstCategoryName);
 function changeCategory(category) {
     // all menu items that are NOT in category
     let otherItems = document.querySelectorAll('.menu-item:not(.' + category + ')');
@@ -160,8 +203,6 @@ function changeCategory(category) {
 
     // css selector of the button for the new category
     let selector = '#' + category + '-button';
-
-    console.log(selector);
 
     // the active category
     let activeCategoryButton = document.querySelector(selector);

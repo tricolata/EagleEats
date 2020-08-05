@@ -7,13 +7,25 @@ from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 from flask_mail import Mail, Message
 
-import os
-from dotenv import load_dotenv
 
-# load .env
-load_dotenv()
+import os
+import os.path
+from dotenv import load_dotenv
+import random
+import threading
+import time
+
+# load .env if exists
+if os.path.exists('.env'):
+	load_dotenv()
+else:
+	# load .env.example if no .env is present
+	print('.env file not found, using example file...')
+	load_dotenv(dotenv_path='.env.example')
+
 secret_key = os.getenv('SECRET_KEY')
 database_file = os.getenv('DATABASE_FILE')
+#database_file = "restaurant.db"
 merchant_id = os.getenv('MERCHANT_ID')
 
 app = Flask(__name__)
@@ -31,7 +43,54 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 from charge_card import charge
-from classes import MenuItem, User, Order
+from classes import *
+db.create_all()
+menu_items = MenuItem.query.order_by(MenuItem.id.asc()).all()
+
+# food processing
+def food_manager():
+	while True:
+		current_order = Order.query.filter_by(status='received').order_by(Order.id.asc()).first()
+
+		if current_order == None:
+			# wait 1 minute before trying again
+			time.sleep(5)
+		else:
+			print(f'cooking order {current_order.id}...')
+
+			food_list = json.loads(current_order.food_list)
+
+			# calculate cook time
+			total_cook_time = 0
+			for item in food_list['items']:
+				total_cook_time += menu_items[int(item['id'])].cook_time
+
+			# update status
+			current_order.status = 'cooking'
+			db.session.commit()
+
+			# "cook" food
+			time.sleep(total_cook_time)
+
+			# update status
+			current_order.status = 'ready'
+			db.session.commit()
+
+			print(f'finished cooking order {current_order.id}!')
+
+food_manager_thread = threading.Thread(target=food_manager)
+food_manager_thread.daemon = True # this thread dies when main thread dies
+food_manager_thread.start()
+
+# randomly pick 4 deal items
+deal_items = []
+while len(deal_items) < 2:
+	# get random item from menu_items
+	deal_item = random.choice(menu_items)
+
+	# add deal_item if it is not already in deal_items
+	if deal_item not in deal_items:
+		deal_items.append(deal_item)
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
@@ -91,20 +150,90 @@ def logout():
 
 @app.route("/deals")
 def deals():
-	# TODO: get deals
-
-	return render_template("deals.html")
+	return render_template("menu.html", menu_items=deal_items)
 
 @app.route("/menu", methods=["GET"])
 def menu():
-	# TODO: Read items from somwehere
-	menu_items = [
-		MenuItem(0, 'Chicken Fingers', 'Description', 'garden-fresh-slate-compressed.jpg', 5.99, '{"options":["Ranch"]}', 'entree', 'false'),
-		MenuItem(1, 'French Fries', 'Description', 'pepperoni-slate-compressed.jpg', 1.99, None, 'side', 'true'),
-		MenuItem(2, 'Ice Cream', 'Description', 'garden-fresh-slate-compressed.jpg', 2.99, '{"options":["Fudge", "Caramel", "Cookie Dough"]}', 'dessert', 'true'),
-		MenuItem(3, 'Coca Cola', 'Description', 'pepperoni-slate-compressed.jpg', 0.99, None, 'drink', 'true'),
-	]
-	return render_template("menu.html", menu_items=menu_items)
+	menu_items_filtered = []
+	unique_names = []
+	for item in menu_items:
+		if item.name not in unique_names:
+			menu_items_filtered.append(item)
+			unique_names.append(item.name)
+
+	return render_template("menu.html", menu_items=menu_items_filtered, delivery_method=session.get('delivery_method'))
+
+
+
+@app.route("/checkout", methods=["POST", "GET"])
+def checkout():
+	cart_items = access_cart()
+	order = construct_order()
+	if order is not None:
+		order_price = '{:.2f}'.format(float(order.total_price() * 1.0825)) # with tax
+	else:
+		order_price = 0
+	user = User.query.filter_by(email=session.get('email')).first()
+
+	if request.method == 'POST':
+		if order is not None:
+			payment_type = request.form['transaction']
+			if payment_type == 'creditCard':
+				card_number = request.form.get('cardNumber')
+				expiration_date = request.form.get('expDate')
+
+				trans_response = charge(card_number, expiration_date, order_price, merchant_id)
+
+				# if card was charged successfully
+				# if trans_response[0]:
+				if True:
+					# add to current order table
+					db.session.add(order)
+					db.session.commit()
+
+					empty_cart()
+
+					return 'This will redirect to confirmation soon'
+				else:
+					flash('Card could not be charged succesfully')
+					return redirect(url_for('checkout'))
+			else:
+				# add to current order table
+				db.session.add(order)
+				db.session.commit()
+
+				empty_cart()
+				return 'This will redirect to confirmation soon'
+		else:
+			flash('No items in order')
+			return redirect(url_for('checkout'))
+	else:
+		return render_template("checkout.html", cart_item=cart_items, orderAmount=order_price, customer=user)
+
+# constructs and returns an order instance
+# based on the cart and current user
+def construct_order():
+	cart_json = session.get('cart')
+	user_email = session.get('email')
+	user = User.query.filter_by(email=user_email).first()
+	if (cart_json is not None and user is not None):
+		cart_items = access_cart()
+		delivery_method = json.loads(session['cart'])['delivery_method']
+
+		if len(cart_items) > 0:
+			order = Order(
+				user_id=user.id,
+				food_list=cart_json,
+				delivery_method=delivery_method,
+			)
+
+			return order
+
+	# if we have not returned yet then at least one of the following is true:
+	# 1.) cart_json is None
+	# 2.) user for current email is None
+	# 3.) cart is empty
+	return None
 
 # FIXME TODO XXX: TEMPORARY ROUTES FOR HELPING DEVELOPMENT
 @app.route("/cart/json")
@@ -129,11 +258,19 @@ def build_option_string(option, value):
 def cart():
 	if request.method == "POST":
 		id = request.form.get('id')
+		if session.get('delivery_method') is None:
+			delivery_method = request.form.get('deliveryMethod')
+			session['delivery_method'] = delivery_method
+			set_delivery_method(delivery_method)
 
 		options = []
 		for field in request.form:
 			# already grabbed ID, so skip it
 			if field == 'id':
+				continue
+
+			# already grabbed deliveryMethod, so skip it
+			if field == 'deliveryMethod':
 				continue
 
 			field_value = request.form.get(field)
@@ -154,19 +291,34 @@ def cart():
 				# everything else is an option string
 				# NOTE: only add modifications (e.g. not 'Regular')
 				if field_value != 'regular':
-					options.append(build_option_string(field, field_value));
+					options.append(build_option_string(field, field_value))
 
 		add_to_cart(id, options)
-
 		# return to menu
 		return redirect(url_for('menu'))
 	else:
-		# TODO: read cart data
-		return render_template("cart.html")
+		orderAmount = OrderAmount()
+		cart_item =access_cart()
+		user = User.query.filter_by(email=session['email']).first()
+		for item in cart_item:
+			orderAmount.subTotal += item.price
+			
+		orderAmount.subTotal =(orderAmount.subTotal)
+		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
+		orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
+		orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
+		orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
+		orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
+		return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
 
 def init_cart():
 	# json boilerplate
-	session['cart'] = '{"items":[]}'
+	session['cart'] = '{"delivery_method": "","items":[]}'
+
+def set_delivery_method(method):
+	cart = json.loads(session['cart'])
+	cart['delivery_method'] = method
+	session['cart'] = json.dumps(cart)
 
 def add_to_cart(id, options):
 	item = {
@@ -177,6 +329,7 @@ def add_to_cart(id, options):
 	cart = json.loads(session['cart'])
 
 	cart['items'].append(item)
+
 
 	session['cart'] = json.dumps(cart)
 
@@ -194,9 +347,18 @@ def empty_cart():
 	while len(cart['items']) > 0:
 		del cart['items'][0]
 
-	session['cart'] = json.dumps(cart)
+	session.pop('delivery_method', None)
+
+	init_cart()
 
 	return session['cart']
+
+def access_cart():
+	cart = json.loads(session['cart'])
+	cart_item = []
+	for item in cart['items']:
+		cart_item.append(menu_items[int(item['id'])])
+	return cart_item
 
 @app.route("/aboutus")
 def aboutus():
@@ -280,6 +442,3 @@ def account():
 			return redirect(url_for('index'))
 	else:
 		return redirect(url_for('index'))
-
-if __name__ == '__main__':
-	app.run()
