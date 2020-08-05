@@ -264,6 +264,10 @@ def build_option_string(option, value):
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
+	# create cart if not already there
+	if session.get('cart') is None:
+		init_cart()
+
 	if request.method == "POST":
 		id = request.form.get('id')
 		if session.get('delivery_method') is None:
