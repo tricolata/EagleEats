@@ -83,7 +83,7 @@
 
     <!-- set stage on window load -->
     <script>
-        window.onload = setStage('{{ order.status }}');
+        window.addEventListener('load', setStage('{{ order.status }}'));
     </script>
     {% else %}
         <div id="not-found">
