@@ -34,7 +34,11 @@
 				<h2>{{ item.name }}</h2>
 				<p>${{ item.price }}</p>
 			</div>
-			<button onclick="buildCustomizer('{{ item.name }}','{{ item.id }}', '{{ item.options }}', '{{ item.size }}')">Customize</button>
+			{% if session['logged_in'] is not none and session['logged_in'] is not false %}
+				<button onclick="buildCustomizer('{{ item.name }}','{{ item.id }}', '{{ item.options }}', '{{ item.size }}')">Customize</button>
+			{% else %}
+				<button onclick="location.href='{{ url_for('login') }}'">Customize</button>
+			{% endif %}
 		</div>
 	{% endfor %}
 	<div id="customizer">
@@ -42,4 +46,7 @@
 		</div>
 	</div>
 	<script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    {% if delivery_method is not none %}
+        <script>changeCategory(firstCategoryName)</script>
+    {% endif %}
 {% endblock %}

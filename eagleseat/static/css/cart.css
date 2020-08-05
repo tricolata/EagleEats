@@ -21,8 +21,8 @@
   width: 30%;
 }
 .burger{
-  width: 12%; 
-  height: auto;
+  width: 158px; 
+  height: 126px;
   border-radius:5px;
   border:3px solid var(--unt-green);
 }
@@ -113,14 +113,16 @@ hr {
   justify-content: space-between;
 }
 #recommendation .recommendationImg{
-  width:25%;
-  height: auto;
   border-radius:5px;
-  
+  width:125px;
+  height:100px;
+  border-color: var(--unt-green);
+  border: solid var(--unt-green) 3px;
 }
 #recommendation.orderImg{
   flex:1.5;
   padding:1em;
+  
 }
 .columns{
   flex:2;
