@@ -193,7 +193,7 @@ def checkout():
 
 					empty_cart()
 
-					return redirect(url_for('confirmation'))
+					return redirect(url_for('confirmation', order_id=order.id))
 				else:
 					flash('Card could not be charged succesfully')
 					return redirect(url_for('checkout'))
@@ -203,7 +203,7 @@ def checkout():
 				db.session.commit()
 
 				empty_cart()
-				return redirect(url_for('confirmation'))
+				return redirect(url_for('confirmation', order_id=order.id))
 		else:
 			flash('No items in order')
 			return redirect(url_for('checkout'))
@@ -266,6 +266,7 @@ def cart():
 
 		if request.method == "POST":
 			id = request.form.get('id')
+			print(id)
 			if session.get('delivery_method') is None:
 				delivery_method = request.form.get('deliveryMethod')
 				session['delivery_method'] = delivery_method
@@ -319,30 +320,32 @@ def cart():
 			orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
 			return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
 
-@app.route("/confirmation", methods=["GET", "POST"])
-def confirmation():
+@app.route("/confirmation/<order_id>", methods=["GET", "POST"])
+def confirmation(order_id):
 	if session.get('logged_in') is not None:
 		if request.method == 'GET':
 			if not session['logged_in']:
 				return redirect(url_for('login'))
 			else:
 				user = User.query.filter_by(email=session['email']).first()
-				order = Order.query.filter_by(id=Order.id).first()
-				orderAmount = OrderAmount()
+				order = Order.query.filter_by(id=order_id).first()
 				order_items = json.loads(order.food_list)
 
 				items = []
+				total_price = 0
 				# construct food list
 				for item_json in order_items['items']:
 					# item dict
 					item = {}
 					item_name = menu_items[int(item_json['id'])].name
 					size = menu_items[int(item_json['id'])].size
+					total_price += menu_items[int(item_json['id'])].price
 					if size is not None:
 						item_name = size + ' ' + item_name
 					item['name'] = item_name
 					items.append(item)
-				return render_template("confirmation_page.html", user=user, orderAmount=orderAmount, order=order, items=items)
+				print(total_price)
+				return render_template("confirmation_page.html", user=user, orderAmount=total_price * 1.0825, order=order, items=items)
 
 def init_cart():
 	# json boilerplate

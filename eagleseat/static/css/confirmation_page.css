@@ -49,8 +49,9 @@ html, body{
   color: var(--unt-green);
   text-align: center;
 }
-.right li{
-  padding-bottom: 40px;
+
+.right ul li:last-of-type {
+  padding-bottom: 10px;
 }
 .left p{
   margin:0;

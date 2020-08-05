@@ -10,17 +10,17 @@
     <li>Customer<p>{{ user.name }}</p></li>
     <li>Order Number<p>{{ (order.id|string).rjust(8, '0') }}</p></li>
   </ul>
-  <a href="./tracker/{{ (order.id|string).rjust(8, '0') }}" style="text-align: center; color: var(--unt-green); text-decoration:none;"><h3>Order Tracker</h3></a>
+  <a href="/tracker/{{ (order.id|string).rjust(8, '0') }}" style="text-align: center; color: var(--unt-green); text-decoration:none;"><h3>Order Tracker</h3></a>
 </div>
 <div class = "right">
   <h1>Order Summary</h1>
+  <ul style= "list-style:none;">
   {% for item in items %}
-  <ul style= "list-style:none;">
     <li><p>{{ item.name }}</p></li>
-  </ul>
   {% endfor %}
+  </ul>
   <ul style= "list-style:none;">
-    <li>Order Total<p>{{ orderAmount.total }}</p></li>
+	  <li>Order Total<p>${{ '{:0<2.2f}'.format(orderAmount) }}</p></li>
   </ul>
 </div>
 {% endblock %}
