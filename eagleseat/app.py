@@ -264,64 +264,68 @@ def build_option_string(option, value):
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
-	# create cart if not already there
-	if session.get('cart') is None:
-		init_cart()
-
-	if request.method == "POST":
-		id = request.form.get('id')
-		if session.get('delivery_method') is None:
-			delivery_method = request.form.get('deliveryMethod')
-			session['delivery_method'] = delivery_method
-			set_delivery_method(delivery_method)
-
-		options = []
-		for field in request.form:
-			# already grabbed ID, so skip it
-			if field == 'id':
-				continue
-
-			# already grabbed deliveryMethod, so skip it
-			if field == 'deliveryMethod':
-				continue
-
-			field_value = request.form.get(field)
-
-			# if field is a size, then value is added to ID to get
-			# the 'real' ID of the menu item
-			if field == 'size':
-				# calculate 'real' ID of size item
-				if field_value == 'small':
-					id = str(int(id) + 0)
-				elif field_value == 'medium':
-					id = str(int(id) + 1)
-				elif field_value == 'large':
-					id = str(int(id) + 2)
-				elif field_value == 'giant':
-					id = str(int(id) + 3)
-			else:
-				# everything else is an option string
-				# NOTE: only add modifications (e.g. not 'Regular')
-				if field_value != 'regular':
-					options.append(build_option_string(field, field_value))
-
-		add_to_cart(id, options)
-		# return to menu
-		return redirect(url_for('menu'))
+	if session.get('logged_in') != True:
+		flash('You must be logged in to place an order')
+		return redirect(url_for('login'))
 	else:
-		orderAmount = OrderAmount()
-		cart_item =access_cart()
-		user = User.query.filter_by(email=session['email']).first()
-		for item in cart_item:
-			orderAmount.subTotal += item.price
-			
-		orderAmount.subTotal =(orderAmount.subTotal)
-		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
-		orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
-		orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
-		orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
-		orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
-		return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
+		# create cart if not already there
+		if session.get('cart') is None:
+			init_cart()
+
+		if request.method == "POST":
+			id = request.form.get('id')
+			if session.get('delivery_method') is None:
+				delivery_method = request.form.get('deliveryMethod')
+				session['delivery_method'] = delivery_method
+				set_delivery_method(delivery_method)
+
+			options = []
+			for field in request.form:
+				# already grabbed ID, so skip it
+				if field == 'id':
+					continue
+
+				# already grabbed deliveryMethod, so skip it
+				if field == 'deliveryMethod':
+					continue
+
+				field_value = request.form.get(field)
+
+				# if field is a size, then value is added to ID to get
+				# the 'real' ID of the menu item
+				if field == 'size':
+					# calculate 'real' ID of size item
+					if field_value == 'small':
+						id = str(int(id) + 0)
+					elif field_value == 'medium':
+						id = str(int(id) + 1)
+					elif field_value == 'large':
+						id = str(int(id) + 2)
+					elif field_value == 'giant':
+						id = str(int(id) + 3)
+				else:
+					# everything else is an option string
+					# NOTE: only add modifications (e.g. not 'Regular')
+					if field_value != 'regular':
+						options.append(build_option_string(field, field_value))
+
+			add_to_cart(id, options)
+			# return to menu
+			return redirect(url_for('menu'))
+		else:
+			orderAmount = OrderAmount()
+			cart_item =access_cart()
+			user = User.query.filter_by(email=session['email']).first()
+			for item in cart_item:
+				orderAmount.subTotal += item.price
+				
+			orderAmount.subTotal =(orderAmount.subTotal)
+			orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
+			orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
+			orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
+			orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
+			orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
+			return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
 
 def init_cart():
 	# json boilerplate
