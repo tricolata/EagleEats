@@ -132,4 +132,5 @@ hr {
 
 .removeFood:hover {
 	cursor: pointer;
+    text-decoration: underline;
 }
