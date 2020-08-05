@@ -150,26 +150,18 @@ def logout():
 
 @app.route("/deals")
 def deals():
-	if session.get('logged_in') != True:
-		flash('You must be logged in to place an order')
-		return redirect(url_for('login'))
-	else:
-		return render_template("menu.html", menu_items=deal_items, delivery_method=session.get('delivery_method'))
+	return render_template("menu.html", menu_items=deal_items, delivery_method=session.get('delivery_method'))
 
 @app.route("/menu", methods=["GET"])
 def menu():
-	if session.get('logged_in') != True:
-		flash('You must be logged in to place an order')
-		return redirect(url_for('login'))
-	else:
-		menu_items_filtered = []
-		unique_names = []
-		for item in menu_items:
-			if item.name not in unique_names:
-				menu_items_filtered.append(item)
-				unique_names.append(item.name)
+	menu_items_filtered = []
+	unique_names = []
+	for item in menu_items:
+		if item.name not in unique_names:
+			menu_items_filtered.append(item)
+			unique_names.append(item.name)
 
-		return render_template("menu.html", menu_items=menu_items_filtered, delivery_method=session.get('delivery_method'))
+	return render_template("menu.html", menu_items=menu_items_filtered, delivery_method=session.get('delivery_method'))
 
 
 
