@@ -258,9 +258,57 @@ def build_option_string(option, value):
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
-	if session.get('logged_in') != True:
-		flash('You must be logged in to place an order')
-		return redirect(url_for('login'))
+	# create cart if not already there
+	if session.get('cart') is None:
+		init_cart()
+
+	if request.method == "POST":
+		remove_pos = request.form.get('removePos')
+
+		# if remove_pos is not None, this post request is from the remove item button
+		if remove_pos is not None:
+			remove_from_cart(int(remove_pos))
+			return redirect(url_for('cart'))
+
+		id = request.form.get('id')
+		if session.get('delivery_method') is None:
+			delivery_method = request.form.get('deliveryMethod')
+			session['delivery_method'] = delivery_method
+			set_delivery_method(delivery_method)
+
+		options = []
+		for field in request.form:
+			# already grabbed ID, so skip it
+			if field == 'id':
+				continue
+
+			# already grabbed deliveryMethod, so skip it
+			if field == 'deliveryMethod':
+				continue
+
+			field_value = request.form.get(field)
+
+			# if field is a size, then value is added to ID to get
+			# the 'real' ID of the menu item
+			if field == 'size':
+				# calculate 'real' ID of size item
+				if field_value == 'small':
+					id = str(int(id) + 0)
+				elif field_value == 'medium':
+					id = str(int(id) + 1)
+				elif field_value == 'large':
+					id = str(int(id) + 2)
+				elif field_value == 'giant':
+					id = str(int(id) + 3)
+			else:
+				# everything else is an option string
+				# NOTE: only add modifications (e.g. not 'Regular')
+				if field_value != 'regular':
+					options.append(build_option_string(field, field_value))
+
+		add_to_cart(id, options)
+		# return to menu
+		return redirect(url_for('menu'))
 	else:
 		# create cart if not already there
 		if session.get('cart') is None:
@@ -344,9 +392,9 @@ def add_to_cart(id, options):
 	session['cart'] = json.dumps(cart)
 
 def remove_from_cart(pos):
-	if 0 < pos < len(cart['items']):
-		cart = json.loads(session['cart'])
-
+	print(pos)
+	cart = json.loads(session['cart'])
+	if 0 <= pos < len(cart['items']):
 		del cart['items'][pos]
 
 		session['cart'] = json.dumps(cart)

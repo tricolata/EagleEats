@@ -127,3 +127,12 @@ hr {
 .columns{
   flex:2;
 }
+
+.removeFood {
+	color: var(--unt-green);
+}
+
+.removeFood:hover {
+	cursor: pointer;
+    text-decoration: underline;
+}
