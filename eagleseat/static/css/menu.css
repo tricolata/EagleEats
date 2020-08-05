@@ -93,6 +93,8 @@
 
 	width: calc(100% - var(--banner-border-size) * 2);
 	height: calc(100% - var(--banner-border-size) * 4 - 60px);
+
+    object-fit: cover;
 }
 
 .menu-item-details {
