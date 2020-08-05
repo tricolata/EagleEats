@@ -397,6 +397,10 @@ def remove_from_cart(pos):
 	if 0 <= pos < len(cart['items']):
 		del cart['items'][pos]
 
+		# reset delivery method if this removes the last item from the cart
+		if len(cart['items']) == 0:
+			session['delivery_method'] = None
+
 		session['cart'] = json.dumps(cart)
 
 def empty_cart():
