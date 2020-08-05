@@ -195,7 +195,7 @@ def checkout():
 
 					empty_cart()
 
-					return 'This will redirect to confirmation soon'
+					return redirect(url_for('confirmation', order_id=order.id))
 				else:
 					flash('Card could not be charged succesfully')
 					return redirect(url_for('checkout'))
@@ -205,7 +205,7 @@ def checkout():
 				db.session.commit()
 
 				empty_cart()
-				return 'This will redirect to confirmation soon'
+				return redirect(url_for('confirmation', order_id=order.id))
 		else:
 			flash('No items in order')
 			return redirect(url_for('checkout'))
@@ -316,6 +316,7 @@ def cart():
 
 		if request.method == "POST":
 			id = request.form.get('id')
+			print(id)
 			if session.get('delivery_method') is None:
 				delivery_method = request.form.get('deliveryMethod')
 				session['delivery_method'] = delivery_method
@@ -360,7 +361,7 @@ def cart():
 			user = User.query.filter_by(email=session['email']).first()
 			for item in cart_item:
 				orderAmount.subTotal += item.price
-				
+
 			orderAmount.subTotal =(orderAmount.subTotal)
 			orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
 			orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
@@ -368,6 +369,37 @@ def cart():
 			orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
 			orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
 			return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
+
+@app.route("/confirmation/<order_id>", methods=["GET", "POST"])
+def confirmation(order_id):
+	if session.get('logged_in') is not None:
+		if request.method == 'GET':
+			if not session['logged_in']:
+				return redirect(url_for('login'))
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+				order = Order.query.filter_by(id=order_id).first()
+				order_items = json.loads(order.food_list)
+
+				items = []
+				total_price = 0
+				# construct food list
+				for item_json in order_items['items']:
+					# item dict
+					item = {}
+					item_name = menu_items[int(item_json['id'])].name
+					size = menu_items[int(item_json['id'])].size
+					total_price += menu_items[int(item_json['id'])].price
+					if size is not None:
+						item_name = size + ' ' + item_name
+					item['name'] = item_name
+					items.append(item)
+				#print(total_price)
+				msg = Message('EagleEats', sender='eagle.eats.2020@gmail.com', recipients=[user.email])
+				msg.body="Thank you for ordering with EagleEats"
+				msg.html=render_template("conf_email.html")
+				mail.send(msg)
+				return render_template("confirmation_page.html", user=user, orderAmount=total_price * 1.0825, order=order, items=items)
 
 def init_cart():
 	# json boilerplate
@@ -489,7 +521,7 @@ def tracker(order_id):
 		return render_template('tracker.html', order=None, attempted_id=order_id)
 
 	order_items = json.loads(order.food_list);
-	
+
 	items = []
 	total_cook_time = 0
 	# construct food list
