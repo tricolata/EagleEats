@@ -344,7 +344,11 @@ def confirmation(order_id):
 						item_name = size + ' ' + item_name
 					item['name'] = item_name
 					items.append(item)
-				print(total_price)
+				#print(total_price)
+				msg = Message('EagleEats', sender='eagle.eats.2020@gmail.com', recipients=[user.email])
+				msg.body="Thank you for ordering with EagleEats"
+				msg.html=render_template("conf_email.html")
+				mail.send(msg)
 				return render_template("confirmation_page.html", user=user, orderAmount=total_price * 1.0825, order=order, items=items)
 
 def init_cart():
