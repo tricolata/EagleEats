@@ -84,13 +84,15 @@ food_manager_thread.start()
 
 # randomly pick 4 deal items
 deal_items = []
+deal_item_names = []
 while len(deal_items) < 5:
 	# get random item from menu_items
 	deal_item = random.choice(menu_items)
 
 	# add deal_item if it is not already in deal_items
-	if deal_item not in deal_items and deal_item.category != 'drink':
+	if deal_item not in deal_items and deal_item.category != 'drink' and deal_item.name not in deal_item_names:
 		deal_items.append(deal_item)
+		deal_item_names.append(deal_item.name)
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
