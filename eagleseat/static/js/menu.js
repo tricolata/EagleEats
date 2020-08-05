@@ -81,6 +81,11 @@ function buildCustomizer(itemName, itemId, options, size) {
         for (option of optionsJSON.options) {
             form.appendChild(buildOption(option));
         }
+    } else {
+        // attach form and submit
+        optionPanel.appendChild(form);
+        form.submit();
+        return;
     }
 
     // submit button
