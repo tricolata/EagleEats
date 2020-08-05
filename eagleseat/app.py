@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 from flask_mail import Mail, Message
 
-
+from datetime import timedelta
 import os
 import os.path
 from dotenv import load_dotenv
@@ -150,18 +150,26 @@ def logout():
 
 @app.route("/deals")
 def deals():
-	return render_template("menu.html", menu_items=deal_items)
+	if session.get('logged_in') != True:
+		flash('You must be logged in to place an order')
+		return redirect(url_for('login'))
+	else:
+		return render_template("menu.html", menu_items=deal_items, delivery_method=session.get('delivery_method'))
 
 @app.route("/menu", methods=["GET"])
 def menu():
-	menu_items_filtered = []
-	unique_names = []
-	for item in menu_items:
-		if item.name not in unique_names:
-			menu_items_filtered.append(item)
-			unique_names.append(item.name)
+	if session.get('logged_in') != True:
+		flash('You must be logged in to place an order')
+		return redirect(url_for('login'))
+	else:
+		menu_items_filtered = []
+		unique_names = []
+		for item in menu_items:
+			if item.name not in unique_names:
+				menu_items_filtered.append(item)
+				unique_names.append(item.name)
 
-	return render_template("menu.html", menu_items=menu_items_filtered, delivery_method=session.get('delivery_method'))
+		return render_template("menu.html", menu_items=menu_items_filtered, delivery_method=session.get('delivery_method'))
 
 
 
@@ -256,12 +264,16 @@ def build_option_string(option, value):
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
-	if request.method == "POST":
-		removePos = request.form.get('id')
+	# create cart if not already there
+	if session.get('cart') is None:
+		init_cart()
 
-		# if removePos is not None, this post request is from the remove item button
-		if removePos is not None:
-			remove_from_cart(pos)
+	if request.method == "POST":
+		remove_pos = request.form.get('removePos')
+
+		# if remove_pos is not None, this post request is from the remove item button
+		if remove_pos is not None:
+			remove_from_cart(int(remove_pos))
 			return redirect(url_for('cart'))
 
 		id = request.form.get('id')
@@ -341,9 +353,9 @@ def add_to_cart(id, options):
 	session['cart'] = json.dumps(cart)
 
 def remove_from_cart(pos):
-	if 0 < pos < len(cart['items']):
-		cart = json.loads(session['cart'])
-
+	print(pos)
+	cart = json.loads(session['cart'])
+	if 0 <= pos < len(cart['items']):
 		del cart['items'][pos]
 
 		session['cart'] = json.dumps(cart)
@@ -424,3 +436,49 @@ def account():
 			return redirect(url_for('index'))
 	else:
 		return redirect(url_for('index'))
+
+@app.route("/tracker/<order_id>", methods=["GET"])
+def tracker(order_id):
+	order = Order.query.filter_by(id=order_id).first();
+
+	# handle order not found
+	if order is None:
+		return render_template('tracker.html', order=None, attempted_id=order_id)
+
+	order_items = json.loads(order.food_list);
+	
+	items = []
+	total_cook_time = 0
+	# construct food list
+	for item_json in order_items['items']:
+		# item dict
+		item = {}
+
+		item_name = menu_items[int(item_json['id'])].name
+
+		size = menu_items[int(item_json['id'])].size
+		if size is not None:
+			item_name = size + ' ' + item_name
+
+		item['name'] = item_name
+
+		mods = []
+		for option in item_json['options']:
+			mods.append(option)
+
+		item['mods'] = mods
+
+		total_cook_time += menu_items[int(item_json['id'])].cook_time
+
+		items.append(item)
+
+	expected_time = order.date_posted + timedelta(seconds=total_cook_time)
+
+	return render_template('tracker.html', order=order, items=items, expected_time=expected_time.strftime('%I:%M%p'))
+
+@app.errorhandler(404)
+def page_not_found(e):
+	return render_template('404.html')
+
+if __name__ == '__main__':
+	app.run()

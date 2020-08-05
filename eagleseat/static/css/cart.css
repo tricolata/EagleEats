@@ -85,6 +85,15 @@
   border:1.5px solid #00853E;
   
 }
+
+#checkout.topButton[disabled]{
+  color: #333;
+  background-color: #ddd;
+  border-color: #333;
+
+  cursor: initial;
+}
+
 hr {
   background-color:d8dee2;
 }
@@ -115,4 +124,12 @@ hr {
 }
 .columns{
   flex:2;
+}
+
+.removeFood {
+	color: var(--unt-green);
+}
+
+.removeFood:hover {
+	cursor: pointer;
 }
