@@ -26,7 +26,7 @@
         <div class ="orderPrice">
             <h4> ${{item.price}}</h4>
             <h5 class ="softText">qty: 1</h5> <!--Here we need to work around adding quantities-->
-            <a class="softText" href="/menu">edit</a>
+	    <a class="softText" onclick='removeFromCart({{ loop.index}})'>remove</a>
         </div>
         </div>
         {% endfor %}

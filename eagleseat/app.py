@@ -257,6 +257,13 @@ def build_option_string(option, value):
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
 	if request.method == "POST":
+		removePos = request.form.get('id')
+
+		# if removePos is not None, this post request is from the remove item button
+		if removePos is not None:
+			remove_from_cart(pos)
+			return redirect(url_for('cart'))
+
 		id = request.form.get('id')
 		if session.get('delivery_method') is None:
 			delivery_method = request.form.get('deliveryMethod')
