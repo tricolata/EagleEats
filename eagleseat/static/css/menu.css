@@ -79,7 +79,9 @@
 	width: 330px;
 	height: 370px;
 
-	display: flex;
+    /* don't display menu-item by default */
+    /* must be enabled in JS */
+	display: none;
 	flex-direction: column;
 
 	background-image: url('../img/menu-item-banner.png');

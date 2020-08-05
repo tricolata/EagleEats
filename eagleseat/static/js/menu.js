@@ -2,10 +2,11 @@ var deliveryMethod;
 
 function setDeliveryMethod(method) {
     deliveryMethod= method;
-    console.log(deliveryMethod);
 
     let deliveryOptionPane = document.getElementById('delivery-method');
     deliveryOptionPane.parentNode.removeChild(deliveryOptionPane);
+
+    changeCategory(firstCategoryName);t
 }
 
 function buildCustomizer(itemName, itemId, options, size) {
@@ -187,7 +188,6 @@ let firstCategoryButtonId = document.querySelector('.menu-navbar button').id;
 // category name (singular) is category button text up to '-button'
 let suffixIndex = firstCategoryButtonId.indexOf('-button');
 let firstCategoryName = firstCategoryButtonId.substring(0, suffixIndex);
-changeCategory(firstCategoryName);
 function changeCategory(category) {
     // all menu items that are NOT in category
     let otherItems = document.querySelectorAll('.menu-item:not(.' + category + ')');
@@ -202,8 +202,7 @@ function changeCategory(category) {
 
     // show all items in categoryItems
     for (item of categoryItems) {
-        // clear display, let css define
-        item.style.display = ''
+        item.style.display = 'flex'
     }
 
     // css selector of the button for the new category

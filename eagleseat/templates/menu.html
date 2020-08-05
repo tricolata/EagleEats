@@ -46,4 +46,7 @@
 		</div>
 	</div>
 	<script src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    {% if delivery_method is not none %}
+        <script>changeCategory(firstCategoryName)</script>
+    {% endif %}
 {% endblock %}
