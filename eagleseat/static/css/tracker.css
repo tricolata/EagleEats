@@ -1,0 +1,253 @@
+#content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#content h1 {
+	margin-top: 3.75rem;
+	margin-bottom: calc(0.67em / 2);
+}
+
+#progress-bar {
+	position: relative;
+
+	margin: 2vh;
+
+	width: 50%;
+	height: 2.1875rem;
+	display: flex;
+
+	justify-content: center;
+
+	border-radius: 1.0938rem;
+}
+
+#progress-base {
+	position: absolute;
+
+	left: 10%;
+
+	/* this needs to be 5.7%, not 5%, don't ask me why */
+	top: 5.7%;
+
+	width: 80%;
+	height: 90%;
+
+	display: flex;
+
+	background-color: var(--unt-green-dark);
+}
+
+#progress-base .joiner {
+	height: 100%;
+	width: 33%;
+}
+
+#progress-base .joiner.active {
+	background-color: var(--unt-green);
+}
+
+.joiner.stage2 {
+	transition: background-color 0.33s linear 0.166s;
+}
+
+.joiner.stage3 {
+	transition: background-color 0.33s linear 0.496s;
+}
+
+.joiner.stage4 {
+	transition: background-color 0.33s linear 0.826s;
+}
+
+#labels {
+	position: absolute;
+
+	margin: auto;
+
+	width: 85%;
+	height: 100%;
+
+	display: flex;
+	justify-content: center;
+
+	align-self: center;
+
+	z-index: 25;
+}
+
+.label {
+	margin-right: 0.75%;
+	width: 25%;
+
+	flex-shrink: 0;
+
+	color: white;
+
+	font-size: 0.875rem;
+	line-height: 2.1875rem;
+	text-align: center;
+
+	width: 25%;
+}
+
+#stages {
+	margin: auto;
+
+	width: 85%;
+	height: 100%;
+
+	display: flex;
+	justify-content: center;
+
+	align-self: center;
+
+	border-radius: 1.0938rem;
+
+	overflow: hidden;
+}
+
+.stage {
+	position: relative;
+	transform: skew(-45deg, 0);
+	height: 100%;
+
+	flex-shrink: 0;
+
+	margin-right: 1%;
+	background-color: var(--unt-green);
+}
+
+.stage.active {
+	background-color: var(--unt-green-light);
+}
+
+.stage.stage1 {
+	width: 30%;
+
+	transition: background-color 0.33s linear 0s;
+}
+.stage.stage2 {
+	width: 25%;
+	transition: background-color 0.33s linear 0.33s;
+}
+
+.stage.stage3 {
+	width: 25%;
+	transition: background-color 0.33s linear 0.66s;
+}
+.stage.stage4 {
+	width: 30%;
+	transition: background-color 0.33s linear 1s;
+}
+
+#status {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+	text-align: center;
+
+	/* margin-bottom: 1vh; */
+}
+
+#status h2 {
+	margin: 0 0 .4em 0;
+}
+
+#status p {
+	margin-top: 0;
+}
+
+#status i,
+#not-found i {
+	margin: 1.5vh;
+
+	width: 7.5rem;
+	height: 7.5rem;
+
+	color: #FCFCFC;
+	background-color: var(--unt-green);
+
+	border-radius: 50%;
+
+	font-size: 5rem;
+	text-align: center;
+	line-height: 7.5rem;
+}
+
+#order-details {
+	margin-top: 0;
+
+	width: 35%;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	text-align: center;
+	margin-bottom: 2em;
+}
+
+#order-details h3 {
+	margin-bottom: 0;
+}
+
+#order-details ul {
+	margin-top: 0;
+	list-style: none;
+}
+
+#order-details > ul {
+	padding: 0;
+}
+
+#order-details li {
+	position: relative;
+	margin: .5em 0;
+	padding-left: .75em;
+	text-align: left;
+}
+
+#order-details li::before {
+	position: absolute;
+
+	left: 0;
+	top: -0.125rem;
+	/* width: 5px; */
+	/* height: 11px; */
+
+	color: var(--unt-green);
+
+	content: '\2022';
+}
+
+#not-found {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#not-found i {
+	font-size: 7.5rem;
+}
+
+#not-found p {
+	margin-top: 0;
+}
+
+#not-found a {
+	color: blue;
+
+	font-size: 0.875rem;
+	text-decoration: none;
+}
+
+#not-found a:visited {
+	color: blue;
+}
+
+#not-found a:hover {
+	text-decoration: underline;
+}
