@@ -84,13 +84,15 @@ food_manager_thread.start()
 
 # randomly pick 4 deal items
 deal_items = []
-while len(deal_items) < 2:
+deal_item_names = []
+while len(deal_items) < 5:
 	# get random item from menu_items
 	deal_item = random.choice(menu_items)
 
 	# add deal_item if it is not already in deal_items
-	if deal_item not in deal_items:
+	if deal_item not in deal_items and deal_item.category != 'drink' and deal_item.name not in deal_item_names:
 		deal_items.append(deal_item)
+		deal_item_names.append(deal_item.name)
 
 """ route() tells flask what URL triggers this function """
 @app.route("/")
@@ -193,7 +195,7 @@ def checkout():
 
 					empty_cart()
 
-					return 'This will redirect to confirmation soon'
+					return redirect(url_for('confirmation', order_id=order.id))
 				else:
 					flash('Card could not be charged succesfully')
 					return redirect(url_for('checkout'))
@@ -203,7 +205,7 @@ def checkout():
 				db.session.commit()
 
 				empty_cart()
-				return 'This will redirect to confirmation soon'
+				return redirect(url_for('confirmation', order_id=order.id))
 		else:
 			flash('No items in order')
 			return redirect(url_for('checkout'))
@@ -256,9 +258,57 @@ def build_option_string(option, value):
 
 @app.route("/cart", methods=["GET", "POST"])
 def cart():
-	if session.get('logged_in') != True:
-		flash('You must be logged in to place an order')
-		return redirect(url_for('login'))
+	# create cart if not already there
+	if session.get('cart') is None:
+		init_cart()
+
+	if request.method == "POST":
+		remove_pos = request.form.get('removePos')
+
+		# if remove_pos is not None, this post request is from the remove item button
+		if remove_pos is not None:
+			remove_from_cart(int(remove_pos))
+			return redirect(url_for('cart'))
+
+		id = request.form.get('id')
+		if session.get('delivery_method') is None:
+			delivery_method = request.form.get('deliveryMethod')
+			session['delivery_method'] = delivery_method
+			set_delivery_method(delivery_method)
+
+		options = []
+		for field in request.form:
+			# already grabbed ID, so skip it
+			if field == 'id':
+				continue
+
+			# already grabbed deliveryMethod, so skip it
+			if field == 'deliveryMethod':
+				continue
+
+			field_value = request.form.get(field)
+
+			# if field is a size, then value is added to ID to get
+			# the 'real' ID of the menu item
+			if field == 'size':
+				# calculate 'real' ID of size item
+				if field_value == 'small':
+					id = str(int(id) + 0)
+				elif field_value == 'medium':
+					id = str(int(id) + 1)
+				elif field_value == 'large':
+					id = str(int(id) + 2)
+				elif field_value == 'giant':
+					id = str(int(id) + 3)
+			else:
+				# everything else is an option string
+				# NOTE: only add modifications (e.g. not 'Regular')
+				if field_value != 'regular':
+					options.append(build_option_string(field, field_value))
+
+		add_to_cart(id, options)
+		# return to menu
+		return redirect(url_for('menu'))
 	else:
 		# create cart if not already there
 		if session.get('cart') is None:
@@ -266,6 +316,7 @@ def cart():
 
 		if request.method == "POST":
 			id = request.form.get('id')
+			print(id)
 			if session.get('delivery_method') is None:
 				delivery_method = request.form.get('deliveryMethod')
 				session['delivery_method'] = delivery_method
@@ -310,7 +361,7 @@ def cart():
 			user = User.query.filter_by(email=session['email']).first()
 			for item in cart_item:
 				orderAmount.subTotal += item.price
-				
+
 			orderAmount.subTotal =(orderAmount.subTotal)
 			orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
 			orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
@@ -318,6 +369,37 @@ def cart():
 			orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
 			orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
 			return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
+
+@app.route("/confirmation/<order_id>", methods=["GET", "POST"])
+def confirmation(order_id):
+	if session.get('logged_in') is not None:
+		if request.method == 'GET':
+			if not session['logged_in']:
+				return redirect(url_for('login'))
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+				order = Order.query.filter_by(id=order_id).first()
+				order_items = json.loads(order.food_list)
+
+				items = []
+				total_price = 0
+				# construct food list
+				for item_json in order_items['items']:
+					# item dict
+					item = {}
+					item_name = menu_items[int(item_json['id'])].name
+					size = menu_items[int(item_json['id'])].size
+					total_price += menu_items[int(item_json['id'])].price
+					if size is not None:
+						item_name = size + ' ' + item_name
+					item['name'] = item_name
+					items.append(item)
+				#print(total_price)
+				msg = Message('EagleEats', sender='eagle.eats.2020@gmail.com', recipients=[user.email])
+				msg.body="Thank you for ordering with EagleEats"
+				msg.html=render_template("conf_email.html")
+				mail.send(msg)
+				return render_template("confirmation_page.html", user=user, orderAmount=total_price * 1.0825, order=order, items=items)
 
 def init_cart():
 	# json boilerplate
@@ -342,10 +424,14 @@ def add_to_cart(id, options):
 	session['cart'] = json.dumps(cart)
 
 def remove_from_cart(pos):
-	if 0 < pos < len(cart['items']):
-		cart = json.loads(session['cart'])
-
+	print(pos)
+	cart = json.loads(session['cart'])
+	if 0 <= pos < len(cart['items']):
 		del cart['items'][pos]
+
+		# reset delivery method if this removes the last item from the cart
+		if len(cart['items']) == 0:
+			session['delivery_method'] = None
 
 		session['cart'] = json.dumps(cart)
 
@@ -435,7 +521,7 @@ def tracker(order_id):
 		return render_template('tracker.html', order=None, attempted_id=order_id)
 
 	order_items = json.loads(order.food_list);
-	
+
 	items = []
 	total_cook_time = 0
 	# construct food list

@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+html, body{
+
+  list-style: none;
+
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  /* custom css properties for UNT colors */
+	--unt-green: #00853E;
+	--unt-green-light: #3fa36e;
+}
+
+.left{
+  border:5px solid var(--unt-green);
+  background-color: lightgrey;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 40px #999999;
+
+  width:60%;
+  height:100%;
+  float: left;
+}
+.left h1{
+  text-align: center;
+  color: var(--unt-green);
+}
+.left h3{
+  font-size: 2em;
+}
+.left li{
+  padding-bottom: 50px;
+}
+.left p{
+  margin:0;
+  padding-right: 100px;
+  float:right;
+}
+.right{
+  border:5px solid var(--unt-green);
+  background-color: lightgrey;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 40px #999999;
+
+  width:30%;
+  height:100%;
+  float: right;
+}
+.right h1{
+  color: var(--unt-green);
+  text-align: center;
+}
+.right h2{
+  font-size: 2em;
+  padding-top:40%;
+  color: var(--unt-green);
+  text-align: center;
+}
+.right li{
+  padding-bottom: 40px;
+}
+.right p{
+  margin:0;
+  padding-right: 100%;
+  float:right;
+}

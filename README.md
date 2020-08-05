@@ -58,11 +58,14 @@ The example file will be used if no `.env` file is present
 []: # TODO: Write Database Structure Documentation
 
 ### Cart Structure
-The cart is a JSON list of menu item IDs and option strings, stored in the
+The cart is a delivery method key value pair and a JSON list of menu item IDs and option strings, stored in the
 `cart` session variable. For example:
 
 ```javascript
 {
+    // requested delivery method
+    "delivery_method": "takeout",
+
     // list of menu items
     "items": [
         {
