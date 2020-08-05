@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="initial-scale=1, width=device-width">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<title>Eagles Eat</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ url_for('static', filename='img/logo.png') }}">
+	</head>
+	<body>
+
+		<!-- navbar -->
+		<div class="navbar">
+			<div id="left-wing">
+				<button id="deals-button" onclick="location.href='/deals'">Deals</button>
+				<button id="menu-button" onclick="location.href='/menu'">Menu</button>
+				<button id="cart-button" onclick="location.href='/cart'" ><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+			</div>
+			<div onclick="location.href='/'" id="branding">
+				<span>Eagle</span>
+				<img src="{{ url_for('static', filename='img/logo.png') }}">
+				<span>Eats</span>
+			</div>
+			<div id="right-wing">
+				{% if session['logged_in'] %}
+					<button id="account-button" onclick="location.href='/account'">Account</button>
+					<button id="logout-button" onclick="location.href='/logout'">Logout</button>
+				{% else %}
+					<button id="login-button" onclick="location.href='/login'">Login</button>
+					<button id="signup-button" onclick="location.href='/signup'">Sign up</button>
+				{% endif %}
+			</div>
+		</div>
+		<div id="content">
+			{% block content %}
+			{% endblock %}
+		</div>
+		<div class="footer">
+				<div class="footerelements">
+					<div class="logo">
+						<img src="{{ url_for('static', filename='img/logo_border.png') }}">
+					</div>
+					<div class="item">
+						<a href="./aboutus"><h1>About Us</h1></a>
+						<p>EaglesEats was the brainchild of hardworking and starving College students who find themselves too lazy to get their own food.</p>
+					</div>
+					<div class="item">
+						<h1>Contact Us</h1>
+						<p>e-mail: Student@my.unt.edu</p>
+						<p>Phone: xxx-xxx-xxxx</p>
+					</div>
+					<div class="item">
+						<h1>Follow Us</h1>
+						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+						<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+						<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+					</div>
+			</div>
+		</div>
+
+		<script src="{{ url_for('static', filename='js/layout.js') }}"></script>
+	</body>
+</html>

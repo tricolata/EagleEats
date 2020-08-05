@@ -1,0 +1,138 @@
+
+.orderItem{
+  display:flex;
+  justify-content: space-between;
+  
+}
+.orderItem div{
+  width:auto;
+  border-radius: 5px;
+  padding: 10px;
+}
+.orderName{
+/*flex: 1;*/
+  width: 45%;
+  margin-left:10px;
+  font-size: 1.7em;
+}
+
+.orderImg{
+  flex: .8;
+  width: 30%;
+}
+.burger{
+  width: 158px; 
+  height: 126px;
+  border-radius:5px;
+  border:3px solid var(--unt-green);
+}
+.orderDesc{
+/*flex: 1;*/
+  width: auto;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 1.3em;
+  margin-left:-4px;
+}
+.orderPrice{
+  width: 30%;
+  justify-content: right;
+  text-align: right;
+}
+.parent{
+  font-family: sans-serif;
+  background-color: white;
+
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 10px;
+  font-weight: bold;
+  margin-bottom:2em;
+}
+.prices{
+  display:flex;
+  justify-content: flex-end;
+}
+.subtotal{
+  justify-content: center;
+  width:10%;
+  justify-content: space-between;
+  flex: .2;
+  text-align: left;
+}
+.subtotalPrice{
+  flex:.1;
+  justify-content: flex-end;
+}
+.topButtons{
+  display: flex;
+  margin-bottom:.5em;
+  justify-content: space-between;
+}
+.topButton{
+  background-color: #00853E; /* Green */
+  border: none;
+  color: white;
+  border-radius: 12px;
+  width: 45%;
+  padding:1.3em;
+  
+  font-weight: bold;
+}
+#checkout.topButton{
+  background-color: white;
+  color:var(--unt-green);
+  border:1.5px solid #00853E;
+  
+}
+
+#checkout.topButton[disabled]{
+  color: #333;
+  background-color: #ddd;
+  border-color: #333;
+
+  cursor: initial;
+}
+
+hr {
+  background-color:d8dee2;
+}
+
+.softText{
+  margin-top:-1.3em;
+  font-weight:1;
+  font-size:.85em;
+}
+
+.softText a {
+  margin-top:-1.3em;
+  
+}
+.attempt{
+  display:flex;
+  justify-content: space-between;
+}
+#recommendation .recommendationImg{
+  border-radius:5px;
+  width:125px;
+  height:100px;
+  border-color: var(--unt-green);
+  border: solid var(--unt-green) 3px;
+}
+#recommendation.orderImg{
+  flex:1.5;
+  padding:1em;
+  
+}
+.columns{
+  flex:2;
+}
+
+.removeFood {
+	color: var(--unt-green);
+}
+
+.removeFood:hover {
+	cursor: pointer;
+    text-decoration: underline;
+}

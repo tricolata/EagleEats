@@ -1,0 +1,61 @@
+{% extends "form.html" %}
+
+{% block header %}Finish Checking Out{% endblock %}
+
+{% block dest %}checkout{% endblock %}
+
+{% block submit_text %}Checkout{% endblock %}
+
+{% block form_items %}
+
+    <div>
+        <p style="text-align: center;">Order for {{ customer.name }}</p>
+        <p id="opener">Please choose a payment method</p>
+    </div>
+    
+        <div class="option">
+            <div class="credit">
+                <input onclick="showCard()" type="radio" id="creditCard1" name="transaction" value="creditCard">
+                <label for="creditCard1">Credit Card</label>
+            </div>
+            <div class="cash">
+                <input onclick="showCash()" type="radio" id="cash1" name="transaction" value="cash">
+                <label for="cash1">Cash</label>
+            </div>
+        </div>
+        
+        <span id="creditCard">
+        <label  for="cardNumber" >Card Number</label>
+        <input  type="text" name="cardNumber" placeholder="####-####-####-####" pattern="[0-9]*" minlength=13 autocapitalize="off" autocorrect="off">
+        
+        <label for="expDate">Expiration Date</label>
+        <input id="expDate" type="text" name="expDate" pattern="[0-9]{2}-[0-9]{4}" placeholder="MM-YYYY" autocapitalize="off" autocorrect="off">
+        </span>
+        <p id="cash" >Great! Prepare to pay when you arrive.</p>
+        
+        
+    <script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+
+{% endblock %}
+
+{% block additional_items %}
+<div class="additional-item">
+    
+    <p><a id="view-order" onclick="viewOrder()">Order Summary</a></p>
+
+    <div id="orderSummary">
+    {% for item in cart_item %}
+        <div class = "orderSummary">
+            <p class = "orderSumChild">{{ item.name }}</p>
+            <p class = "orderSumChild1">${{ item.price }}</p>
+        </div>
+    {% endfor %}
+  
+    <div class = "orderSummary">
+        <p class="orderSumChild" style="font-weight:bold;">Total</p>
+        <p class="orderSumChild1" style="font-weight:bold;"> ${{orderAmount}} </p>
+    </div>
+    </div>
+</div>
+  
+{% endblock %}
