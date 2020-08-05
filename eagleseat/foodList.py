@@ -18,7 +18,7 @@ menu_items = [
 	['Sloppy Joe', 'Description', 'sloppyJoe.jpg', 6.99,None, 'entree', 3, False],
 	['Pancakes', 'Description', 'pancakes.jpg', 6.99,'{"options":["syrup"]}', 'entree', 3, False],
 	['French Toast', 'Description', 'frenchToast.jpg', 6.99,'{"options":["syrup"]}', 'entree', 3, False],
-	['Chicken and Waffles', 'Description', 'waffles.jpg', 8.99,'{"options":["Honey"]}', 'entree', 3, False],
+	['Chicken N\' Waffles', 'Description', 'waffles.jpg', 8.99,'{"options":["Honey"]}', 'entree', 3, False],
 	['Shrimp Tacos', 'Description', 'shrimpTaco.jpg', 7.99,'{"options":["Salsa Verde"]}', 'entree', 3, False],
 	['Cinnamon Bun', 'Description', 'cinnamonBun.jpeg', 3.99, None, 'dessert', 3, False],
 	['Cheesecake', 'Description', 'cheesecake.jpg', 3.99,'{"options":["Strawberries", "Raspberries", "Chocolate"]}', 'dessert', 3, False],
