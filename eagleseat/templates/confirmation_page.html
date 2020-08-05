@@ -5,26 +5,22 @@
 <div class = "left">
   <h1>Thank you for your order</h1>
   <ul style= "list-style:none;">
-    <li>Order Number{{ order.order_num }}</li>
     <li>Phone Number<p>{{ user.phone }}</p></li>
+    <li>E-Mail<p>{{ user.email }}</p></li>
     <li>Customer<p>{{ user.name }}</p></li>
+    <li>Order Number<p>{{ (order.id|string).rjust(8, '0') }}</p></li>
   </ul>
+  <a href="./tracker/{{ (order.id|string).rjust(8, '0') }}" style="text-align: center; color: var(--unt-green); text-decoration:none;"><h3>Order Tracker</h3></a>
 </div>
 <div class = "right">
   <h1>Order Summary</h1>
+  {% for item in items %}
   <ul style= "list-style:none;">
-    <li>Subtotal<p>{{ orderAmount.subTotal }}</p></li>
-    <li>Shipping<p>Free Delivery</p></li>
-    <li>Discounts<p>None</p></li>
-    <li>Tax{{ orderAmount.salesTax }}</li>
-    <li>Order Total{{ orderAmount.total }}</li>
-  </ul>
-
-  <h2>Items Ordered</h2>
-  {% for item in cart_item %}
-  <ul style= "list-style:none;">
-    <li>{{ item.name }}</li>
+    <li><p>{{ item.name }} {{ item.price }}</p></li>
   </ul>
   {% endfor %}
+  <ul style= "list-style:none;">
+    <li>Order Total<p>{{ orderAmount.total }}</p></li>
+  </ul>
 </div>
 {% endblock %}

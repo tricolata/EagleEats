@@ -25,8 +25,16 @@ html, body{
   text-align: center;
   color: var(--unt-green);
 }
+.left h3{
+  font-size: 2em;
+}
 .left li{
   padding-bottom: 50px;
+}
+.left p{
+  margin:0;
+  padding-right: 100px;
+  float:right;
 }
 .right{
   border:5px solid var(--unt-green);
@@ -52,8 +60,8 @@ html, body{
 .right li{
   padding-bottom: 40px;
 }
-.left p{
+.right p{
   margin:0;
-  padding-right: 100px;
+  padding-right: 100%;
   float:right;
 }

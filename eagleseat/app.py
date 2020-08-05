@@ -193,7 +193,7 @@ def checkout():
 
 					empty_cart()
 
-					return confirmation
+					return redirect(url_for('confirmation'))
 				else:
 					flash('Card could not be charged succesfully')
 					return redirect(url_for('checkout'))
@@ -203,7 +203,7 @@ def checkout():
 				db.session.commit()
 
 				empty_cart()
-				return confirmation
+				return redirect(url_for('confirmation'))
 		else:
 			flash('No items in order')
 			return redirect(url_for('checkout'))
@@ -260,21 +260,6 @@ def cart():
 		flash('You must be logged in to place an order')
 		return redirect(url_for('login'))
 	else:
-<<<<<<< HEAD
-		orderAmount = OrderAmount()
-		cart_item =access_cart()
-		user = User.query.filter_by(email=session['email']).first()
-		for item in cart_item:
-			orderAmount.subTotal += item.price
-
-		orderAmount.subTotal =(orderAmount.subTotal)
-		orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
-		orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
-		orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
-		orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
-		orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
-		return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
-=======
 		# create cart if not already there
 		if session.get('cart') is None:
 			init_cart()
@@ -325,7 +310,7 @@ def cart():
 			user = User.query.filter_by(email=session['email']).first()
 			for item in cart_item:
 				orderAmount.subTotal += item.price
-				
+
 			orderAmount.subTotal =(orderAmount.subTotal)
 			orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
 			orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
@@ -333,7 +318,31 @@ def cart():
 			orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
 			orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
 			return render_template("cart.html", cart_item = cart_item ,orderAmount=orderAmount, user=user)
->>>>>>> develop
+
+@app.route("/confirmation", methods=["GET", "POST"])
+def confirmation():
+	if session.get('logged_in') is not None:
+		if request.method == 'GET':
+			if not session['logged_in']:
+				return redirect(url_for('login'))
+			else:
+				user = User.query.filter_by(email=session['email']).first()
+				order = Order.query.filter_by(id=Order.id).first()
+				orderAmount = OrderAmount()
+				order_items = json.loads(order.food_list)
+
+				items = []
+				# construct food list
+				for item_json in order_items['items']:
+					# item dict
+					item = {}
+					item_name = menu_items[int(item_json['id'])].name
+					size = menu_items[int(item_json['id'])].size
+					if size is not None:
+						item_name = size + ' ' + item_name
+					item['name'] = item_name
+					items.append(item)
+				return render_template("confirmation_page.html", user=user, orderAmount=orderAmount, order=order, items=items)
 
 def init_cart():
 	# json boilerplate
@@ -387,31 +396,6 @@ def access_cart():
 @app.route("/aboutus")
 def aboutus():
 	return render_template("aboutus.html")
-
-@app.route("/confirmation", methods=["GET", "POST"])
-def confirmation():
-	if session.get('logged_in') is not None:
-		if request.method == 'GET':
-			if not session['logged_in']:
-				return redirect(url_for('login'))
-			else:
-				user = User.query.filter_by(email=session['email']).first()
-				orderAmount = OrderAmount()
-				cart_item =access_cart()
-				for item in cart_item:
-					orderAmount.subTotal += item.price
-
-					orderAmount.subTotal =(orderAmount.subTotal)
-					orderAmount.salesTax = (orderAmount.TAX * orderAmount.subTotal)
-					orderAmount.total = (orderAmount.salesTax +  orderAmount.subTotal)
-					orderAmount.subTotal = '{:0>2.2f}'.format(orderAmount.subTotal)
-					orderAmount.salesTax = '{:0>2.2f}'.format(orderAmount.salesTax)
-					orderAmount.total = '{:0>2.2f}'.format(orderAmount.total)
-				return render_template("confirmation_page.html", user=user, cart_item = cart_item, orderAmount=orderAmount)
-
-				if Order.query.filter_by(order_num=session['order_num']).first():
-					order = Order.query.filter_by(order_num=session['order_num']).first()
-					return render_template("confirmation_page.html", order=order)
 
 @app.route("/account", methods=["GET", "POST"])
 def account():
@@ -476,7 +460,7 @@ def tracker(order_id):
 		return render_template('tracker.html', order=None, attempted_id=order_id)
 
 	order_items = json.loads(order.food_list);
-	
+
 	items = []
 	total_cook_time = 0
 	# construct food list
